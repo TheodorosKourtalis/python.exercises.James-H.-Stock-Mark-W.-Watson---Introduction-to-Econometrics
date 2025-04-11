@@ -3,7 +3,7 @@
 """
 Created on Sat Apr 12 00:53:06 2025
 
-@author: thodoreskourtales
+@author: ThodorisKourtalis
 """
 
 import streamlit as st
@@ -87,9 +87,10 @@ Calculate the expected number of failures and explain your calculation step by s
 **Sample Answer:**  
 The expected value is computed by taking the sum of each outcome multiplied by its probability:
 
-\\[
-E(M) = 0 \\times 0.80 + 1 \\times 0.10 + 2 \\times 0.06 + 3 \\times 0.03 + 4 \\times 0.01 = 0 + 0.10 + 0.12 + 0.09 + 0.04 = 0.35.
-\\]
+$$
+E(M) = 0 \\times 0.80 + 1 \\times 0.10 + 2 \\times 0.06 + 3 \\times 0.03 + 4 \\times 0.01 
+= 0 + 0.10 + 0.12 + 0.09 + 0.04 = 0.35.
+$$
 
 Thus, the expected number of connection failures is **0.35**.
             """
@@ -123,15 +124,20 @@ b) The conditional probability of having a long commute given that it is raining
         st.markdown(
             """
 **Sample Answer:**  
-a) The marginal probability of a short commute is the sum of the probabilities where Y = 1:  
-\\[
-P(Y = 1) = 0.15 (rainy) + 0.63 (clear) = 0.78.
-\\]
+a) The marginal probability of a short commute is the sum of the probabilities where \\(Y = 1\\):
 
-b) The conditional probability of a long commute given that it is rainy is:  
-\\[
-P(Y = 0 | X = 0) = \\frac{P(X = 0 \\text{ and } Y = 0)}{P(X = 0)} = \\frac{0.15}{0.30} = 0.50.
-\\]
+$$
+P(Y = 1) = 0.15 + 0.63 = 0.78.
+$$
+
+b) The conditional probability of a long commute given that it is raining is:
+
+$$
+P(Y = 0 \\mid X = 0) 
+= \\frac{P(X = 0 \\text{ and } Y = 0)}{P(X = 0)} 
+= \\frac{0.15}{0.30} 
+= 0.50.
+$$
 
 So, there is a 50% chance of a long commute when it is raining.
             """
@@ -151,19 +157,21 @@ Outline your steps using the standard normal transformation.
     st.text_area("Your Answer:", height=180, key="ex2_4")
     with st.expander("Show Sample Answer"):
         st.markdown(
-            """
+            r"""
 **Sample Answer:**  
 1. **Standardize the value:**  
-   The z-score is given by:  
-   \\[
-   z = \\frac{X - \\mu}{\\sigma} = \\frac{-2 - 0}{1.2} \\approx -1.67.
-   \\]
+   The z-score is:
+
+$$
+z = \\frac{X - \\mu}{\\sigma} = \\frac{-2 - 0}{1.2} \\approx -1.67.
+$$
 
 2. **Find the cumulative probability:**  
-   Using a standard normal table (or a calculator),  
-   \\[
-   P(Z \\leq -1.67) \\approx 0.0475.
-   \\]
+   Using a standard normal table (or a calculator):
+
+$$
+P(Z \\leq -1.67) \\approx 0.0475.
+$$
 
 Thus, the probability that the stock price change is less than -2% is approximately **4.75%**.
             """
@@ -188,31 +196,48 @@ Show all your calculation steps.
     st.text_area("Your Answer:", height=200, key="ex2_5")
     with st.expander("Show Sample Answer"):
         st.markdown(
-            """
+            r"""
 **Sample Answer:**  
 Let:
-- \\( P(\\text{Disease}) = 0.01 \\),
-- \\( P(\\text{No Disease}) = 0.99 \\),
-- Sensitivity \\( = P(\\text{Test Positive}|\\text{Disease}) = 0.98 \\),
-- Specificity \\( = P(\\text{Test Negative}|\\text{No Disease}) = 0.95 \\).  
-Thus, \\( P(\\text{Test Positive}|\\text{No Disease}) = 1 - 0.95 = 0.05 \\).
+- \\( P(\\text{Disease}) = 0.01 \\)
+- \\( P(\\text{No Disease}) = 0.99 \\)
+- Sensitivity = \\( P(\\text{Test Positive}\\mid\\text{Disease}) = 0.98 \\)
+- Specificity = \\( P(\\text{Test Negative}\\mid\\text{No Disease}) = 0.95 \\)
 
-Apply Bayes’ rule:
-\\[
-P(\\text{Disease}|\\text{Test Positive}) = \\frac{P(\\text{Test Positive}|\\text{Disease}) \\times P(\\text{Disease})}{P(\\text{Test Positive})}
-\\]
+Thus, \\( P(\\text{Test Positive}\\mid\\text{No Disease}) = 1 - 0.95 = 0.05 \\).
+
+Apply **Bayes’ rule**:
+
+$$
+P(\\text{Disease}\\mid\\text{Test Positive}) 
+= \\frac{P(\\text{Test Positive}\\mid\\text{Disease}) \\times P(\\text{Disease})}{P(\\text{Test Positive})}.
+$$
+
 where
-\\[
-P(\\text{Test Positive}) = P(\\text{Test Positive}|\\text{Disease}) \\times P(\\text{Disease}) + P(\\text{Test Positive}|\\text{No Disease}) \\times P(\\text{No Disease})
-\\]
+
+$$
+P(\\text{Test Positive}) 
+= P(\\text{Test Positive}\\mid\\text{Disease}) \\times P(\\text{Disease})
++ P(\\text{Test Positive}\\mid\\text{No Disease}) \\times P(\\text{No Disease}).
+$$
+
 Plug in the values:
-\\[
-P(\\text{Test Positive}) = (0.98 \\times 0.01) + (0.05 \\times 0.99) = 0.0098 + 0.0495 = 0.0593.
-\\]
-So,
-\\[
-P(\\text{Disease}|\\text{Test Positive}) = \\frac{0.98 \\times 0.01}{0.0593} \\approx \\frac{0.0098}{0.0593} \\approx 0.165.
-\\]
+
+$$
+P(\\text{Test Positive}) 
+= (0.98 \\times 0.01) + (0.05 \\times 0.99) 
+= 0.0098 + 0.0495 
+= 0.0593.
+$$
+
+Hence,
+
+$$
+P(\\text{Disease}\\mid\\text{Test Positive}) 
+= \\frac{0.98 \\times 0.01}{0.0593} 
+\\approx \\frac{0.0098}{0.0593} 
+\\approx 0.165.
+$$
 
 Thus, a person who tests positive has roughly a **16.5% chance** of actually having the disease.
             """
