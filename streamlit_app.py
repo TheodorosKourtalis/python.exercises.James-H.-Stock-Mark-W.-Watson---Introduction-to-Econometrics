@@ -1,14 +1,6 @@
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
-"""
-Created on Sat Apr 12 00:33:44 2025
-
-@author: thodoreskourtales
-"""
-
 import streamlit as st
 
-# Page configuration: title, icon, and layout
+# Configure page settings
 st.set_page_config(
     page_title="Econometrics Exercises Notebook",
     page_icon="📚",
@@ -16,32 +8,20 @@ st.set_page_config(
     initial_sidebar_state="expanded",
 )
 
-# Main header and description on the main page
+# Main page header and information
 st.title("Econometrics Exercises Notebook")
 st.markdown(
     """
 **Inspired by:** *Introduction to Econometrics*  
 James H. Stock & Mark W. Watson  
-Global Edition, Pearson Education Limited
+Global Edition, Pearson Education Limited  
+**Disclaimer:** This non-profit app is a passion project by **Thodoris Kourtalis**.  
+All rights belong to the original creators.  
+[Buy the book here](https://www.pearson.com)
 """
 )
-st.markdown(
-    """
-**Disclaimer:** This non-profit app is a passion project developed solely by **Thodoris Kourtalis**.  
-All intellectual property and rights to the book belong to the original creators.
-"""
-)
-st.markdown(
-    "If you wish to support the original work, you can [buy the book here](https://www.pearson.com)."
-)
 
-st.markdown("---")
-
-# Sidebar section for chapters and exercises
-st.sidebar.header("Chapters & Exercises")
-
-# Define the chapters and exercises in a dictionary
-# You can update these with the actual exercise titles as your project evolves.
+# Define chapters and exercises
 chapters = {
     "Chapter 1: Introduction": [
         "Exercise 1.1 - Overview",
@@ -61,30 +41,24 @@ chapters = {
         "Exercise 4.1 - Instrumental Variables",
         "Exercise 4.2 - Panel Data Analysis"
     ],
-    # Add additional chapters and exercises as needed
+    # Add more chapters and exercises as required
 }
 
-# Create expandable sections in the sidebar for every chapter
-for chapter, exercises in chapters.items():
-    with st.sidebar.expander(chapter, expanded=False):
-        # Create nested expanders (or bullet lists) for each exercise within the chapter
-        for exercise in exercises:
-            with st.expander(exercise, expanded=False):
-                st.write(f"**Notebook content for {exercise}:**")
-                st.write("Place your interactive code, examples, or further instructions here.")
-
-# Additional instructions on the main page
-st.header("Welcome to Your Econometrics Notebook")
-st.write(
-    """
-This interactive application provides curated exercise notebooks organized by chapters.
-Each chapter includes exercises that are either direct transferrals from or inspired by the original book.
-You can explore the notebooks via the sidebar. Click on a chapter to see available exercises, and expand each exercise to reveal its details.
-
----
-**How to Use This App:**
-- **Navigation:** Use the sidebar to browse through chapters and exercises.
-- **Learning:** Each exercise notebook may include explanations, example code, and interactive widgets to enhance your econometrics learning experience.
-- **Feedback:** As this is a passion project by Thodoris Kourtalis, feel free to reach out for any suggestions or comments.
-"""
+# Sidebar: chapter selection
+st.sidebar.header("Exercises Navigation")
+selected_chapter = st.sidebar.selectbox(
+    "Choose a Chapter:",
+    list(chapters.keys())
 )
+
+# Sidebar: exercise selection within the chosen chapter
+if selected_chapter:
+    selected_exercise = st.sidebar.selectbox(
+        "Choose an Exercise:",
+        chapters[selected_chapter]
+    )
+    
+    # Display selected content on the main page
+    st.header(f"{selected_chapter} - {selected_exercise}")
+    st.write(f"Notebook content for **{selected_exercise}** goes here.")
+    # You can replace the above line with the actual interactive notebook content
