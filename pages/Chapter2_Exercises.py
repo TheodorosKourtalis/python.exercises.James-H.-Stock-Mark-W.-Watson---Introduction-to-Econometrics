@@ -123,9 +123,10 @@ Their joint distribution is given by:
 | **\(X=1\)** (Clear)  | 0.07           | 0.63            | 0.70    |
 | **Total**      | 0.22           | 0.78            | 1.00    |
 
-Calculate:  
-a) \(P(Y=1)\), the marginal probability of a short commute, and  
-b) \(P(Y=0 \mid X=0)\), the conditional probability of a long commute given that it is rainy.
+Calculate:
+
+a) P(Y=1), the marginal probability of a short commute, and
+b) P(Y=0 \mid X=0), the conditional probability of a long commute given that it is rainy.
         """
     )
     st.text_area("Your Answer:", height=200, key="ex2_3")
