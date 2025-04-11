@@ -190,13 +190,9 @@ def exercise_2_5():
     st.markdown(
         """
 **Question:**  
-A medical test for a disease has:
-- \( P(\text{Disease}) = 0.01 \)
-- \( P(\text{No Disease}) = 0.99 \)
-- Sensitivity: \( P(\text{Test Positive} \mid \text{Disease}) = 0.98 \)
-- Specificity: \( P(\text{Test Negative} \mid \text{No Disease}) = 0.95 \)
-
-Calculate \( P(\text{Disease} \mid \text{Test Positive}) \) using Bayes’ rule. Show all steps.
+A medical test for a particular disease has a sensitivity of 98% and a specificity of 95%. The disease prevalence in the population is 1%.  
+If a person tests positive, calculate the probability that they actually have the disease using Bayes’ rule.  
+Show all your calculation steps.
         """
     )
     st.text_area("Your Answer:", height=200, key="ex2_5")
@@ -205,42 +201,58 @@ Calculate \( P(\text{Disease} \mid \text{Test Positive}) \) using Bayes’ rule.
             r"""
 **Sample Answer:**
 
-Given:
-- \( P(\text{Disease}) = 0.01 \)
-- \( P(\text{No Disease}) = 0.99 \)
-- \( P(\text{Test Positive} \mid \text{Disease}) = 0.98 \)
-- \( P(\text{Test Negative} \mid \text{No Disease}) = 0.95 \)
-  
-Thus,  
-$$
-P(\text{Test Positive} \mid \text{No Disease}) = 1 - 0.95 = 0.05.
-$$
-
-Apply Bayes’ rule:
+Let:
 
 $$
-P(\text{Disease} \mid \text{Test Positive}) = \frac{P(\text{Test Positive} \mid \text{Disease}) \times P(\text{Disease})}{P(\text{Test Positive})},
+P(\text{Disease}) \;=\; 0.01, \qquad P(\text{No Disease}) \;=\; 0.99,
+$$
+
+$$
+P(\text{Test Positive}\mid\text{Disease}) \;=\; 0.98, \qquad P(\text{Test Negative}\mid\text{No Disease}) \;=\; 0.95.
+$$
+
+Thus, 
+$$
+P(\text{Test Positive} \mid \text{No Disease})
+\;=\; 1 - 0.95
+\;=\; 0.05.
+$$
+
+Apply **Bayes’ rule**:
+
+$$
+P(\text{Disease} \mid \text{Test Positive}) 
+= \frac{\,P(\text{Test Positive}\mid\text{Disease}) \,\times\, P(\text{Disease})\,}
+       {\,P(\text{Test Positive})\,}.
 $$
 
 where
 
 $$
-P(\text{Test Positive}) = P(\text{Test Positive} \mid \text{Disease}) \times P(\text{Disease}) + P(\text{Test Positive} \mid \text{No Disease}) \times P(\text{No Disease}).
+P(\text{Test Positive}) 
+= P(\text{Test Positive}\mid\text{Disease}) \,\times\, P(\text{Disease})
+\;+\; P(\text{Test Positive}\mid\text{No Disease}) \,\times\, P(\text{No Disease}).
 $$
 
-Plugging in:
+Plug in the values:
 
 $$
-P(\text{Test Positive}) = (0.98 \times 0.01) + (0.05 \times 0.99) = 0.0098 + 0.0495 = 0.0593.
+P(\text{Test Positive})
+= (0.98 \,\times\, 0.01) \;+\; (0.05 \,\times\, 0.99)
+= 0.0098 + 0.0495
+= 0.0593.
 $$
 
-Thus,
+Hence,
 
 $$
-P(\text{Disease} \mid \text{Test Positive}) = \frac{0.98 \times 0.01}{0.0593} \approx 0.165.
+P(\text{Disease}\mid\text{Test Positive})
+= \frac{\,0.98 \,\times\, 0.01\,}{\,0.0593\,}
+\;\approx\; \frac{0.0098}{\,0.0593\,}
+\;\approx\; 0.165.
 $$
 
-A person who tests positive has roughly a **16.5%** chance of having the disease.
+Thus, a person who tests positive has roughly a **16.5% chance** of actually having the disease.
             """
         )
 
