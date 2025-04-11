@@ -80,15 +80,14 @@ def exercise_2_2():
         """
 **Question:**  
 Consider a random variable \( M \) (the number of times your wireless connection fails) with the following distribution:
-
 $$
-\begin{aligned}
-P(M=0) &= 0.80,\\
-P(M=1) &= 0.10,\\
-P(M=2) &= 0.06,\\
-P(M=3) &= 0.03,\\
-P(M=4) &= 0.01.
-\end{aligned}
+\begin{array}{rcl}
+P(M=0) & = & 0.80,\\[4mm]
+P(M=1) & = & 0.10,\\[4mm]
+P(M=2) & = & 0.06,\\[4mm]
+P(M=3) & = & 0.03,\\[4mm]
+P(M=4) & = & 0.01.
+\end{array}
 $$
 
 Calculate \( E(M) \) and explain each step.
