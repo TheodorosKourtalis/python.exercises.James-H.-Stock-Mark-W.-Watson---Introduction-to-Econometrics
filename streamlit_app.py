@@ -1,63 +1,42 @@
+# streamlit_app.py
+
 import streamlit as st
 
-# Configure page settings
 st.set_page_config(
     page_title="Econometrics Exercises Notebook",
     page_icon="📚",
     layout="wide",
-    initial_sidebar_state="expanded",
 )
 
-# Main page header and information
 st.title("Econometrics Exercises Notebook")
-st.markdown(
-    """
+st.markdown("""
 **Inspired by:** *Introduction to Econometrics*  
 James H. Stock & Mark W. Watson  
-Global Edition, Pearson Education Limited  
+Global Edition, Pearson Education Limited
+
 **Disclaimer:** This non-profit app is a passion project by **Thodoris Kourtalis**.  
 All rights belong to the original creators.  
 [Buy the book here](https://www.pearson.com)
-"""
-)
+""")
 
-# Define chapters and exercises
+st.markdown("---")
+
+st.header("Chapters & Exercises Preview")
+
 chapters = {
-    "Chapter 1: Introduction": [
-        "Exercise 1.1 - Overview",
-        "Exercise 1.2 - Basic Concepts",
-        "Exercise 1.3 - Data Interpretation"
+    "Chapter 1: Economic Questions and Data": [
+        "1.1 - Effect of Reading on Vocabulary",
+        "1.2 - Alcohol Consumption and Memory Loss",
+        "1.3 - Training and Worker Productivity"
     ],
     "Chapter 2: Simple Regression": [
-        "Exercise 2.1 - Regression Basics",
-        "Exercise 2.2 - Model Fitting",
-        "Exercise 2.3 - Residual Analysis"
-    ],
-    "Chapter 3: Multiple Regression": [
-        "Exercise 3.1 - Multicollinearity",
-        "Exercise 3.2 - Hypothesis Testing"
-    ],
-    "Chapter 4: Advanced Topics": [
-        "Exercise 4.1 - Instrumental Variables",
-        "Exercise 4.2 - Panel Data Analysis"
-    ],
-    # Add additional chapters and exercises as necessary
+        "Coming soon..."
+    ]
 }
 
-# Sidebar: Show chapter expanders with exercises as bullet points
-st.sidebar.header("Chapters & Exercises")
 for chapter, exercises in chapters.items():
-    expander = st.sidebar.expander(chapter, expanded=False)
-    # Display exercises as a bullet list
-    for exercise in exercises:
-        expander.write(f"- {exercise}")
+    with st.expander(chapter):
+        for exercise in exercises:
+            st.write(f"• {exercise}")
 
-# Main page content for instructions
-st.header("Welcome to Your Econometrics Notebook")
-st.write(
-    """
-This interactive application provides curated exercise notebooks organized by chapters.
-Select a chapter from the sidebar to view a summary of its exercises.
-For interactive content on an exercise, consider using the dropdown selections on the main page.
-"""
-)
+st.info("To begin, use the sidebar to navigate to a chapter and start solving exercises.")
