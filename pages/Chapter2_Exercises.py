@@ -205,24 +205,27 @@ Show all your calculation steps.
     st.text_area("Your Answer:", height=200, key="ex2_5")
 
     with st.expander("Show Sample Answer"):
-        # Inject custom CSS
+        # Inject CSS with container adjustments for mobile fitting.
         st.markdown(
             """
             <style>
             .sample-answer {
-                max-width: 95%;
+                width: 95%;
+                max-width: 100%;
                 margin: 0 auto;
                 text-align: left;
                 font-size: 1rem;
-                line-height: 1.5;
+                line-height: 1.4;
                 word-wrap: break-word;
+                overflow-x: auto;
             }
             </style>
             """, unsafe_allow_html=True
         )
-        # Begin container div (unsafe_allow_html=True to open a div)
+        # Open container div.
         st.markdown('<div class="sample-answer">', unsafe_allow_html=True)
-        # Now call st.markdown without unsafe_allow_html so the markdown (and LaTeX) gets processed
+        
+        # Render the sample answer with LaTeX.
         st.markdown(r"""
 **Sample Answer:**
 
@@ -251,7 +254,7 @@ $$
 where
 
 $$
-P(\text{Test Positive}) \;=\; (0.98 \times 0.01) + (0.05 \times 0.99) \;=\; 0.0098 + 0.0495 \;=\; 0.0593.
+P(\text{Test Positive}) \;=\; (0.98 \times 0.01) + (0.05 \times 0.99) = 0.0098 + 0.0495 = 0.0593.
 $$
 
 Hence,
@@ -262,7 +265,7 @@ $$
 
 Thus, a person who tests positive has roughly a **16.5% chance** of actually having the disease.
         """)
-        # Close the container div
+        # Close the container div.
         st.markdown("</div>", unsafe_allow_html=True)
 # ------------------------------
 # Exercise 2.6: Skewness & Kurtosis Calculator (Interactive)
