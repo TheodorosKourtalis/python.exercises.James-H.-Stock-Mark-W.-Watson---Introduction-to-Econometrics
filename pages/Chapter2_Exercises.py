@@ -74,10 +74,9 @@ Describe one example of a **discrete random variable** and one example of a **co
 
 # ------------------------------
 # Exercise 2.2: Expected Value Calculation
-def exercise_2_2():
+ddef exercise_2_2():
     st.subheader("Exercise 2.2: Expected Value Calculation")
-    st.markdown(
-        """
+    st.markdown(r"""
 **Question:**  
 Consider a random variable \( M \) (the number of times your wireless connection fails) with the following distribution:
 $$
@@ -90,22 +89,20 @@ P(M=4) & = & 0.01.
 \end{array}
 $$
 
-Calculate \( E(M) \) and explain each step.
-        """
-    )
+Calculate the expected value \(E(M)\) and explain your steps.
+    """)
     st.text_area("Your Answer:", height=150, key="ex2_2")
     with st.expander("Show Sample Answer"):
-        st.markdown(
-            r"""
-**Sample Answer:**  
+        st.markdown(r"""
+**Sample Answer:**
 
+The expected value is computed as:
 $$
-E(M) = 0 \times 0.80 + 1 \times 0.10 + 2 \times 0.06 + 3 \times 0.03 + 4 \times 0.01 = 0.35.
+E(M) = \sum_{m} m\,P(M=m) = 0 \times 0.80 + 1 \times 0.10 + 2 \times 0.06 + 3 \times 0.03 + 4 \times 0.01 = 0.35.
 $$
 
-Thus, the expected number of failures is **0.35**.
-            """
-        )
+Thus, \(E(M)=0.35\).
+        """)
 
 # ------------------------------
 # Exercise 2.3: Joint and Conditional Probabilities
