@@ -1,68 +1,34 @@
 import streamlit as st
 
-# Page configuration
 st.set_page_config(
-    page_title="Econometrics Exercises – Thodoris Kourtalis",
-    page_icon="📚",
+    page_title="Intro to Econometrics Exercises",
     layout="wide",
 )
 
-# Minimal header
-st.title("Econometrics Exercises")
-st.caption("By Thodoris Kourtalis")
-
+st.title("📘 Econometrics Notebook Builder")
 st.markdown(
     """
-This open educational tool presents exercises inspired by  
-**James H. Stock & Mark W. Watson – Introduction to Econometrics**  
-(Global Edition, Pearson Education Limited)
+Welcome to an open, self-driven companion app to *Introduction to Econometrics* by **James H. Stock & Mark W. Watson**.
 
-All intellectual property remains with the original authors.  
-This is a non-profit academic initiative.
-"""
-)
+This is a **non-profit educational project** by **Thodoris Kourtalis**, created out of genuine love for econometrics and pedagogy.
 
-st.markdown("---")
+---
 
-# Chapters dictionary
-chapters = {
-    "Chapter 1 – Economic Questions and Data": [
-        "1.1 – Reading and Vocabulary",
-        "1.2 – Alcohol and Memory Loss",
-        "1.3 – Training and Productivity"
-    ],
-    "Chapter 2 – Review of Probability": [
-        "2.1 – Discrete vs. Continuous Variables",
-        "2.2 – Expected Value of Network Failures",
-        "2.3 – Joint and Conditional Probabilities",
-        "2.4 – Stock Returns and the Normal Distribution",
-        "2.5 – Bayes’ Rule in Diagnostics"
-    ],
-    "Chapter 3 – Multiple Regression": [
-        "Coming soon"
-    ]
-}
+### 💡 What’s inside?
+- Carefully designed exercises from every chapter
+- A mix of inspired and directly transferred questions
+- Some interactive widgets to deepen your intuition
+- All content is organized by chapter (see sidebar)
 
-# Clean sidebar preview
-st.sidebar.header("Navigation")
-for chapter, exercises in chapters.items():
-    with st.sidebar.expander(chapter):
-        for ex in exercises:
-            st.markdown(f"- {ex}")
+---
 
-# Main chapter preview
-st.subheader("Contents")
-for chapter, exercises in chapters.items():
-    st.markdown(f"**{chapter}**")
-    for ex in exercises:
-        st.markdown(f"- {ex}")
-    st.markdown("")
+### 📚 Support the authors
+This work draws on *Introduction to Econometrics (Global Edition)*. If you find it useful, consider buying the original textbook:
 
-# Footer
-st.markdown("---")
-st.markdown(
+👉 [Buy the book on Pearson](https://www.pearson.com/en-us/subject-catalog/p/introduction-to-econometrics-global-edition/P200000003103/9781292264456)
+
+---
+
+*All rights belong to the original authors and publisher. This app is a personal educational tool, not an official or commercial product.*
     """
-For reference or to support the original authors,  
-consider [purchasing the textbook](https://www.pearson.com).
-"""
 )
