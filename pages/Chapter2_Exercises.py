@@ -83,10 +83,10 @@ Consider a random variable \( M \) (the number of times your wireless connection
 
 $$
 \begin{aligned}
-P(M=0) &= 0.80,\\[6pt]
-P(M=1) &= 0.10,\\[6pt]
-P(M=2) &= 0.06,\\[6pt]
-P(M=3) &= 0.03,\\[6pt]
+P(M=0) &= 0.80,\\
+P(M=1) &= 0.10,\\
+P(M=2) &= 0.06,\\
+P(M=3) &= 0.03,\\
 P(M=4) &= 0.01.
 \end{aligned}
 $$
