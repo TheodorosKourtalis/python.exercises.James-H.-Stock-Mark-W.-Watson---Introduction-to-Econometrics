@@ -74,7 +74,7 @@ Describe one example of a **discrete random variable** and one example of a **co
 
 # ------------------------------
 # Exercise 2.2: Expected Value Calculation
-ddef exercise_2_2():
+def exercise_2_2():
     st.subheader("Exercise 2.2: Expected Value Calculation")
     st.markdown(r"""
 **Question:**  
