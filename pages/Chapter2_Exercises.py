@@ -206,6 +206,7 @@ Show all your calculation steps.
     with st.expander("Show Sample Answer"):
         st.markdown(
             r"""
+<div style="max-width:90%; margin: 0 auto; text-align: left;">
 **Sample Answer:**
 
 Let:
@@ -230,7 +231,7 @@ Apply **Bayes’ rule**:
 $$
 P(\text{Disease} \mid \text{Test Positive}) 
 = \frac{\,P(\text{Test Positive}\mid\text{Disease}) \,\times\, P(\text{Disease})\,}
-       {\,P(\text{Test Positive})\,}.
+       {\,P(\text{Test Positive})\,},
 $$
 
 where
@@ -260,7 +261,8 @@ P(\text{Disease}\mid\text{Test Positive})
 $$
 
 Thus, a person who tests positive has roughly a **16.5% chance** of actually having the disease.
-            """
+</div>
+            """, unsafe_allow_html=True
         )
 
 # ------------------------------
