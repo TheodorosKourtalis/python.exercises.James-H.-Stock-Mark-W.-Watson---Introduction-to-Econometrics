@@ -257,50 +257,66 @@ Thus, a person who tests positive has roughly a **16.5% chance** of actually hav
         )
 
 # ------------------------------
-# Exercise 2.6: Skewness & Kurtosis Calculator
+# Exercise 2.6: Skewness & Kurtosis Calculator (Interactive)
 def exercise_2_6():
     st.subheader("Exercise 2.6: Skewness & Kurtosis Calculator")
     st.markdown(
         """
 **Question:**  
-Enter a series of numbers (comma separated) to calculate their skewness and kurtosis.
+Generate a random sample and examine its skewness and kurtosis.  
+Select a distribution and sample size.
         """
     )
-    data_str = st.text_input("Enter numbers separated by commas (e.g., 1, 2, 3, 4, 5):", key="ex2_6")
-    if st.button("Calculate Skewness & Kurtosis", key="calc_skew"):
-        try:
-            data = [float(x.strip()) for x in data_str.split(',') if x.strip() != ""]
-            if len(data) < 2:
-                st.error("Please enter at least two numbers.")
-            else:
-                skew_val = skew(data)
-                kurt_val = kurtosis(data, fisher=False)  # Use Fisher=False to report raw kurtosis (normal=3)
-                st.success(f"Skewness: {skew_val:.4f}, Kurtosis: {kurt_val:.4f}")
-        except Exception as e:
-            st.error("Error parsing data. Please ensure the values are numeric.")
+    dist_type = st.selectbox("Select Distribution:", ["Normal", "Uniform", "Exponential"], key="ex2_6_dist")
+    sample_size = st.slider("Sample Size:", min_value=50, max_value=1000, value=200, step=50, key="ex2_6_size")
+    
+    if dist_type == "Normal":
+        data = np.random.normal(loc=0, scale=1, size=sample_size)
+    elif dist_type == "Uniform":
+        data = np.random.uniform(low=0, high=1, size=sample_size)
+    else:  # Exponential
+        data = np.random.exponential(scale=1, size=sample_size)
+    
+    skew_val = skew(data)
+    kurt_val = kurtosis(data, fisher=False)  # raw kurtosis; normal = 3
+    st.markdown(f"**Skewness:** {skew_val:.4f}  |  **Kurtosis:** {kurt_val:.4f}")
+    
+    # Plot histogram
+    fig, ax = plt.subplots()
+    ax.hist(data, bins=30, color="mediumseagreen", edgecolor="black")
+    ax.set_title(f"{dist_type} Distribution Histogram (n={sample_size})")
+    ax.set_xlabel("Value")
+    ax.set_ylabel("Frequency")
+    st.pyplot(fig)
 
 # ------------------------------
-# Exercise 2.7: Variance and Std Calculator
+# Exercise 2.7: Variance and Standard Deviation Calculator (Interactive)
 def exercise_2_7():
     st.subheader("Exercise 2.7: Variance and Standard Deviation Calculator")
     st.markdown(
         """
 **Question:**  
-Enter a series of numbers (comma separated) to calculate their variance and standard deviation.
+Generate a sample from a chosen distribution and compute its variance and standard deviation.
         """
     )
-    data_str = st.text_input("Enter numbers separated by commas:", key="ex2_7")
-    if st.button("Calculate Variance & Std", key="calc_var"):
-        try:
-            data = [float(x.strip()) for x in data_str.split(',') if x.strip() != ""]
-            if len(data) < 2:
-                st.error("Please enter at least two numbers.")
-            else:
-                variance = np.var(data, ddof=1)  # Sample variance
-                std_dev = np.std(data, ddof=1)   # Sample standard deviation
-                st.success(f"Variance: {variance:.4f}, Standard Deviation: {std_dev:.4f}")
-        except Exception as e:
-            st.error("Error parsing data. Please ensure the values are numeric.")
+    dist_type = st.selectbox("Select Distribution:", ["Normal", "Uniform", "Exponential"], key="ex2_7_dist")
+    sample_size = st.slider("Sample Size:", min_value=50, max_value=1000, value=200, step=50, key="ex2_7_size")
+    
+    if dist_type == "Normal":
+        data = np.random.normal(loc=0, scale=1, size=sample_size)
+    elif dist_type == "Uniform":
+        data = np.random.uniform(low=0, high=1, size=sample_size)
+    else:
+        data = np.random.exponential(scale=1, size=sample_size)
+    
+    variance = np.var(data, ddof=1)  # sample variance
+    std_dev = np.std(data, ddof=1)   # sample std
+    st.markdown(f"**Variance:** {variance:.4f}  |  **Standard Deviation:** {std_dev:.4f}")
+    
+    fig, ax = plt.subplots()
+    ax.hist(data, bins=30, color="cornflowerblue", edgecolor="black")
+    ax.set_title(f"{dist_type} Distribution (n={sample_size})")
+    st.pyplot(fig)
 
 # ------------------------------
 # Exercise 2.8: Expected Value Calculator (Interactive)
@@ -309,76 +325,80 @@ def exercise_2_8():
     st.markdown(
         """
 **Question:**  
-Input a list of outcomes and their corresponding probabilities (comma separated).  
-Calculate the expected value.
+Specify outcomes and their probabilities using sliders and calculate the expected value.
         """
     )
-    outcomes_str = st.text_input("Enter outcomes (e.g., 0, 1, 2, 3):", key="ex2_8_outcomes")
-    probs_str = st.text_input("Enter probabilities (e.g., 0.8, 0.1, 0.06, 0.04):", key="ex2_8_probs")
-    if st.button("Calculate Expected Value", key="calc_exp"):
-        try:
-            outcomes = [float(x.strip()) for x in outcomes_str.split(',') if x.strip() != ""]
-            probs = [float(x.strip()) for x in probs_str.split(',') if x.strip() != ""]
-            if len(outcomes) != len(probs) or len(outcomes) == 0:
-                st.error("Please ensure you enter the same number of outcomes and probabilities.")
-            else:
-                if not np.isclose(sum(probs), 1):
-                    st.warning("Probabilities do not sum to 1. They will be normalized.")
-                    probs = [p / sum(probs) for p in probs]
-                exp_val = sum(o * p for o, p in zip(outcomes, probs))
-                st.success(f"Expected Value: {exp_val:.4f}")
-        except Exception as e:
-            st.error("Error parsing input. Ensure values are numeric and separated by commas.")
+    n_outcomes = st.slider("Number of Outcomes:", min_value=2, max_value=10, value=4, key="ex2_8_n")
+    outcomes = []
+    probs = []
+    cols = st.columns(2)
+    default_prob = round(1/n_outcomes, 2)
+    for i in range(n_outcomes):
+        with cols[0]:
+            outcome = st.number_input(f"Outcome {i+1} Value:", value=float(i), key=f"ex2_8_out_{i}")
+            outcomes.append(outcome)
+        with cols[1]:
+            prob = st.slider(f"Probability for Outcome {i+1}:", min_value=0.0, max_value=1.0, value=default_prob, step=0.01, key=f"ex2_8_prob_{i}")
+            probs.append(prob)
+    total_prob = sum(probs)
+    if not np.isclose(total_prob, 1):
+        st.warning(f"The total probability is {total_prob:.4f}. Probabilities will be normalized.")
+        probs = [p/total_prob for p in probs]
+    exp_val = sum(o * p for o, p in zip(outcomes, probs))
+    st.markdown(f"**Expected Value:** {exp_val:.4f}")
+    
+    # Optionally, plot the outcomes with probabilities
+    fig, ax = plt.subplots()
+    ax.bar(range(n_outcomes), probs, color="mediumpurple", edgecolor="black")
+    ax.set_xlabel("Outcome Index")
+    ax.set_ylabel("Probability")
+    ax.set_xticks(range(n_outcomes))
+    ax.set_title("Outcome Probabilities")
+    st.pyplot(fig)
 
 # ------------------------------
-# Exercise 2.9: Discrete Distribution Plotter
+# Exercise 2.9: Discrete Distribution Plotter (Interactive)
 def exercise_2_9():
     st.subheader("Exercise 2.9: Discrete Distribution Plotter")
     st.markdown(
         """
 **Question:**  
-Enter a list of outcomes and their probabilities (comma separated) to plot the discrete probability distribution.
+Use sliders to set probabilities for each outcome of a discrete distribution and plot the distribution.
         """
     )
-    outcomes_str = st.text_input("Outcomes (e.g., 0, 1, 2, 3):", key="ex2_9_outcomes")
-    probs_str = st.text_input("Probabilities (e.g., 0.8, 0.1, 0.06, 0.04):", key="ex2_9_probs")
-    if st.button("Plot Distribution", key="plot_dist"):
-        try:
-            outcomes = [float(x.strip()) for x in outcomes_str.split(',') if x.strip() != ""]
-            probs = [float(x.strip()) for x in probs_str.split(',') if x.strip() != ""]
-            if len(outcomes) != len(probs) or len(outcomes) == 0:
-                st.error("Ensure equal numbers of outcomes and probabilities are entered.")
-            else:
-                if not np.isclose(sum(probs), 1):
-                    st.warning("Probabilities do not sum to 1. They will be normalized.")
-                    probs = [p / sum(probs) for p in probs]
-                # Plotting the discrete distribution
-                fig, ax = plt.subplots()
-                ax.bar(outcomes, probs, width=0.4, color="skyblue", edgecolor="black")
-                ax.set_xlabel("Outcomes")
-                ax.set_ylabel("Probability")
-                ax.set_title("Discrete Probability Distribution")
-                st.pyplot(fig)
-        except Exception as e:
-            st.error("Error parsing input. Ensure numeric, comma-separated values.")
+    n_outcomes = st.slider("Number of Outcomes:", min_value=2, max_value=10, value=4, key="ex2_9_n")
+    outcomes = list(range(n_outcomes))
+    probs = []
+    for i in range(n_outcomes):
+        prob = st.slider(f"Probability for Outcome {i}:", min_value=0.0, max_value=1.0, value=1/n_outcomes, step=0.01, key=f"ex2_9_prob_{i}")
+        probs.append(prob)
+    total_prob = sum(probs)
+    if not np.isclose(total_prob, 1):
+        st.warning(f"Total probability = {total_prob:.4f}. Probabilities will be normalized.")
+        probs = [p/total_prob for p in probs]
+    fig, ax = plt.subplots()
+    ax.bar(outcomes, probs, color="tomato", edgecolor="black")
+    ax.set_xlabel("Outcome")
+    ax.set_ylabel("Probability")
+    ax.set_title("Discrete Probability Distribution")
+    st.pyplot(fig)
 
 # ------------------------------
-# Exercise 2.10: Bernoulli Simulator
+# Exercise 2.10: Bernoulli Simulator (Interactive)
 def exercise_2_10():
     st.subheader("Exercise 2.10: Bernoulli Simulator")
     st.markdown(
         """
 **Question:**  
-Simulate Bernoulli trials by specifying the probability of success and the number of trials.  
-Display the sample mean along with a histogram of outcomes.
+Simulate Bernoulli trials interactively. Adjust the probability of success and the number of trials using sliders, then view the sample mean and a histogram of outcomes.
         """
     )
-    p = st.number_input("Enter probability of success (0 to 1):", min_value=0.0, max_value=1.0, value=0.5, key="ex2_10_p")
-    n_trials = st.number_input("Enter the number of trials:", min_value=1, value=100, key="ex2_10_n")
+    p = st.slider("Probability of Success:", min_value=0.0, max_value=1.0, value=0.5, step=0.01, key="ex2_10_p")
+    n_trials = st.slider("Number of Trials:", min_value=10, max_value=10000, value=100, step=10, key="ex2_10_n")
     if st.button("Simulate Bernoulli Trials", key="simulate_bernoulli"):
         trials = np.random.binomial(n=1, p=p, size=int(n_trials))
         sample_mean = np.mean(trials)
-        st.success(f"Sample Mean: {sample_mean:.4f}")
+        st.markdown(f"**Sample Mean:** {sample_mean:.4f}")
         fig, ax = plt.subplots()
         ax.hist(trials, bins=[-0.5, 0.5, 1.5], rwidth=0.8, color="salmon", edgecolor="black")
         ax.set_xticks([0, 1])
@@ -388,24 +408,24 @@ Display the sample mean along with a histogram of outcomes.
         st.pyplot(fig)
 
 # ------------------------------
-# Display the selected exercise based on the user's choice
-if exercise_choice.startswith("2.1"):
+# Display selected exercise using exact string comparison
+if exercise_choice == "2.1: Understanding Distributions":
     exercise_2_1()
-elif exercise_choice.startswith("2.2"):
+elif exercise_choice == "2.2: Expected Value Calculation":
     exercise_2_2()
-elif exercise_choice.startswith("2.3"):
+elif exercise_choice == "2.3: Joint and Conditional Probabilities":
     exercise_2_3()
-elif exercise_choice.startswith("2.4"):
+elif exercise_choice == "2.4: Normal Distribution Application":
     exercise_2_4()
-elif exercise_choice.startswith("2.5"):
+elif exercise_choice == "2.5: Bayes’ Rule Challenge":
     exercise_2_5()
-elif exercise_choice.startswith("2.6"):
+elif exercise_choice == "2.6: Skewness & Kurtosis Calculator":
     exercise_2_6()
-elif exercise_choice.startswith("2.7"):
+elif exercise_choice == "2.7: Variance and Std Calculator":
     exercise_2_7()
-elif exercise_choice.startswith("2.8"):
+elif exercise_choice == "2.8: Expected Value Calculator (Interactive)":
     exercise_2_8()
-elif exercise_choice.startswith("2.9"):
+elif exercise_choice == "2.9: Discrete Distribution Plotter":
     exercise_2_9()
-elif exercise_choice.startswith("2.10"):
+elif exercise_choice == "2.10: Bernoulli Simulator":
     exercise_2_10()
