@@ -203,6 +203,7 @@ $$
 P(\text{Test Positive}\mid\text{Disease}) \;=\; 0.98, \qquad P(\text{Test Negative}\mid\text{No Disease}) \;=\; 0.95.
 $$
 
+Thus, 
 $$
 P(\text{Test Positive} \mid \text{No Disease})
 \;=\; 1 - 0.95
