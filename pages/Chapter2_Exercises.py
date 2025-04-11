@@ -195,10 +195,13 @@ Show all your calculation steps.
 
 Let:
 
-- \( P(\text{Disease}) = 0.01 \)  
-- \( P(\text{No Disease}) = 0.99 \)  
-- Sensitivity \(=\; P(\text{Test Positive}\mid\text{Disease}) = 0.98\)  
-- Specificity \(=\; P(\text{Test Negative}\mid\text{No Disease}) = 0.95\)
+$$
+P(\text{Disease}) \;=\; 0.01, \qquad P(\text{No Disease}) \;=\; 0.99,
+$$
+
+$$
+P(\text{Test Positive}\mid\text{Disease}) \;=\; 0.98, \qquad P(\text{Test Negative}\mid\text{No Disease}) \;=\; 0.95.
+$$
 
 Thus, 
 \[
