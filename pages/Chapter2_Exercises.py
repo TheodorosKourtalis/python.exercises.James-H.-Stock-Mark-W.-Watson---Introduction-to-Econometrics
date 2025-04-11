@@ -203,57 +203,37 @@ Show all your calculation steps.
         """
     )
     st.text_area("Your Answer:", height=200, key="ex2_5")
+    
     with st.expander("Show Sample Answer"):
-        # Use st.components.v1.html to embed HTML with custom CSS for better mobile support.
-        sample_html = r"""
-<html>
-  <head>
-    <style>
-      body {
-        font-size: 1rem;
-        max-width: 100%;
-        overflow-wrap: break-word;
-      }
-      .container {
-        max-width: 90%;
-        margin: 0 auto;
-        text-align: left;
-      }
-    </style>
-  </head>
-  <body>
-    <div class="container">
-      <strong>Sample Answer:</strong>
-      <br><br>
-      Let:
-      <br>
-      $$P(\text{Disease}) \;=\; 0.01,\qquad P(\text{No Disease}) \;=\; 0.99,$$
-      <br><br>
-      $$P(\text{Test Positive}\mid \text{Disease}) \;=\; 0.98,\qquad P(\text{Test Negative}\mid \text{No Disease}) \;=\; 0.95.$$
-      <br><br>
-      Thus,
-      <br>
-      $$P(\text{Test Positive}\mid \text{No Disease}) \;=\; 1 - 0.95 \;=\; 0.05.$$
-      <br><br>
-      Apply <strong>Bayes’ rule</strong>:
-      <br>
-      $$P(\text{Disease}\mid \text{Test Positive}) \;=\; \frac{P(\text{Test Positive}\mid \text{Disease}) \times P(\text{Disease})}{P(\text{Test Positive})},$$
-      <br><br>
-      where,
-      <br>
-      $$P(\text{Test Positive}) \;=\; (0.98 \times 0.01) + (0.05 \times 0.99) = 0.0098 + 0.0495 = 0.0593.$$
-      <br><br>
-      Hence,
-      <br>
-      $$P(\text{Disease}\mid \text{Test Positive}) \;\approx\; \frac{0.0098}{0.0593} \;\approx\; 0.165.$$
-      <br><br>
-      Thus, a person who tests positive has roughly a <strong>16.5%</strong> chance of actually having the disease.
-    </div>
-  </body>
-</html>
-"""
-        import streamlit.components.v1 as components
-        components.html(sample_html, height=600)
+        st.markdown(
+            """
+            <style>
+            .sample-answer {
+                max-width: 95%;
+                margin: auto;
+                text-align: left;
+                font-size: 1rem;
+                line-height: 1.5;
+                word-wrap: break-word;
+            }
+            </style>
+            <div class="sample-answer">
+            <strong>Sample Answer:</strong><br><br>
+            Let:<br><br>
+            $$P(\\text{Disease}) \\;=\\; 0.01, \\qquad P(\\text{No Disease}) \\;=\\; 0.99,$$<br><br>
+            $$P(\\text{Test Positive}\\mid\\text{Disease}) \\;=\\; 0.98, \\qquad P(\\text{Test Negative}\\mid\\text{No Disease}) \\;=\\; 0.95.$$<br><br>
+            Thus,<br>
+            $$P(\\text{Test Positive}\\mid\\text{No Disease}) \\;=\\; 1 - 0.95 \\;=\\; 0.05.$$<br><br>
+            Apply Bayes’ rule:<br>
+            $$P(\\text{Disease}\\mid\\text{Test Positive}) \\;=\\; \\frac{P(\\text{Test Positive}\\mid\\text{Disease}) \\times P(\\text{Disease})}{P(\\text{Test Positive})},$$<br><br>
+            where<br>
+            $$P(\\text{Test Positive}) \\;=\\; (0.98 \\times 0.01) + (0.05 \\times 0.99) \\;=\\; 0.0098 + 0.0495 \\;=\\; 0.0593.$$<br><br>
+            Hence,<br>
+            $$P(\\text{Disease}\\mid\\text{Test Positive}) \\;\\approx\\; \\frac{0.0098}{0.0593} \\;\\approx\\; 0.165.$$<br><br>
+            Thus, a person who tests positive has roughly a <strong>16.5% chance</strong> of having the disease.
+            </div>
+            """, unsafe_allow_html=True
+        )
 # ------------------------------
 # Exercise 2.6: Skewness & Kurtosis Calculator (Interactive)
 def exercise_2_6():
