@@ -108,20 +108,28 @@ Thus, \(E(M)=0.35\).
 # Exercise 2.3: Joint and Conditional Probabilities
 def exercise_2_3():
     st.subheader("Exercise 2.3: Joint and Conditional Probabilities")
+    
+    # First part: Question and variable definitions.
     st.markdown(r"""
 **Question:**  
-Suppose we have two binary variables:  
-- \(X\): Weather (0 = rainy, 1 = clear)  
-- \(Y\): Commute length (0 = long, 1 = short)
-
-Their joint distribution is:
+Suppose we have two binary variables:
+- **\(X\)**: Weather (0 = rainy, 1 = clear)
+- **\(Y\)**: Commute length (0 = long, 1 = short)
+    """)
+    
+    # Next, display the joint distribution table.
+    st.markdown(r"""
+Their joint distribution is given by:
 
 |                | \(Y=0\) (Long) | \(Y=1\) (Short) | Total   |
 |----------------|----------------|-----------------|---------|
 | **\(X=0\)** (Rainy)  | 0.15           | 0.15            | 0.30    |
 | **\(X=1\)** (Clear)  | 0.07           | 0.63            | 0.70    |
 | **Total**      | 0.22           | 0.78            | 1.00    |
-
+    """)
+    
+    # Then, in a separate Markdown block, include the "Calculate:" portion.
+    st.markdown(r"""
 **Calculate:**  
 a) \(P(Y=1)\), the marginal probability of a short commute, and  
 b) \(P(Y=0 \mid X=0)\), the conditional probability of a long commute given that it is rainy.
