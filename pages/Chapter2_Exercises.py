@@ -108,14 +108,13 @@ Thus, \(E(M)=0.35\).
 # Exercise 2.3: Joint and Conditional Probabilities
 def exercise_2_3():
     st.subheader("Exercise 2.3: Joint and Conditional Probabilities")
-    st.markdown(
-        r"""
+    st.markdown(r"""
 **Question:**  
-Suppose we have two binary variables:
-- **\(X\)**: Weather (0 = rainy, 1 = clear)
-- **\(Y\)**: Commute length (0 = long, 1 = short)
+Suppose we have two binary variables:  
+- \(X\): Weather (0 = rainy, 1 = clear)  
+- \(Y\): Commute length (0 = long, 1 = short)
 
-Their joint distribution is given by:
+Their joint distribution is:
 
 |                | \(Y=0\) (Long) | \(Y=1\) (Short) | Total   |
 |----------------|----------------|-----------------|---------|
@@ -123,11 +122,10 @@ Their joint distribution is given by:
 | **\(X=1\)** (Clear)  | 0.07           | 0.63            | 0.70    |
 | **Total**      | 0.22           | 0.78            | 1.00    |
 
-Calculate:  
+**Calculate:**  
 a) \(P(Y=1)\), the marginal probability of a short commute, and  
 b) \(P(Y=0 \mid X=0)\), the conditional probability of a long commute given that it is rainy.
-        """
-    )
+    """)
     st.text_area("Your Answer:", height=200, key="ex2_3")
     with st.expander("Show Sample Answer"):
         st.markdown(
