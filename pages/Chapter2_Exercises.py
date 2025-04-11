@@ -203,37 +203,67 @@ Show all your calculation steps.
         """
     )
     st.text_area("Your Answer:", height=200, key="ex2_5")
-    
+
     with st.expander("Show Sample Answer"):
+        # Inject custom CSS
         st.markdown(
             """
             <style>
             .sample-answer {
                 max-width: 95%;
-                margin: auto;
+                margin: 0 auto;
                 text-align: left;
                 font-size: 1rem;
                 line-height: 1.5;
                 word-wrap: break-word;
             }
             </style>
-            <div class="sample-answer">
-            <strong>Sample Answer:</strong><br><br>
-            Let:<br><br>
-            $$P(\\text{Disease}) \\;=\\; 0.01, \\qquad P(\\text{No Disease}) \\;=\\; 0.99,$$<br><br>
-            $$P(\\text{Test Positive}\\mid\\text{Disease}) \\;=\\; 0.98, \\qquad P(\\text{Test Negative}\\mid\\text{No Disease}) \\;=\\; 0.95.$$<br><br>
-            Thus,<br>
-            $$P(\\text{Test Positive}\\mid\\text{No Disease}) \\;=\\; 1 - 0.95 \\;=\\; 0.05.$$<br><br>
-            Apply Bayes’ rule:<br>
-            $$P(\\text{Disease}\\mid\\text{Test Positive}) \\;=\\; \\frac{P(\\text{Test Positive}\\mid\\text{Disease}) \\times P(\\text{Disease})}{P(\\text{Test Positive})},$$<br><br>
-            where<br>
-            $$P(\\text{Test Positive}) \\;=\\; (0.98 \\times 0.01) + (0.05 \\times 0.99) \\;=\\; 0.0098 + 0.0495 \\;=\\; 0.0593.$$<br><br>
-            Hence,<br>
-            $$P(\\text{Disease}\\mid\\text{Test Positive}) \\;\\approx\\; \\frac{0.0098}{0.0593} \\;\\approx\\; 0.165.$$<br><br>
-            Thus, a person who tests positive has roughly a <strong>16.5% chance</strong> of having the disease.
-            </div>
             """, unsafe_allow_html=True
         )
+        # Begin container div (unsafe_allow_html=True to open a div)
+        st.markdown('<div class="sample-answer">', unsafe_allow_html=True)
+        # Now call st.markdown without unsafe_allow_html so the markdown (and LaTeX) gets processed
+        st.markdown(r"""
+**Sample Answer:**
+
+Let:
+
+$$
+P(\text{Disease}) \;=\; 0.01, \qquad P(\text{No Disease}) \;=\; 0.99,
+$$
+
+$$
+P(\text{Test Positive}\mid\text{Disease}) \;=\; 0.98, \qquad P(\text{Test Negative}\mid\text{No Disease}) \;=\; 0.95.
+$$
+
+Thus, 
+
+$$
+P(\text{Test Positive}\mid\text{No Disease}) \;=\; 1 - 0.95 \;=\; 0.05.
+$$
+
+Apply **Bayes’ rule**:
+
+$$
+P(\text{Disease}\mid\text{Test Positive}) \;=\; \frac{P(\text{Test Positive}\mid\text{Disease}) \times P(\text{Disease})}{P(\text{Test Positive})},
+$$
+
+where
+
+$$
+P(\text{Test Positive}) \;=\; (0.98 \times 0.01) + (0.05 \times 0.99) \;=\; 0.0098 + 0.0495 \;=\; 0.0593.
+$$
+
+Hence,
+
+$$
+P(\text{Disease}\mid\text{Test Positive}) \;\approx\; \frac{0.0098}{0.0593} \;\approx\; 0.165.
+$$
+
+Thus, a person who tests positive has roughly a **16.5% chance** of actually having the disease.
+        """)
+        # Close the container div
+        st.markdown("</div>", unsafe_allow_html=True)
 # ------------------------------
 # Exercise 2.6: Skewness & Kurtosis Calculator (Interactive)
 def exercise_2_6():
