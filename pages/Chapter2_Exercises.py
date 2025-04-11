@@ -129,12 +129,12 @@ Their joint distribution is given by:
     """)
     
     # Then, in a separate Markdown block, include the "Calculate:" portion.
-  # Then, a separate Markdown block for the "Calculate:" part with inline math using $.
+ # Prompt with inline math expressions
     st.markdown(r"""
 **Calculate:**  
-a) `$P(Y=1)$`, the marginal probability of a short commute, and  
-b) `$P(Y=0 \mid X=0)$`, the conditional probability of a long commute given that it is rainy.
-    """)
+a) $P(Y=1)$, the marginal probability of a short commute, and  
+b) $P(Y=0 \\mid X=0)$, the conditional probability of a long commute given that it is rainy.
+""")
     st.text_area("Your Answer:", height=200, key="ex2_3")
     with st.expander("Show Sample Answer"):
         st.markdown(
