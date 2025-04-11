@@ -159,28 +159,22 @@ Outline your steps using the standard normal transformation.
         st.markdown(
             r"""
 **Sample Answer:**  
-1. **Standardize the value:**  
-   The z-score is:
+
+1. **Standardize the value.** The z-score is:
 
 $$
-z = \\frac{X - \\mu}{\\sigma} = \\frac{-2 - 0}{1.2} \\approx -1.67.
+z \;=\; \frac{X - \mu}{\sigma} \;=\; \frac{-2 \,-\, 0}{1.2} \;\approx\; -1.67.
 $$
 
-2. **Find the cumulative probability:**  
-   Using a standard normal table (or a calculator):
+2. **Find the cumulative probability.** Using a standard normal table (or a calculator):
 
 $$
-P(Z \\leq -1.67) \\approx 0.0475.
+P\bigl(Z \le -1.67\bigr) \;\approx\; 0.0475.
 $$
 
 Thus, the probability that the stock price change is less than -2% is approximately **4.75%**.
             """
         )
-        
-        # Optional: If you want to dynamically display a calculation using scipy, uncomment below.
-        # z_value = (-2 - 0) / 1.2
-        # prob = norm.cdf(z_value)
-        # st.markdown(f"Using SciPy, the computed probability is approximately **{prob:.4f}**.")
 
 # Exercise 2.5: Bayes’ Rule Challenge
 def exercise_2_5():
@@ -197,46 +191,54 @@ Show all your calculation steps.
     with st.expander("Show Sample Answer"):
         st.markdown(
             r"""
-**Sample Answer:**  
-Let:
-- \\( P(\\text{Disease}) = 0.01 \\)
-- \\( P(\\text{No Disease}) = 0.99 \\)
-- Sensitivity = \\( P(\\text{Test Positive}\\mid\\text{Disease}) = 0.98 \\)
-- Specificity = \\( P(\\text{Test Negative}\\mid\\text{No Disease}) = 0.95 \\)
+**Sample Answer:**
 
-Thus, \\( P(\\text{Test Positive}\\mid\\text{No Disease}) = 1 - 0.95 = 0.05 \\).
+Let:
+
+- \( P(\text{Disease}) = 0.01 \)  
+- \( P(\text{No Disease}) = 0.99 \)  
+- Sensitivity \(=\; P(\text{Test Positive}\mid\text{Disease}) = 0.98\)  
+- Specificity \(=\; P(\text{Test Negative}\mid\text{No Disease}) = 0.95\)
+
+Thus, 
+\[
+P(\text{Test Positive}\mid\text{No Disease}) 
+= 1 \;-\; 0.95 
+= 0.05.
+\]
 
 Apply **Bayes’ rule**:
 
 $$
-P(\\text{Disease}\\mid\\text{Test Positive}) 
-= \\frac{P(\\text{Test Positive}\\mid\\text{Disease}) \\times P(\\text{Disease})}{P(\\text{Test Positive})}.
+P(\text{Disease} \mid \text{Test Positive}) 
+= \frac{\,P(\text{Test Positive}\mid\text{Disease}) \,\times\, P(\text{Disease})\,}
+       {\,P(\text{Test Positive})\,}.
 $$
 
 where
 
 $$
-P(\\text{Test Positive}) 
-= P(\\text{Test Positive}\\mid\\text{Disease}) \\times P(\\text{Disease})
-+ P(\\text{Test Positive}\\mid\\text{No Disease}) \\times P(\\text{No Disease}).
+P(\text{Test Positive}) 
+= P(\text{Test Positive}\mid\text{Disease}) \,\times\, P(\text{Disease})
+\;+\; P(\text{Test Positive}\mid\text{No Disease}) \,\times\, P(\text{No Disease}).
 $$
 
 Plug in the values:
 
 $$
-P(\\text{Test Positive}) 
-= (0.98 \\times 0.01) + (0.05 \\times 0.99) 
-= 0.0098 + 0.0495 
+P(\text{Test Positive})
+= (0.98 \,\times\, 0.01) \;+\; (0.05 \,\times\, 0.99)
+= 0.0098 + 0.0495
 = 0.0593.
 $$
 
 Hence,
 
 $$
-P(\\text{Disease}\\mid\\text{Test Positive}) 
-= \\frac{0.98 \\times 0.01}{0.0593} 
-\\approx \\frac{0.0098}{0.0593} 
-\\approx 0.165.
+P(\text{Disease}\mid\text{Test Positive})
+= \frac{\,0.98 \,\times\, 0.01\,}{\,0.0593\,}
+\;\approx\; \frac{0.0098}{\,0.0593\,}
+\;\approx\; 0.165.
 $$
 
 Thus, a person who tests positive has roughly a **16.5% chance** of actually having the disease.
