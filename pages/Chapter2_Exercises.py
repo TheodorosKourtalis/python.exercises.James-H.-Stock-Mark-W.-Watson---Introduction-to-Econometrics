@@ -80,6 +80,7 @@ def exercise_2_2():
         """
 **Question:**  
 Consider a random variable \( M \) (the number of times your wireless connection fails) with the following distribution:
+
 $$
 \begin{aligned}
 P(M=0) &= 0.80,\\[6pt]
