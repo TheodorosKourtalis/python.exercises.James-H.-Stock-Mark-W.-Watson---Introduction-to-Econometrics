@@ -203,30 +203,40 @@ Show all your calculation steps.
         """
     )
     st.text_area("Your Answer:", height=200, key="ex2_5")
-
+    
+    # Let the user choose if they prefer the PDF version.
+    pdf_preference = st.checkbox("I'm on a small screen – show me the PDF version of the sample answer instead")
+    
     with st.expander("Show Sample Answer"):
-        # Inject CSS with container adjustments for mobile fitting.
-        st.markdown(
-            """
-            <style>
-            .sample-answer {
-                width: 95%;
-                max-width: 100%;
-                margin: 0 auto;
-                text-align: left;
-                font-size: 1rem;
-                line-height: 1.4;
-                word-wrap: break-word;
-                overflow-x: auto;
-            }
-            </style>
-            """, unsafe_allow_html=True
-        )
-        # Open container div.
-        st.markdown('<div class="sample-answer">', unsafe_allow_html=True)
-        
-        # Render the sample answer with LaTeX.
-        st.markdown(r"""
+        if pdf_preference:
+            # Provide a download link for the PDF version.
+            st.markdown(
+                """
+Download the sample answer PDF here: [Sample Answer PDF](https://www.example.com/sample_answer.pdf)
+                
+*(If the link doesn’t work, please contact the app administrator.)*
+                """
+            )
+        else:
+            # Inject CSS for proper responsive container and then render the interactive sample answer.
+            st.markdown(
+                """
+                <style>
+                .sample-answer {
+                    width: 95%;
+                    max-width: 100%;
+                    margin: 0 auto;
+                    text-align: left;
+                    font-size: 1rem;
+                    line-height: 1.4;
+                    word-wrap: break-word;
+                    overflow-x: auto;
+                }
+                </style>
+                """, unsafe_allow_html=True
+            )
+            st.markdown('<div class="sample-answer">', unsafe_allow_html=True)
+            st.markdown(r"""
 **Sample Answer:**
 
 Let:
@@ -254,19 +264,18 @@ $$
 where
 
 $$
-P(\text{Test Positive}) \;=\; (0.98 \times 0.01) + (0.05 \times 0.99) = 0.0098 + 0.0495 = 0.0593.
+P(\text{Test Positive}) \;=\; (0.98 \times 0.01) + (0.05 \times 0.99) \;=\; 0.0098 + 0.0495 \;=\; 0.0593.
 $$
 
 Hence,
 
 $$
-P(\text{Disease}\mid\text{Test Positive}) \;\approx\; \frac{0.0098}{0.0593} \;\approx\; 0.165.
+P(\text{Disease}\mid\text{Test Positive}) \;\approx\; \frac{0.98 \times 0.01}{0.0593} \;\approx\; \frac{0.0098}{0.0593} \;\approx\; 0.165.
 $$
 
 Thus, a person who tests positive has roughly a **16.5% chance** of actually having the disease.
-        """)
-        # Close the container div.
-        st.markdown("</div>", unsafe_allow_html=True)
+            """)
+            st.markdown("</div>", unsafe_allow_html=True)
 # ------------------------------
 # Exercise 2.6: Skewness & Kurtosis Calculator (Interactive)
 def exercise_2_6():
