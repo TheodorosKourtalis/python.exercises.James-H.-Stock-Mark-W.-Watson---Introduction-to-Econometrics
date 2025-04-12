@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+##!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
 Chapter 2: Review of Probability – Exercises
@@ -13,6 +13,9 @@ from scipy.stats import norm, skew, kurtosis
 import matplotlib.pyplot as plt
 import subprocess
 import sys
+import tempfile
+import os
+from fpdf import FPDF
 
 # -------------------------------------------------------------------
 # PAGE CONFIGURATION
@@ -45,32 +48,68 @@ exercise_choice = st.radio("Select an Exercise:",
 st.markdown("---")
 
 # -------------------------------------------------------------------
-# HELPER FUNCTIONS
+# GLOBAL HELPER FUNCTIONS
 # -------------------------------------------------------------------
-def generate_pdf_via_subprocess(sample_text):
-    try:
-        process = subprocess.Popen(
-            [sys.executable, "generate_pdf.py"],
-            stdin=subprocess.PIPE,
-            stdout=subprocess.PIPE,
-            stderr=subprocess.PIPE
-        )
-        pdf_data, err = process.communicate(input=sample_text.encode('utf-8'))
-        if process.returncode != 0:
-            st.error("Error generating PDF: " + err.decode('utf-8'))
-            return None
-        return pdf_data
-    except Exception as e:
-        st.error("Exception during PDF generation: " + str(e))
-        return None
+def latex_to_png(latex_str: str, filename: str):
+    """
+    Μετατρέπει ένα LaTeX string σε εικόνα PNG χρησιμοποιώντας matplotlib.
+    """
+    import matplotlib.pyplot as plt
+    # Δημιουργία figure χωρίς άξονες.
+    fig = plt.figure(figsize=(0.01, 0.01))
+    plt.axis('off')
+    # Τοποθέτηση του κειμένου – χρησιμοποίησε \n για νέες γραμμές.
+    # Δεδομένου ότι το matplotlib mathtext έχει περιορισμούς, το renderαρισμένο κείμενο θα είναι απλό.
+    text = fig.text(0, 0.5, f"{latex_str}", fontsize=12, ha='left', va='center')
+    # Σχεδίασε για να πάρετε το bounding box.
+    fig.canvas.draw()
+    bbox = text.get_window_extent()
+    # Μετατροπή διαστάσεων σε ίντσες.
+    width = bbox.width / fig.dpi
+    height = bbox.height / fig.dpi
+    fig.set_size_inches(width, height)
+    text.set_position((0, 0))
+    plt.savefig(filename, dpi=300, bbox_inches='tight', pad_inches=0.1, transparent=True)
+    plt.close(fig)
 
-def show_sample_answer(sample_md, key_suffix="default"):
+def generate_pdf_with_latex_image(sample_md: str) -> bytes:
+    """
+    Δημιουργεί ένα PDF από το sample answer που περιέχει LaTeX μετατρέποντάς το σε εικόνα,
+    και το ενσωματώνει σε PDF μέσω της fpdf.
+    """
+    with tempfile.NamedTemporaryFile(suffix=".png", delete=False) as tmp_png:
+        png_filename = tmp_png.name
+    with tempfile.NamedTemporaryFile(suffix=".pdf", delete=False) as tmp_pdf:
+        pdf_filename = tmp_pdf.name
+
+    # Μετατροπή του sample_md (που περιέχει και LaTeX) σε εικόνα.
+    # Για απλότητα θεωρούμε ότι το sample_md είναι κείμενο που περιέχει τα math blocks.
+    # Μπορείς να τροποποιήσεις εδώ αν χρειάζεσαι πιο λεπτομερή render.
+    latex_to_png(sample_md, png_filename)
+
+    pdf = FPDF()
+    pdf.add_page()
+    # Τοποθετούμε την εικόνα στη σελίδα. Εδώ προσαρμόζουμε το πλάτος ώστε να έχει 10 mm περιθώριο.
+    pdf.image(png_filename, x=10, y=10, w=pdf.w - 20)
+    pdf.output(pdf_filename)
+    os.remove(png_filename)
+    with open(pdf_filename, "rb") as f:
+        pdf_bytes = f.read()
+    os.remove(pdf_filename)
+    return pdf_bytes
+
+def show_sample_answer(sample_md: str, key_suffix="default"):
+    """
+    Ελέγχει το global flag για small screen.
+    Αν είναι ενεργό, δημιουργεί ένα PDF από το sample answer και εμφανίζει κουμπί download.
+    Διαφορετικά, εμφανίζει το sample answer ως interactive Markdown.
+    """
     if st.session_state.get("small_screen", False):
-        pdf_data = generate_pdf_via_subprocess(sample_md)
-        if pdf_data:
+        pdf_bytes = generate_pdf_with_latex_image(sample_md)
+        if pdf_bytes:
             st.download_button(
                 label="Download Sample Answer PDF",
-                data=pdf_data,
+                data=pdf_bytes,
                 file_name="sample_answer.pdf",
                 mime="application/pdf"
             )
@@ -94,7 +133,7 @@ def show_sample_answer(sample_md, key_suffix="default"):
         st.markdown("</div>", unsafe_allow_html=True)
 
 # -------------------------------------------------------------------
-# GLOBAL SMALL SCREEN FLAG (fallback standalone)
+# GLOBAL SETUP: SMALL SCREEN FLAG (fallback standalone)
 # -------------------------------------------------------------------
 if "small_screen" not in st.session_state:
     st.session_state["small_screen"] = False
@@ -102,11 +141,12 @@ if "small_screen" not in st.session_state:
 # -------------------------------------------------------------------
 # EXERCISE FUNCTIONS
 # -------------------------------------------------------------------
+
 def exercise_2_1():
     st.subheader("Exercise 2.1: Understanding Distributions")
     st.markdown("""
 **Question:**  
-Give one example of a discrete random variable and one example of a continuous random variable from everyday life. Explain why.
+Give one example each of a discrete random variable and a continuous random variable from everyday life. Explain why.
     """)
     st.text_area("Your Answer:", height=150, key="ex2_1")
     with st.expander("Show Sample Answer"):
@@ -130,14 +170,14 @@ P(M=3) & = & 0.03,\\[4mm]
 P(M=4) & = & 0.01.
 \end{array}
 $$
-Calculate \(E(M)\) and explain your steps.
+Calculate the expected value \(E(M)\) and explain your steps.
     """)
     st.text_area("Your Answer:", height=150, key="ex2_2")
     with st.expander("Show Sample Answer"):
         st.markdown(r"""
 **Sample Answer:**
 $$
-E(M) = \sum_{m} m\,P(M=m) = 0\times0.80+ 1\times0.10+ 2\times0.06+ 3\times0.03+ 4\times0.01 = 0.35.
+E(M)=\sum_{m}m\,P(M=m)=0\times0.80+1\times0.10+2\times0.06+3\times0.03+4\times0.01=0.35.
 $$
 Thus, \(E(M)=0.35\).
         """)
@@ -151,7 +191,7 @@ Suppose we have two binary variables:
 - **\(Y\)**: Commute length (0 = long, 1 = short)
 
 Their joint distribution is:
-
+    
 |                | \(Y=0\) (Long) | \(Y=1\) (Short) | Total   |
 |----------------|----------------|-----------------|---------|
 | **\(X=0\)** (Rainy)  | 0.15           | 0.15            | 0.30    |
@@ -200,7 +240,7 @@ $$
 
 2. **Find Probability:**
 $$
-P(Z\leq -1.67)\approx0.0475.
+P(Z\le-1.67)\approx0.0475.
 $$
 
 Thus, the probability is approximately **4.75%**.
