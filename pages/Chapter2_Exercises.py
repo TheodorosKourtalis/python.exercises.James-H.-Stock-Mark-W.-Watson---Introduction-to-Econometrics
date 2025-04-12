@@ -387,14 +387,22 @@ $$
 Summing over all values of 
 $$y$$ 
 for a fixed value of $$x$$ gives the total probability for that $$x$$, that is:
-
+$$
 P(X = x).
 $$
 Likewise, summing over all values of $$x$$ for a fixed value of $$y$$ gives:
 $$
 P(Y = y).
 $$
-This is why the marginal distributions are obtained by summing along the rows (for $$P(X = x)$$) or columns (for $$P(Y = y)$$) of the joint distribution table.
+This is why the marginal distributions are obtained by summing along the rows (for 
+$$
+P(X = x)
+$$
+) or columns (for 
+$$
+P(Y = y)
+$$
+) of the joint distribution table.
         """
         show_sample_answer(sample_md, key_suffix="2_11")
 
