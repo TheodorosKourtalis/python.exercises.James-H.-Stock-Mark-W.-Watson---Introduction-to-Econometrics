@@ -63,7 +63,11 @@ exercise_choice = st.radio("Select an Exercise:",
         "2.10: Bernoulli Simulator (Interactive)",
         "2.11: Joint & Marginal Distribution Table Generator",
         "2.12: Conditional Distribution Calculator",
-        "2.13: Law of Iterated Expectations Verifier"
+        "2.13: Law of Iterated Expectations Verifier",
+        "2.14: Normal Distribution Probability Calculator (Advanced)",
+        "2.15: Bayes’ Rule Visualizer (Advanced)",
+        "2.16: Covariance and Correlation Analyzer (Advanced)",
+        "2.17: Mean Squared Error Minimizer (Advanced)"
     ])
 st.markdown("---")
 
@@ -559,6 +563,251 @@ $$
 
         # Use your helper function. For example:
         show_sample_answer(sample_md, key_suffix="2_13")
+def exercise_2_14():
+    st.subheader("Exercise 2.14: Normal Distribution Probability Calculator (Advanced)")
+    st.markdown(r"""
+**Question:**  
+Given parameters $$\mu$$ (mean) and $$\sigma$$ (standard deviation) for a normal random variable $$Z$$, and a threshold $$c$$, compute 
+$$
+P(Z \le c)
+$$
+using standardization and the cumulative distribution function from `scipy.stats.norm`.
+
+Then, interpret the result for different values of $$\mu, \sigma,$$ and $$c$$.
+""")
+    # Interactive inputs
+    mu = st.number_input("Mean (μ):", value=0.0, step=0.1, key="ex2_14_mu")
+    sigma = st.number_input("Std. Dev (σ):", value=1.0, step=0.1, key="ex2_14_sigma")
+    c = st.number_input("Threshold (c):", value=0.0, step=0.1, key="ex2_14_c")
+    
+    if sigma <= 0:
+        st.error("σ must be > 0.")
+        return
+    
+    prob = norm.cdf((c - mu)/sigma)  # Standardize
+    st.markdown(f"**Probability:**  P(Z ≤ {c}) ≈ {prob:.4f}")
+
+    # Optional: Add a small plot for the distribution
+    xvals = np.linspace(mu - 4*sigma, mu + 4*sigma, 200)
+    pdf_vals = norm.pdf((xvals - mu)/sigma)
+    fig, ax = plt.subplots()
+    ax.plot(xvals, pdf_vals, label="PDF (standardized)", color="midnightblue")
+    ax.axvline(c, color="red", linestyle="--", label=f"Threshold c={c}")
+    ax.fill_between(xvals[xvals<=c], pdf_vals[xvals<=c], color="red", alpha=0.3)
+    ax.set_title("Normal Distribution (Standardized Plot)")
+    ax.legend()
+    st.pyplot(fig)
+
+    st.text_area("Your Answer:", height=150, key="ex2_14_answer")
+    with st.expander("Show Sample Answer"):
+        sample_md = r"""
+**Sample Answer**  
+Using the standard normal CDF, we compute  
+$$
+P(Z \le c) = \Phi\!\Bigl(\frac{c - \mu}{\sigma}\Bigr),
+$$
+where \(\Phi\) is the CDF of the standard normal distribution. If \(\mu=0,\sigma=1\), then  
+$$
+P(Z \le c)=\Phi(c).
+$$
+For example, if \(\mu=0,\sigma=1\), and \(c=1.64\), we get \(\approx 0.9495\).
+        """
+        show_sample_answer(sample_md, key_suffix="2_14")
+
+
+def exercise_2_15():
+    st.subheader("Exercise 2.15: Bayes’ Rule Visualizer (Advanced)")
+    st.markdown(r"""
+**Question:**  
+Visualize Bayes’ rule by adjusting:
+- The **prior** \(P(A)\) 
+- The **likelihood** \(P(B \mid A)\)
+- The **false alarm rate** \(P(B \mid \neg A)\)
+
+Then observe the **posterior** \(P(A \mid B)\) in real time.
+""")
+
+    prior = st.slider("Prior P(A):", 0.0, 1.0, 0.2, 0.01, key="ex2_15_prior")
+    likelihood = st.slider("P(B | A):", 0.0, 1.0, 0.8, 0.01, key="ex2_15_like")
+    false_alarm = st.slider("P(B | ¬A):", 0.0, 1.0, 0.1, 0.01, key="ex2_15_false")
+    
+    # Bayes' rule: P(A|B) = [ P(B|A) * P(A) ] / P(B)
+    # P(B) = P(B|A)*P(A) + P(B|¬A)*P(¬A)
+    p_b = likelihood*prior + false_alarm*(1 - prior)
+    if p_b == 0:
+        st.error("P(B) is 0. Adjust your sliders.")
+        return
+    posterior = (likelihood*prior) / p_b
+    
+    st.markdown(f"**Posterior P(A | B):** {posterior:.4f}")
+    st.markdown(f"**P(B):** {p_b:.4f}")
+    
+    # Optional simple bar chart
+    fig, ax = plt.subplots()
+    categories = ["P(A)", "P(B|A)", "P(B|¬A)", "P(A|B)"]
+    values = [prior, likelihood, false_alarm, posterior]
+    ax.bar(categories, values, color=["orange","skyblue","limegreen","tomato"])
+    ax.set_ylim([0,1])
+    ax.set_title("Bayes Rule Visualization")
+    for i, val in enumerate(values):
+        ax.text(i, val+0.02, f"{val:.2f}", ha="center")
+    st.pyplot(fig)
+
+    st.text_area("Your Answer:", height=150, key="ex2_15_answer")
+    with st.expander("Show Sample Answer"):
+        sample_md = r"""
+**Sample Answer**  
+Bayes’ rule states: 
+$$
+P(A \mid B)=\frac{P(B \mid A)\,P(A)}{P(B)},
+$$
+where 
+$$
+P(B)=P(B\mid A)\,P(A)+P(B\mid\neg A)\,\bigl[1-P(A)\bigr].
+$$
+By adjusting the prior \(P(A)\), the likelihood \(P(B\mid A)\), and the false alarm \(P(B \mid \neg A)\), we dynamically see changes in \(P(A\mid B)\).
+        """
+        show_sample_answer(sample_md, key_suffix="2_15")
+
+
+def exercise_2_16():
+    st.subheader("Exercise 2.16: Covariance and Correlation Analyzer (Advanced)")
+    st.markdown(r"""
+**Question:**  
+Generate a 2D dataset for two variables \(X\) and \(Y\). Compute their covariance 
+$$
+\mathrm{cov}(X,Y)
+$$
+and correlation 
+$$
+\mathrm{corr}(X,Y).
+$$
+Experiment with different relationships (positive, negative, or zero correlation).
+""")
+
+    # Let user pick correlation scenario
+    relationship = st.selectbox("Pick Relationship:", ["Positive", "Negative", "Uncorrelated"], key="ex2_16_relation")
+    sample_size = st.slider("Sample Size:", 50, 2000, 500, 50, key="ex2_16_size")
+    
+    np.random.seed(0)  # for reproducibility
+    if relationship == "Positive":
+        # X normal(0,1), Y = X + noise
+        X = np.random.normal(0,1,sample_size)
+        Y = X + np.random.normal(0,0.5,sample_size)
+    elif relationship == "Negative":
+        X = np.random.normal(0,1,sample_size)
+        Y = -X + np.random.normal(0,0.5,sample_size)
+    else:
+        # Uncorrelated
+        X = np.random.normal(0,1,sample_size)
+        Y = np.random.normal(0,1,sample_size)
+    
+    cov_xy = np.cov(X, Y, ddof=1)[0,1]
+    corr_xy = np.corrcoef(X, Y)[0,1]
+    
+    st.markdown(f"**Cov(X,Y):** {cov_xy:.4f} | **Corr(X,Y):** {corr_xy:.4f}")
+    fig, ax = plt.subplots()
+    ax.scatter(X, Y, alpha=0.5, color="purple", edgecolor="white")
+    ax.set_title(f"{relationship} Relationship")
+    ax.set_xlabel("X")
+    ax.set_ylabel("Y")
+    st.pyplot(fig)
+    
+    st.text_area("Your Answer:", height=150, key="ex2_16_answer")
+    with st.expander("Show Sample Answer"):
+        sample_md = r"""
+**Sample Answer**  
+
+We compute:
+$$
+\mathrm{cov}(X,Y) 
+= \frac{1}{n-1}\sum_{i=1}^n (x_i - \bar{x})(y_i - \bar{y}),
+$$
+and
+$$
+\mathrm{corr}(X,Y) 
+= \frac{\mathrm{cov}(X,Y)}{\sqrt{\mathrm{var}(X)\,\mathrm{var}(Y)}}.
+$$
+- A positive relationship leads to a **positive** covariance and correlation close to 1.  
+- A negative relationship leads to a **negative** covariance and correlation close to -1.  
+- When \(X\) and \(Y\) are generated independently, \(\mathrm{corr}(X,Y)\) should be **near zero**.
+        """
+        show_sample_answer(sample_md, key_suffix="2_16")
+
+
+def exercise_2_17():
+    st.subheader("Exercise 2.17: Mean Squared Error Minimizer (Advanced)")
+    st.markdown(r"""
+**Question:**  
+Simulate data \((X_i, Y_i)\) and explore how the function 
+$$
+g(X)=\alpha
+$$
+compares against 
+$$
+g(X)=\mathbb{E}[Y \mid X]
+$$
+in terms of mean squared error:
+$$
+\mathrm{MSE}(g) = \mathbb{E}\bigl[(Y - g(X))^2\bigr].
+$$
+Show that using the conditional mean \(\mathbb{E}[Y \mid X]\) gives a lower MSE than any constant function \(\alpha\).
+""")
+
+    # Let user pick function type
+    func_type = st.selectbox("Model g(X):", ["Constant alpha", "Conditional Mean"], key="ex2_17_func")
+    n_points = st.slider("Number of Points:", 50, 1000, 200, 50, key="ex2_17_n")
+    
+    # Generate some random data, e.g. Y = 2*X + noise
+    X_data = np.random.uniform(0,1,n_points)
+    Y_data = 2*X_data + np.random.normal(0,0.2,n_points)
+    
+    # If user picks "Constant alpha", let them choose alpha
+    if func_type == "Constant alpha":
+        alpha_val = st.slider("Choose alpha:", -1.0, 3.0, 1.0, 0.1, key="ex2_17_alpha")
+        pred = alpha_val
+    else:
+        # "Conditional Mean" -> we do a simple "binned" approximation or direct function
+        pred = 2*X_data  # from the true relationship
+        alpha_val = None
+    
+    # Compute MSE
+    mse_val = np.mean((Y_data - pred)**2)
+    st.markdown(f"**Mean Squared Error:** {mse_val:.5f}")
+    
+    # Plot
+    fig, ax = plt.subplots()
+    ax.scatter(X_data, Y_data, color="gray", alpha=0.5, label="Data")
+    if func_type == "Constant alpha":
+        ax.axhline(pred, color="red", label=f"Constant α={alpha_val:.2f}")
+    else:
+        ax.plot(np.sort(X_data), 2*np.sort(X_data), color="blue", label="Conditional Mean = 2X")
+    ax.set_xlabel("X")
+    ax.set_ylabel("Y")
+    ax.set_title(f"MSE = {mse_val:.5f}")
+    ax.legend()
+    st.pyplot(fig)
+
+    st.text_area("Your Answer:", height=150, key="ex2_17_answer")
+    with st.expander("Show Sample Answer"):
+        sample_md = r"""
+**Sample Answer**  
+
+A well-known result in statistics states:
+$$
+\mathbb{E}[\, (Y - g(X))^2 \,]
+$$
+is minimized (over functions \(g\)) precisely when 
+$$
+g(X)=\mathbb{E}[Y \mid X].
+$$
+If we restrict \(g\) to be a constant \(\alpha\), then 
+$$
+\mathrm{MSE}(\alpha)=\mathbb{E}\bigl[(Y - \alpha)^2\bigr],
+$$
+which is minimized by \(\alpha=\mathbb{E}[Y]\) but still higher than using \(\mathbb{E}[Y\mid X]\) whenever \(X\) and \(Y\) have some relationship.
+        """
+        show_sample_answer(sample_md, key_suffix="2_17")        
 # -------------------------------------------------------------------
 # MAIN EXECUTION
 # -------------------------------------------------------------------
@@ -588,3 +837,11 @@ elif exercise_choice == "2.12: Conditional Distribution Calculator":
     exercise_2_12()
 elif exercise_choice == "2.13: Law of Iterated Expectations Verifier":
     exercise_2_13()    
+elif exercise_choice == "2.14: Normal Distribution Probability Calculator (Advanced)":
+    exercise_2_14()
+elif exercise_choice == "2.15: Bayes’ Rule Visualizer (Advanced)":
+    exercise_2_15()
+elif exercise_choice == "2.16: Covariance and Correlation Analyzer (Advanced)":
+    exercise_2_16()
+elif exercise_choice == "2.17: Mean Squared Error Minimizer (Advanced)":
+    exercise_2_17()
