@@ -56,11 +56,11 @@ exercise_choice = st.radio("Select an Exercise:",
         "2.3: Joint and Conditional Probabilities",
         "2.4: Normal Distribution Application",
         "2.5: Bayes’ Rule Challenge",
-        "2.6: Skewness & Kurtosis Calculator(Interactive)",
-        "2.7: Variance and Std Calculator(Interactive)",
+        "2.6: Skewness & Kurtosis Calculator (Interactive)",
+        "2.7: Variance and Std Calculator (Interactive)",
         "2.8: Expected Value Calculator (Interactive)",
-        "2.9: Discrete Distribution Plotter(Interactive)",
-        "2.10: Bernoulli Simulator(Interactive)",
+        "2.9: Discrete Distribution Plotter (Interactive)",
+        "2.10: Bernoulli Simulator (Interactive)",
         "2.11: Joint & Marginal Distribution Table Generator",
         "2.12: Conditional Distribution Calculator",
         "2.13: Law of Iterated Expectations Verifier"
@@ -225,7 +225,7 @@ Thus, a person who tests positive has roughly a **16.5% chance** of having the d
         show_sample_answer(sample_md, key_suffix="2_5")
 
 def exercise_2_6():
-    st.subheader("Exercise 2.6: Skewness & Kurtosis Calculator")
+    st.subheader("Exercise 2.6: Skewness & Kurtosis Calculator (Interactive)")
     st.markdown("""
 **Question:**  
 Generate a random sample and examine its skewness and kurtosis.  
@@ -250,7 +250,7 @@ Select a distribution and sample size.
     st.pyplot(fig)
 
 def exercise_2_7():
-    st.subheader("Exercise 2.7: Variance and Standard Deviation Calculator")
+    st.subheader("Exercise 2.7: Variance and Standard Deviation Calculator (Interactive)")
     st.markdown("""
 **Question:**  
 Generate a sample from a chosen distribution and compute its variance and standard deviation.
@@ -304,7 +304,7 @@ Specify outcomes and their probabilities using sliders and calculate the expecte
     st.pyplot(fig)
 
 def exercise_2_9():
-    st.subheader("Exercise 2.9: Discrete Distribution Plotter")
+    st.subheader("Exercise 2.9: Discrete Distribution Plotter (Interactive)")
     st.markdown("""
 **Question:**  
 Use sliders to set probabilities for each outcome of a discrete distribution and plot the distribution.
@@ -326,7 +326,7 @@ Use sliders to set probabilities for each outcome of a discrete distribution and
     ax.set_title("Discrete Probability Distribution")
     st.pyplot(fig)
 def exercise_2_10():
-    st.subheader("Exercise 2.10: Bernoulli Simulator")
+    st.subheader("Exercise 2.10: Bernoulli Simulator (Interactive)")
     st.markdown("""
 **Question:**  
 Simulate Bernoulli trials interactively. Adjust the probability of success and the number of trials using sliders, then view the sample mean and a histogram of outcomes.
