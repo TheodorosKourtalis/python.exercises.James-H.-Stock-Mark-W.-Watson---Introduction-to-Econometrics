@@ -572,15 +572,15 @@ elif exercise_choice == "2.4: Normal Distribution Application":
     exercise_2_4()
 elif exercise_choice == "2.5: Bayes’ Rule Challenge":
     exercise_2_5()
-elif exercise_choice == "2.6: Skewness & Kurtosis Calculator":
+elif exercise_choice == "2.6: Skewness & Kurtosis Calculator (Interactive)":
     exercise_2_6()
-elif exercise_choice == "2.7: Variance and Std Calculator":
+elif exercise_choice == "2.7: Variance and Std Calculator (Interactive)":
     exercise_2_7()
 elif exercise_choice == "2.8: Expected Value Calculator (Interactive)":
     exercise_2_8()
-elif exercise_choice == "2.9: Discrete Distribution Plotter":
+elif exercise_choice == "2.9: Discrete Distribution Plotter (Interactive)":
     exercise_2_9()
-elif exercise_choice == "2.10: Bernoulli Simulator":
+elif exercise_choice == "2.10: Bernoulli Simulator (Interactive)":
     exercise_2_10()
 elif exercise_choice == "2.11: Joint & Marginal Distribution Table Generator":
     exercise_2_11()
