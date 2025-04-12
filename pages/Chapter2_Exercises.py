@@ -61,6 +61,9 @@ exercise_choice = st.radio("Select an Exercise:",
         "2.8: Expected Value Calculator (Interactive)",
         "2.9: Discrete Distribution Plotter",
         "2.10: Bernoulli Simulator"
+        "2.11: Joint & Marginal Distribution Table Generator",
+        "2.12: Conditional Distribution Calculator",
+        "2.13: Law of Iterated Expectations Verifier"
     ])
 st.markdown("---")
 
@@ -342,7 +345,95 @@ Simulate Bernoulli trials interactively. Adjust the probability of success and t
         ax.set_ylabel("Frequency")
         ax.set_title("Histogram of Bernoulli Trials")
         st.pyplot(fig)
+def exercise_2_11():
+    st.subheader("Exercise 2.11: Joint and Marginal Distribution Table Generator")
+    st.markdown("""
+**Question:**  
+Given a joint probability distribution for two variables X and Y, generate a table showing:
+- The joint distribution,
+- The marginal distributions for X and Y, and 
+- Display a heatmap of the joint distribution.
+    """)
+    st.text_area("Your Answer:", height=150, key="ex2_11")
+    with st.expander("Show Sample Answer"):
+        sample_md = r"""
+**Sample Answer:**
 
+Suppose the joint distribution is given by:
+
+|       | Y=0  | Y=1  | Total |
+|-------|------|------|-------|
+| X=0   | 0.10 | 0.20 | 0.30  |
+| X=1   | 0.25 | 0.45 | 0.70  |
+| Total | 0.35 | 0.65 | 1.00  |
+
+Then:
+- Marginal for X: \(P(X=0)=0.30\) and \(P(X=1)=0.70\).
+- Marginal for Y: \(P(Y=0)=0.10+0.25=0.35\) and \(P(Y=1)=0.20+0.45=0.65\).
+
+A heatmap can be generated using matplotlib (e.g., with `imshow`) by reshaping the joint probabilities into a 2×2 matrix.
+        """
+        show_sample_answer(sample_md, key_suffix="2_11")
+
+def exercise_2_12():
+    st.subheader("Exercise 2.12: Conditional Distribution Calculator")
+    st.markdown("""
+**Question:**  
+Given a joint probability distribution for two variables X and Y, calculate the conditional distributions 
+\(P(Y\mid X)\) for each possible value of X.
+    """)
+    st.text_area("Your Answer:", height=150, key="ex2_12")
+    with st.expander("Show Sample Answer"):
+        sample_md = r"""
+**Sample Answer:**
+
+Using the joint distribution from Exercise 2.11:
+
+For \(X=0\):
+$$
+P(Y=0\mid X=0)=\frac{0.10}{0.30}\approx 0.333,\quad P(Y=1\mid X=0)=\frac{0.20}{0.30}\approx 0.667.
+$$
+
+For \(X=1\):
+$$
+P(Y=0\mid X=1)=\frac{0.25}{0.70}\approx 0.357,\quad P(Y=1\mid X=1)=\frac{0.45}{0.70}\approx 0.643.
+$$
+        """
+        show_sample_answer(sample_md, key_suffix="2_12")
+
+def exercise_2_13():
+    st.subheader("Exercise 2.13: Law of Iterated Expectations Verifier")
+    st.markdown(r"""
+**Question:**  
+For random variables \(X\) and \(Y\) with a given joint distribution, verify the law of 
+iterated expectations:
+$$
+\mathbb{E}[Y] = \mathbb{E}[\mathbb{E}[Y\mid X]].
+$$
+Compute the conditional expectations for each value of \(X\) and show that the overall expectation 
+matches the weighted average of these conditional expectations.
+    """)
+    st.text_area("Your Answer:", height=150, key="ex2_13")
+    with st.expander("Show Sample Answer"):
+        sample_md = r"""
+**Sample Answer:**
+
+Assume:
+- \(X\) takes values 0 and 1 with \(P(X=0)=0.4\) and \(P(X=1)=0.6\).
+- The conditional expectations are: 
+  \(\mathbb{E}[Y\mid X=0]=3\) and \(\mathbb{E}[Y\mid X=1]=5\).
+
+By the law of iterated expectations:
+$$
+\mathbb{E}[Y]= 0.4\times 3 + 0.6\times 5=1.2+3=4.2.
+$$
+
+Thus, we verify that:
+$$
+\mathbb{E}[Y] = \mathbb{E}[\mathbb{E}[Y\mid X]] = 4.2.
+$$
+        """
+        show_sample_answer(sample_md, key_suffix="2_13")
 # -------------------------------------------------------------------
 # MAIN EXECUTION
 # -------------------------------------------------------------------
@@ -366,3 +457,9 @@ elif exercise_choice == "2.9: Discrete Distribution Plotter":
     exercise_2_9()
 elif exercise_choice == "2.10: Bernoulli Simulator":
     exercise_2_10()
+elif exercise_choice == "2.11: Joint & Marginal Distribution Table Generator":
+    exercise_2_11()
+elif exercise_choice == "2.12: Conditional Distribution Calculator":
+    exercise_2_12()
+elif exercise_choice == "2.13: Law of Iterated Expectations Verifier":
+    exercise_2_13()    
