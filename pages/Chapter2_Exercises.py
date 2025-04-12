@@ -16,6 +16,7 @@ import sys
 import os
 import tempfile
 import shutil
+import re
 
 # -------------------------------------------------------------------
 # PAGE CONFIGURATION
@@ -48,19 +49,31 @@ exercise_choice = st.radio("Select an Exercise:",
 st.markdown("---")
 
 # -------------------------------------------------------------------
-# HELPER FUNCTIONS (Latex -> PDF με pdflatex)
+# HELPER FUNCTIONS
 # -------------------------------------------------------------------
+
+def markdown_to_latex(md_text: str) -> str:
+    """
+    A simple converter that turns Markdown bold syntax into LaTeX commands.
+    For example, **Sample Answer:** becomes \textbf{Sample Answer:}
+    """
+    # Convert bold: **text** → \textbf{text}
+    converted = re.sub(r"\*\*(.+?)\*\*", r"\\textbf{\1}", md_text)
+    return converted
+
 def generate_pdf_with_pdflatex(sample_md: str) -> bytes:
     """
-    Δημιουργεί ένα PDF από το sample answer χρησιμοποιώντας pdflatex.
-    Γράφει ένα προσωρινό .tex αρχείο, το compileάρει και επιστρέφει τα bytes του PDF.
+    Converts Markdown to LaTeX and compiles it using pdflatex.
+    Returns PDF as bytes.
     """
+    # Convert Markdown to LaTeX (preserve math and convert bold)
+    latex_source = markdown_to_latex(sample_md)
+    # Create a temporary directory and tex file
     tmp_dir = tempfile.mkdtemp()
     try:
         tex_filename = os.path.join(tmp_dir, "document.tex")
         pdf_filename = os.path.join(tmp_dir, "document.pdf")
-        # Δημιουργία πλήρους LaTeX document
-        latex_content = r"""\documentclass{article}
+        document = r"""\documentclass{article}
 \usepackage[utf8]{inputenc}
 \usepackage{amsmath,amssymb}
 \usepackage{lmodern}
@@ -69,26 +82,29 @@ def generate_pdf_with_pdflatex(sample_md: str) -> bytes:
 \begin{document}
 %s
 \end{document}
-""" % sample_md
+""" % latex_source
         with open(tex_filename, "w", encoding="utf-8") as f:
-            f.write(latex_content)
-        # Compile με pdflatex
-        cmd = ["pdflatex", "-interaction=nonstopmode", tex_filename]
-        proc = subprocess.run(cmd, cwd=tmp_dir, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-        if proc.returncode != 0:
-            st.error("pdflatex error:\n" + proc.stderr.decode("utf-8"))
+            f.write(document)
+        # Run pdflatex (make sure it's installed in the environment)
+        result = subprocess.run(
+            ["pdflatex", "-interaction=nonstopmode", tex_filename],
+            cwd=tmp_dir,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE
+        )
+        if result.returncode != 0:
+            st.error("pdflatex error:\n" + result.stderr.decode("utf-8"))
             return None
         with open(pdf_filename, "rb") as f:
-            pdf_bytes = f.read()
-        return pdf_bytes
+            pdf_data = f.read()
+        return pdf_data
     finally:
         shutil.rmtree(tmp_dir)
 
 def show_sample_answer(sample_md: str, key_suffix="default"):
     """
-    Ελέγχει αν ο χρήστης βρίσκεται σε small screen (global flag στο st.session_state).
-    Αν ναι, δημιουργεί ένα PDF μέσω pdflatex από το sample_md και δείχνει κουμπί download.
-    Διαφορετικά, εμφανίζει το sample answer ως interactive Markdown με custom CSS.
+    If the global small_screen flag is True, generate a PDF (with pdflatex) from the
+    converted Markdown and show a download button; otherwise, display the sample answer interactively.
     """
     if st.session_state.get("small_screen", False):
         pdf_bytes = generate_pdf_with_pdflatex(sample_md)
@@ -100,24 +116,8 @@ def show_sample_answer(sample_md: str, key_suffix="default"):
                 mime="application/pdf"
             )
     else:
-        st.markdown("""
-        <style>
-        .sample-answer {
-            width: 95%;
-            max-width: 100%;
-            margin: 0 auto;
-            text-align: left;
-            font-family: Helvetica, Arial, sans-serif;
-            font-size: 1rem;
-            line-height: 1.4;
-            word-wrap: break-word;
-            overflow-x: auto;
-        }
-        </style>
-        """, unsafe_allow_html=True)
-        st.markdown('<div class="sample-answer">', unsafe_allow_html=True)
+        # Simply display the sample answer as-is (without conversion)
         st.markdown(sample_md)
-        st.markdown("</div>", unsafe_allow_html=True)
 
 # -------------------------------------------------------------------
 # GLOBAL SETUP FOR SMALL SCREEN FLAG (Standalone fallback)
@@ -164,7 +164,7 @@ Calculate the expected value \(E(M)\) and explain your steps.
         st.markdown(r"""
 **Sample Answer:**
 $$
-E(M)=\sum_{m} m\,P(M=m)=0\times0.80+1\times0.10+2\times0.06+3\times0.03+4\times0.01=0.35.
+E(M)=\sum_{m}m\,P(M=m)=0\times0.80+1\times0.10+2\times0.06+3\times0.03+4\times0.01=0.35.
 $$
 Thus, \(E(M)=0.35\).
         """)
