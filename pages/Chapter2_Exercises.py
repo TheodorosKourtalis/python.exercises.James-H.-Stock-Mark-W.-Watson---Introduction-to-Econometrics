@@ -98,7 +98,6 @@ $$
 Thus, \(E(M)=0.35\).
         """
         show_sample_answer(sample_md, key_suffix="2_2")
-
 def exercise_2_3():
     st.subheader("Exercise 2.3: Joint and Conditional Probabilities")
     st.markdown(r"""
