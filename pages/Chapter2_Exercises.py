@@ -479,7 +479,7 @@ def exercise_2_13():
 
     st.subheader("Exercise 2.13: Law of Iterated Expectations Verifier (Theoretical & Dynamic)")
     
-st.markdown(r"""
+    st.markdown(r"""
 **Question:**  
 For random variables $$X$$ and $$Y$$ with a given joint distribution, verify the law of
 iterated expectations:
