@@ -381,11 +381,13 @@ $$
 P(Y=0)=0.10+0.25=0.35,\quad P(Y=1)=0.20+0.45=0.65.
 $$
 
-*$$
+$$
 P(X = x, Y = y).
 $$
-Summing over all values of $$y$$ for a fixed value of $$x$$ gives the total probability for that $$x$$, that is:
-$$
+Summing over all values of 
+$$y$$ 
+for a fixed value of $$x$$ gives the total probability for that $$x$$, that is:
+
 P(X = x).
 $$
 Likewise, summing over all values of $$x$$ for a fixed value of $$y$$ gives:
