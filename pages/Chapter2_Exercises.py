@@ -382,7 +382,26 @@ P(Y=0)=0.10+0.25=0.35,\quad P(Y=1)=0.20+0.45=0.65.
 $$
 
 *Theoretical Explanation:*  
-Each cell in the joint distribution represents \(P(X=x, Y=y)\). Summing these over all \(y\) (for a fixed \(x\)) gives the total probability for that \(x\) (i.e., \(P(X=x)\)). Likewise, summing over \(x\) for a fixed \(y\) gives \(P(Y=y)\). This is why the marginal distributions are obtained by summing along rows or columns.
+Each cell in the joint distribution represents \(P(X=x, Y=y)\). Summing these over all 
+$$
+\(y\)
+$$
+(for a fixed 
+$$
+\(x\))
+$$
+gives the total probability for that 
+$$
+\(x\))
+$$
+(i.e., 
+$$
+\(P(X=x)\))
+$$. Likewise, summing over 
+$$
+\(x\)
+$$
+for a fixed \(y\) gives \(P(Y=y)\). This is why the marginal distributions are obtained by summing along rows or columns.
         """
         show_sample_answer(sample_md, key_suffix="2_11")
 
