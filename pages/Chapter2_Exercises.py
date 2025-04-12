@@ -435,90 +435,87 @@ import streamlit as st
 def exercise_2_13():
     """
     Exercise 2.13: Law of Iterated Expectations Verifier (Theoretical & Dynamic)
-    Demonstrates how to verify the law of iterated expectations
-    in a simple discrete setting. Uses a helper function to display
-    or download the sample answer, depending on the small-screen setting.
+    Demonstrates how to verify the law of iterated expectations in a simple discrete setting.
+    Uses a helper function to display or download the sample answer, depending on the small-screen setting.
     """
 
     st.subheader("Exercise 2.13: Law of Iterated Expectations Verifier (Theoretical & Dynamic)")
     
     st.markdown(r"""
 **Question:**  
-For random variables \(X\) and \(Y\) with a given joint distribution, verify the law of 
+For random variables \(X\) and \(Y\) with a given joint distribution, verify the law of
 iterated expectations:
-\[
+$$
 \mathbb{E}[Y] = \mathbb{E}\bigl[\mathbb{E}[Y \mid X]\bigr].
-\]
+$$
 
 1. Generate or assume a (discrete or continuous) joint distribution for \(X\) and \(Y\).
 2. Compute \(\mathbb{E}[Y \mid X = x]\) for each possible \(x\).
-3. Show that summing (or integrating) over \(x\) with the distribution of \(X\) produces 
+3. Show that summing (or integrating) over \(x\) with the distribution of \(X\) gives
    the unconditional expectation \(\mathbb{E}[Y]\).
-
-Finally, provide a brief proof outline.
+4. Provide a brief proof outline.
     """)
 
-    # Let the user type their own answer here
     st.text_area("Your Answer:", height=150, key="ex2_13_user_answer")
 
-    # Use an expander to reveal the sample solution
     with st.expander("Show Sample Answer"):
-        # Define the sample answer as Markdown (including LaTeX)
         sample_md = r"""
-**Sample Answer (Illustration & Proof Outline)**
+**Sample Answer (Illustration & Brief Proof)**
 
 1. **Example Setup**  
-   Assume \(X\) takes values 0 and 1, with probabilities  
-   \[
-   P(X = 0) = 0.4,\quad P(X = 1) = 0.6.
-   \]
-   Suppose we know the conditional expectations:
-   \[
-   \mathbb{E}[Y \mid X=0] = 3 \quad \text{and} \quad \mathbb{E}[Y \mid X=1] = 5.
-   \]
+   Suppose \(X\) takes values 0 and 1 with
+   $$
+   P(X=0) = 0.4, \quad P(X=1) = 0.6.
+   $$
+   and assume
+   $$
+   \mathbb{E}[Y \mid X=0] = 3, \quad \mathbb{E}[Y \mid X=1] = 5.
+   $$
    By the law of iterated expectations,
-   \[
-   \mathbb{E}[Y] 
-   = P(X=0)\,\mathbb{E}[Y\mid X=0] \;+\; P(X=1)\,\mathbb{E}[Y\mid X=1]
+   $$
+   \mathbb{E}[Y]
+   = P(X=0) \,\mathbb{E}[Y \mid X=0]
+   + P(X=1) \,\mathbb{E}[Y \mid X=1]
    = 0.4 \times 3 + 0.6 \times 5 = 4.2.
-   \]
-   This confirms the formula for this simple two-point example.
+   $$
 
 2. **Brief Proof Outline (Discrete Case)**  
-   - Recall that
-     \[
+   - Start with the definition
+     $$
      \mathbb{E}[Y] 
-     = \sum_{y} y \, P(Y=y).
-     \]
-   - Factor in terms of \(X\):
-     \[
+     = \sum_{y} y \, P(Y = y).
+     $$
+   - Express joint probabilities:
+     $$
      \mathbb{E}[Y]
-     = \sum_{x}\sum_{y} y \, P(X=x, Y=y).
-     \]
-   - Rewrite \(P(X=x, Y=y)\) as \(P(Y=y \mid X=x) \, P(X=x)\):
-     \[
+     = \sum_{x} \sum_{y} y \, P(X=x, Y=y).
+     $$
+   - Factorize:
+     $$
+     P(X=x, Y=y) = P(Y=y \mid X=x)\,P(X=x),
+     $$
+     so
+     $$
      \mathbb{E}[Y]
-     = \sum_{x}\sum_{y} y \, P(Y=y \mid X=x)\,P(X=x).
-     \]
-   - Recognize the inner sum is the conditional expectation:
-     \[
+     = \sum_{x} \sum_{y} y \, P(Y=y \mid X=x)\,P(X=x).
+     $$
+   - Recognize that
+     $$
      \sum_{y} y \, P(Y=y \mid X=x) 
      = \mathbb{E}[Y \mid X=x].
-     \]
-   - Therefore,
-     \[
-     \mathbb{E}[Y]
-     = \sum_{x} \mathbb{E}[Y \mid X=x]\; P(X=x),
-     \]
-     i.e.
-     \[
+     $$
+   - Hence,
+     $$
+     \mathbb{E}[Y] 
+     = \sum_{x} \mathbb{E}[Y \mid X=x]\;P(X=x),
+     $$
+     which is precisely
+     $$
      \mathbb{E}[Y] = \mathbb{E}\bigl[\mathbb{E}[Y \mid X]\bigr].
-     \]
-   This completes the proof.
+     $$
         """
 
-        # Use the helper function that either displays the markdown inline
-        # or provides a PDF download, based on st.session_state["small_screen"].
+        # Use your helper function. For example:
         show_sample_answer(sample_md, key_suffix="2_13")
 # -------------------------------------------------------------------
 # MAIN EXECUTION
