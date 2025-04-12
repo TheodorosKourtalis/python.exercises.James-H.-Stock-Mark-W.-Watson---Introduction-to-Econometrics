@@ -428,187 +428,98 @@ The conditional probability \(P(Y=y \mid X=x)\) is defined as \( \frac{P(X=x,Y=y
         """
         show_sample_answer(sample_md, key_suffix="2_12")
 
+import streamlit as st
+# Make sure to import your helper function from wherever you defined it
+# from latex_helpers import show_sample_answer
+
 def exercise_2_13():
+    """
+    Exercise 2.13: Law of Iterated Expectations Verifier (Theoretical & Dynamic)
+    Demonstrates how to verify the law of iterated expectations
+    in a simple discrete setting. Uses a helper function to display
+    or download the sample answer, depending on the small-screen setting.
+    """
+
     st.subheader("Exercise 2.13: Law of Iterated Expectations Verifier (Theoretical & Dynamic)")
+    
     st.markdown(r"""
 **Question:**  
 For random variables \(X\) and \(Y\) with a given joint distribution, verify the law of 
 iterated expectations:
-$$
-\mathbb{E}[Y] = \mathbb{E}[\mathbb{E}[Y \mid X]].
-$$
-Generate or assume a joint distribution for \(X\) and \(Y\), compute the conditional expectations 
-\(\mathbb{E}[Y \mid X = x]\) for each value of \(x\), and then show that the overall expectation 
-matches the weighted average of these conditional expectations. Also, provide a brief proof outline.
+\[
+\mathbb{E}[Y] = \mathbb{E}\bigl[\mathbb{E}[Y \mid X]\bigr].
+\]
 
-Below is a **sample solution** that (1) demonstrates the verification on a **specific** joint distribution and (2) gives a short **proof outline** of the general law.
+1. Generate or assume a (discrete or continuous) joint distribution for \(X\) and \(Y\).
+2. Compute \(\mathbb{E}[Y \mid X = x]\) for each possible \(x\).
+3. Show that summing (or integrating) over \(x\) with the distribution of \(X\) produces 
+   the unconditional expectation \(\mathbb{E}[Y]\).
+
+Finally, provide a brief proof outline.
     """)
-    
-    st.text_area("Your Answer:", height=150, key="ex2_13")
-    
+
+    # Let the user type their own answer here
+    st.text_area("Your Answer:", height=150, key="ex2_13_user_answer")
+
+    # Use an expander to reveal the sample solution
     with st.expander("Show Sample Answer"):
+        # Define the sample answer as Markdown (including LaTeX)
         sample_md = r"""
-**Sample Answer (Concrete Example + Proof Outline)**
+**Sample Answer (Illustration & Proof Outline)**
 
-### 1. Example Joint Distribution
-
-To demonstrate the law of iterated expectations, let's pick a small discrete joint distribution for two random variables \(X\) and \(Y\). Suppose:
-
-- \(X\) can take values in \(\{0,1\}\).
-- \(Y\) can take values in \(\{2,4,6\}\).
-
-Let the joint probability mass function \(p_{X,Y}(x,y)\) be defined by:
-
-\[
-p_{X,Y}(0,2) = 0.1,\quad
-p_{X,Y}(0,4) = 0.3,\quad
-p_{X,Y}(0,6) = 0.0,
-\]
-\[
-p_{X,Y}(1,2) = 0.1,\quad
-p_{X,Y}(1,4) = 0.2,\quad
-p_{X,Y}(1,6) = 0.3.
-\]
-
-> *Check these probabilities sum to 1:*  
-\(
-0.1 + 0.3 + 0.0 + 0.1 + 0.2 + 0.3 = 1.0.
-\)
-
-#### Step 1: Compute \(P(X=x)\)
-
-\[
-P(X=0) = p_{X,Y}(0,2) + p_{X,Y}(0,4) + p_{X,Y}(0,6) = 0.1 + 0.3 + 0.0 = 0.4,
-\]
-\[
-P(X=1) = p_{X,Y}(1,2) + p_{X,Y}(1,4) + p_{X,Y}(1,6) = 0.1 + 0.2 + 0.3 = 0.6.
-\]
-
-#### Step 2: Compute conditional expectations \(\mathbb{E}[Y \mid X=x]\)
-
-- **Case \(X=0\):**
-
-  \[
-  \mathbb{E}[Y \mid X=0] 
-  = \sum_{y} y \, P(Y=y \mid X=0).
-  \]
-  First find \(P(Y=y \mid X=0)\):
-  \[
-  P(Y=2 \mid X=0) = \frac{0.1}{0.4} = 0.25,\quad
-  P(Y=4 \mid X=0) = \frac{0.3}{0.4} = 0.75,\quad
-  P(Y=6 \mid X=0) = \frac{0.0}{0.4} = 0.
-  \]
-  Hence,
-  \[
-  \mathbb{E}[Y \mid X=0] 
-  = 2 \times 0.25 + 4 \times 0.75 + 6 \times 0 
-  = 0.5 + 3 + 0
-  = 3.5.
-  \]
-
-- **Case \(X=1\):**
-
-  \[
-  \mathbb{E}[Y \mid X=1] 
-  = \sum_{y} y \, P(Y=y \mid X=1).
-  \]
-  Now find \(P(Y=y \mid X=1)\):
-  \[
-  P(Y=2 \mid X=1) = \frac{0.1}{0.6} \approx 0.1667, \quad
-  P(Y=4 \mid X=1) = \frac{0.2}{0.6} \approx 0.3333, \quad
-  P(Y=6 \mid X=1) = \frac{0.3}{0.6} = 0.5.
-  \]
-  Thus,
-  \[
-  \mathbb{E}[Y \mid X=1] 
-  = 2 \times 0.1667 + 4 \times 0.3333 + 6 \times 0.5
-  = 0.3334 + 1.3332 + 3
-  \approx 4.6666.
-  \]
-
-#### Step 3: Use the law of iterated expectations
-
-According to the law of iterated expectations,
-\[
-\mathbb{E}[Y] = \sum_{x} \bigl[\mathbb{E}(Y \mid X=x)\bigr] \, P(X=x).
-\]
-We have:
-\[
-P(X=0) = 0.4,\quad \mathbb{E}[Y \mid X=0] = 3.5,
-\]
-\[
-P(X=1) = 0.6,\quad \mathbb{E}[Y \mid X=1] \approx 4.6666.
-\]
-Hence,
-\[
-\mathbb{E}[Y] \approx 3.5 \times 0.4 \;+\; 4.6666 \times 0.6 
-= 1.4 \;+\; 2.8 
-= 4.2.
-\]
-
-#### Step 4: (Optional) Verify \(\mathbb{E}[Y]\) directly
-
-To check consistency, we can compute \(\mathbb{E}[Y]\) using *all* pairs \((x,y)\):
-\[
-\mathbb{E}[Y]
-= \sum_{x,y} y \, p_{X,Y}(x,y)
-= 2\times(0.1+0.1) \;+\; 4\times(0.3+0.2) \;+\; 6\times(0.0+0.3).
-\]
-\[
-= 2 \times 0.2 \;+\; 4 \times 0.5 \;+\; 6 \times 0.3
-= 0.4 + 2 + 1.8 = 4.2.
-\]
-Indeed, the two computations agree: \(\mathbb{E}[Y] = 4.2\).
-
----
-
-### 2. Brief Proof Outline of the Law
-
-1. **Definition of expectation in the discrete case:**
+1. **Example Setup**  
+   Assume \(X\) takes values 0 and 1, with probabilities  
+   \[
+   P(X = 0) = 0.4,\quad P(X = 1) = 0.6.
+   \]
+   Suppose we know the conditional expectations:
+   \[
+   \mathbb{E}[Y \mid X=0] = 3 \quad \text{and} \quad \mathbb{E}[Y \mid X=1] = 5.
+   \]
+   By the law of iterated expectations,
    \[
    \mathbb{E}[Y] 
-   = \sum_{y} y \, P(Y = y).
+   = P(X=0)\,\mathbb{E}[Y\mid X=0] \;+\; P(X=1)\,\mathbb{E}[Y\mid X=1]
+   = 0.4 \times 3 + 0.6 \times 5 = 4.2.
    \]
+   This confirms the formula for this simple two-point example.
 
-2. **Rewrite using joint probabilities:**
-   \[
-   \mathbb{E}[Y] 
-   = \sum_{x} \sum_{y} y \, P(X=x, Y=y).
-   \]
+2. **Brief Proof Outline (Discrete Case)**  
+   - Recall that
+     \[
+     \mathbb{E}[Y] 
+     = \sum_{y} y \, P(Y=y).
+     \]
+   - Factor in terms of \(X\):
+     \[
+     \mathbb{E}[Y]
+     = \sum_{x}\sum_{y} y \, P(X=x, Y=y).
+     \]
+   - Rewrite \(P(X=x, Y=y)\) as \(P(Y=y \mid X=x) \, P(X=x)\):
+     \[
+     \mathbb{E}[Y]
+     = \sum_{x}\sum_{y} y \, P(Y=y \mid X=x)\,P(X=x).
+     \]
+   - Recognize the inner sum is the conditional expectation:
+     \[
+     \sum_{y} y \, P(Y=y \mid X=x) 
+     = \mathbb{E}[Y \mid X=x].
+     \]
+   - Therefore,
+     \[
+     \mathbb{E}[Y]
+     = \sum_{x} \mathbb{E}[Y \mid X=x]\; P(X=x),
+     \]
+     i.e.
+     \[
+     \mathbb{E}[Y] = \mathbb{E}\bigl[\mathbb{E}[Y \mid X]\bigr].
+     \]
+   This completes the proof.
+        """
 
-3. **Factorize and group by \(X=x\):**
-   \[
-   \mathbb{E}[Y] 
-   = \sum_{x} \sum_{y} y \, P(Y=y \mid X=x)\, P(X=x).
-   \]
-
-4. **Recognize the inner sum is \(\mathbb{E}[Y\mid X=x]\):**
-   \[
-   \sum_{y} y \, P(Y=y \mid X=x) 
-   = \mathbb{E}[Y \mid X=x].
-   \]
-
-5. **Hence:**
-   \[
-   \mathbb{E}[Y] 
-   = \sum_{x} \mathbb{E}[Y \mid X=x] \, P(X=x),
-   \]
-   which is exactly
-   \[
-   \mathbb{E}[Y] 
-   = \mathbb{E}\bigl[\mathbb{E}[Y \mid X]\bigr].
-   \]
-
-> *Conclusion:* This completes the demonstration that  
-\[
-\mathbb{E}[Y] 
-= \mathbb{E}\bigl[\mathbb{E}[Y \mid X]\bigr]
-\]
-for both this specific discrete example *and* in general by the proof outline.
-
----
-"""
-        st.markdown(sample_md)
+        # Use the helper function that either displays the markdown inline
+        # or provides a PDF download, based on st.session_state["small_screen"].
+        show_sample_answer(sample_md, key_suffix="2_13")
 # -------------------------------------------------------------------
 # MAIN EXECUTION
 # -------------------------------------------------------------------
