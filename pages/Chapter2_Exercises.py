@@ -467,7 +467,94 @@ $$
 The conditional probability \(P(Y=y \mid X=x)\) is defined as \( \frac{P(X=x,Y=y)}{P(X=x)} \). By dividing the joint probability by the marginal probability of X, we obtain the probability distribution for Y given that X is fixed.
         """
         show_sample_answer(sample_md, key_suffix="2_12")
+import streamlit as st
+# from latex_helpers import show_sample_answer  # Make sure to import your helper
 
+def exercise_2_13():
+    """
+    Exercise 2.13: Law of Iterated Expectations Verifier (Theoretical & Dynamic)
+    Demonstrates how to verify the law of iterated expectations in a simple discrete setting.
+    Uses a helper function to display or download the sample answer, depending on the small-screen setting.
+    """
+
+    st.subheader("Exercise 2.13: Law of Iterated Expectations Verifier (Theoretical & Dynamic)")
+    
+    st.markdown(r"""
+**Question:**  
+For random variables \(X\) and \(Y\) with a given joint distribution, verify the law of
+iterated expectations:
+$$
+\mathbb{E}[Y] = \mathbb{E}\bigl[\mathbb{E}[Y \mid X]\bigr].
+$$
+
+1. Generate or assume a (discrete or continuous) joint distribution for \(X\) and \(Y\).
+2. Compute \(\mathbb{E}[Y \mid X = x]\) for each possible \(x\).
+3. Show that summing (or integrating) over \(x\) with the distribution of \(X\) gives
+   the unconditional expectation \(\mathbb{E}[Y]\).
+4. Provide a brief proof outline.
+    """)
+
+    st.text_area("Your Answer:", height=150, key="ex2_13_user_answer")
+
+    with st.expander("Show Sample Answer"):
+        sample_md = r"""
+**Sample Answer (Illustration & Brief Proof)**
+
+1. **Example Setup**  
+   Suppose \(X\) takes values 0 and 1 with
+   $$
+   P(X=0) = 0.4, \quad P(X=1) = 0.6.
+   $$
+   and assume
+   $$
+   \mathbb{E}[Y \mid X=0] = 3, \quad \mathbb{E}[Y \mid X=1] = 5.
+   $$
+   By the law of iterated expectations,
+   $$
+   \mathbb{E}[Y]
+   = P(X=0) \,\mathbb{E}[Y \mid X=0]
+   + P(X=1) \,\mathbb{E}[Y \mid X=1]
+   = 0.4 \times 3 + 0.6 \times 5 = 4.2.
+   $$
+
+2. **Brief Proof Outline (Discrete Case)**  
+   - Start with the definition
+     $$
+     \mathbb{E}[Y] 
+     = \sum_{y} y \, P(Y = y).
+     $$
+   - Express joint probabilities:
+     $$
+     \mathbb{E}[Y]
+     = \sum_{x} \sum_{y} y \, P(X=x, Y=y).
+     $$
+   - Factorize:
+     $$
+     P(X=x, Y=y) = P(Y=y \mid X=x)\,P(X=x),
+     $$
+     so
+     $$
+     \mathbb{E}[Y]
+     = \sum_{x} \sum_{y} y \, P(Y=y \mid X=x)\,P(X=x).
+     $$
+   - Recognize that
+     $$
+     \sum_{y} y \, P(Y=y \mid X=x) 
+     = \mathbb{E}[Y \mid X=x].
+     $$
+   - Hence,
+     $$
+     \mathbb{E}[Y] 
+     = \sum_{x} \mathbb{E}[Y \mid X=x]\;P(X=x),
+     $$
+     which is precisely
+     $$
+     \mathbb{E}[Y] = \mathbb{E}\bigl[\mathbb{E}[Y \mid X]\bigr].
+     $$
+        """
+
+        # Use your helper function. For example:
+        show_sample_answer(sample_md, key_suffix="2_13")
 def exercise_2_14():
     st.subheader("Exercise 2.14: Normal Distribution Probability Calculator (Interactive)")
     st.markdown(r"""
