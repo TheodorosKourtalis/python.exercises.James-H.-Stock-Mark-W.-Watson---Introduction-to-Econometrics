@@ -1,4 +1,4 @@
-##!/usr/bin/env python3
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
 Chapter 2: Review of Probability – Exercises
@@ -13,9 +13,9 @@ from scipy.stats import norm, skew, kurtosis
 import matplotlib.pyplot as plt
 import subprocess
 import sys
-import tempfile
 import os
-from fpdf import FPDF
+import tempfile
+import shutil
 
 # -------------------------------------------------------------------
 # PAGE CONFIGURATION
@@ -29,7 +29,7 @@ st.set_page_config(
 st.title("📈 Chapter 2: Review of Probability – Exercises")
 st.markdown("""
 This page presents exercises from Chapter 2 of *Introduction to Econometrics*.  
-Select an exercise, work through it interactively, and click **Show Sample Answer** to compare your solution.
+Select an exercise, work interactively, and click **Show Sample Answer** to compare your solution.
 """)
 
 exercise_choice = st.radio("Select an Exercise:",
@@ -48,64 +48,54 @@ exercise_choice = st.radio("Select an Exercise:",
 st.markdown("---")
 
 # -------------------------------------------------------------------
-# GLOBAL HELPER FUNCTIONS
+# HELPER FUNCTIONS
 # -------------------------------------------------------------------
-def latex_to_png(latex_str: str, filename: str):
-    """
-    Μετατρέπει ένα LaTeX string σε εικόνα PNG χρησιμοποιώντας matplotlib.
-    """
-    import matplotlib.pyplot as plt
-    # Δημιουργία figure χωρίς άξονες.
-    fig = plt.figure(figsize=(0.01, 0.01))
-    plt.axis('off')
-    # Τοποθέτηση του κειμένου – χρησιμοποίησε \n για νέες γραμμές.
-    # Δεδομένου ότι το matplotlib mathtext έχει περιορισμούς, το renderαρισμένο κείμενο θα είναι απλό.
-    text = fig.text(0, 0.5, f"{latex_str}", fontsize=12, ha='left', va='center')
-    # Σχεδίασε για να πάρετε το bounding box.
-    fig.canvas.draw()
-    bbox = text.get_window_extent()
-    # Μετατροπή διαστάσεων σε ίντσες.
-    width = bbox.width / fig.dpi
-    height = bbox.height / fig.dpi
-    fig.set_size_inches(width, height)
-    text.set_position((0, 0))
-    plt.savefig(filename, dpi=300, bbox_inches='tight', pad_inches=0.1, transparent=True)
-    plt.close(fig)
 
-def generate_pdf_with_latex_image(sample_md: str) -> bytes:
+def generate_pdf_with_pdflatex(sample_md: str) -> bytes:
     """
-    Δημιουργεί ένα PDF από το sample answer που περιέχει LaTeX μετατρέποντάς το σε εικόνα,
-    και το ενσωματώνει σε PDF μέσω της fpdf.
+    Δημιουργεί ένα PDF από το sample answer χρησιμοποιώντας pdflatex.
+    Γράφει ένα προσωρινό .tex αρχείο, το compileάρει και επιστρέφει τα bytes του PDF.
     """
-    with tempfile.NamedTemporaryFile(suffix=".png", delete=False) as tmp_png:
-        png_filename = tmp_png.name
-    with tempfile.NamedTemporaryFile(suffix=".pdf", delete=False) as tmp_pdf:
-        pdf_filename = tmp_pdf.name
-
-    # Μετατροπή του sample_md (που περιέχει και LaTeX) σε εικόνα.
-    # Για απλότητα θεωρούμε ότι το sample_md είναι κείμενο που περιέχει τα math blocks.
-    # Μπορείς να τροποποιήσεις εδώ αν χρειάζεσαι πιο λεπτομερή render.
-    latex_to_png(sample_md, png_filename)
-
-    pdf = FPDF()
-    pdf.add_page()
-    # Τοποθετούμε την εικόνα στη σελίδα. Εδώ προσαρμόζουμε το πλάτος ώστε να έχει 10 mm περιθώριο.
-    pdf.image(png_filename, x=10, y=10, w=pdf.w - 20)
-    pdf.output(pdf_filename)
-    os.remove(png_filename)
-    with open(pdf_filename, "rb") as f:
-        pdf_bytes = f.read()
-    os.remove(pdf_filename)
-    return pdf_bytes
+    tmp_dir = tempfile.mkdtemp()
+    try:
+        tex_filename = os.path.join(tmp_dir, "document.tex")
+        pdf_filename = os.path.join(tmp_dir, "document.pdf")
+        # Minimal LaTeX document
+        latex_content = r"""\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath,amssymb}
+\usepackage{lmodern}
+\usepackage{geometry}
+\geometry{margin=1in}
+\begin{document}
+%s
+\end{document}
+""" % sample_md
+        with open(tex_filename, "w", encoding="utf-8") as f:
+            f.write(latex_content)
+        # Compile using pdflatex
+        result = subprocess.run(
+            ["pdflatex", "-interaction=nonstopmode", tex_filename],
+            cwd=tmp_dir,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE
+        )
+        if result.returncode != 0:
+            st.error("pdflatex failed:\n" + result.stderr.decode('utf-8'))
+            return None
+        with open(pdf_filename, "rb") as f:
+            pdf_data = f.read()
+        return pdf_data
+    finally:
+        shutil.rmtree(tmp_dir)
 
 def show_sample_answer(sample_md: str, key_suffix="default"):
     """
-    Ελέγχει το global flag για small screen.
-    Αν είναι ενεργό, δημιουργεί ένα PDF από το sample answer και εμφανίζει κουμπί download.
-    Διαφορετικά, εμφανίζει το sample answer ως interactive Markdown.
+    Αν το global flag small_screen είναι True, δημιουργεί PDF μέσω pdflatex και δείχνει κουμπί download.
+    Διαφορετικά, εμφανίζει την sample answer ως interactive Markdown με custom CSS.
     """
     if st.session_state.get("small_screen", False):
-        pdf_bytes = generate_pdf_with_latex_image(sample_md)
+        pdf_bytes = generate_pdf_with_pdflatex(sample_md)
         if pdf_bytes:
             st.download_button(
                 label="Download Sample Answer PDF",
@@ -133,7 +123,7 @@ def show_sample_answer(sample_md: str, key_suffix="default"):
         st.markdown("</div>", unsafe_allow_html=True)
 
 # -------------------------------------------------------------------
-# GLOBAL SETUP: SMALL SCREEN FLAG (fallback standalone)
+# GLOBAL SETUP FOR SMALL SCREEN FLAG (fallback standalone)
 # -------------------------------------------------------------------
 if "small_screen" not in st.session_state:
     st.session_state["small_screen"] = False
@@ -146,14 +136,14 @@ def exercise_2_1():
     st.subheader("Exercise 2.1: Understanding Distributions")
     st.markdown("""
 **Question:**  
-Give one example each of a discrete random variable and a continuous random variable from everyday life. Explain why.
+Give one example of a discrete random variable and one example of a continuous random variable from everyday life. Explain why.
     """)
     st.text_area("Your Answer:", height=150, key="ex2_1")
     with st.expander("Show Sample Answer"):
         st.markdown("""
 **Sample Answer:**
-- **Discrete:** Number of emails received in a day (μόνο ακέραιοι αριθμοί).  
-- **Continuous:** Time taken to commute (μπορεί να έχει δεκαδικά).
+- **Discrete:** Number of emails received in a day.
+- **Continuous:** Time taken to commute.
         """)
 
 def exercise_2_2():
@@ -170,7 +160,7 @@ P(M=3) & = & 0.03,\\[4mm]
 P(M=4) & = & 0.01.
 \end{array}
 $$
-Calculate the expected value \(E(M)\) and explain your steps.
+Calculate the expected value \( E(M) \) and explain your steps.
     """)
     st.text_area("Your Answer:", height=150, key="ex2_2")
     with st.expander("Show Sample Answer"):
@@ -190,7 +180,7 @@ Suppose we have two binary variables:
 - **\(X\)**: Weather (0 = rainy, 1 = clear)
 - **\(Y\)**: Commute length (0 = long, 1 = short)
 
-Their joint distribution is:
+Their joint distribution is given by:
     
 |                | \(Y=0\) (Long) | \(Y=1\) (Short) | Total   |
 |----------------|----------------|-----------------|---------|
