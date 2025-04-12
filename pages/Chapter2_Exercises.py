@@ -450,7 +450,7 @@ $$
 $$
 
 1. Generate or assume a (discrete or continuous) joint distribution for \(X\) and \(Y\).
-2. Compute \(\mathbb{E}[Y \mid X = x]\) for each possible \(x\).
+2. Compute $$\(\mathbb{E}[Y \mid X = x]\)$$ for each possible \(x\).
 3. Show that summing (or integrating) over \(x\) with the distribution of \(X\) gives
    the unconditional expectation \(\mathbb{E}[Y]\).
 4. Provide a brief proof outline.
