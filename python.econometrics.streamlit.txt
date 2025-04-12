@@ -100,7 +100,7 @@ what we learned and why our solution works:
 
 This summary outlines the main challenges, our solution strategy, the details of our conversion and PDF generation process, and why each step is necessary. This should serve as a thorough reference for your future development work.
 
-End of Session Summary.
+End of Session Summary 1.
 
 
 To add the small-screen PDF download option for any exercise (e.g., Exercise 2.3 or later chapters):
@@ -114,3 +114,4 @@ To add the small-screen PDF download option for any exercise (e.g., Exercise 2.3
 • Ensure the global `st.session_state["small_screen"]` flag is initialized (e.g., on your main page with a checkbox or default value).
 
 This pattern allows each exercise to remain clean and focused while keeping the sample answer rendering modular, maintainable, and DRY (Don’t Repeat Yourself).
+End of Session Summary 2.
