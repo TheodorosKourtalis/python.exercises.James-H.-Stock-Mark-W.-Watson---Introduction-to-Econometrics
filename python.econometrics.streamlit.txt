@@ -101,3 +101,16 @@ what we learned and why our solution works:
 This summary outlines the main challenges, our solution strategy, the details of our conversion and PDF generation process, and why each step is necessary. This should serve as a thorough reference for your future development work.
 
 End of Session Summary.
+
+
+To add the small-screen PDF download option for any exercise (e.g., Exercise 2.3 or later chapters):
+
+• Import the helper function (`show_sample_answer`) from your `latex_helpers.py` module.
+• In your exercise’s expander for the sample answer, call:
+
+      show_sample_answer(sample_md)
+
+  where `sample_md` is your Markdown string containing both text and LaTeX.
+• Ensure the global `st.session_state["small_screen"]` flag is initialized (e.g., on your main page with a checkbox or default value).
+
+This pattern allows each exercise to remain clean and focused while keeping the sample answer rendering modular, maintainable, and DRY (Don’t Repeat Yourself).
