@@ -22,21 +22,19 @@ what we learned and why our solution works:
 
 2. PDF Generation Strategy:
    -------------------------
-   - **Requirement**: We needed to create PDFs that correctly display both markdown styling 
-     (e.g., bold/italic text) and LaTeX math.
-   - **Problem**: 
-     - Using libraries like fpdf directly will not process Markdown formatting (e.g., 
-       **bold**) and will not render LaTeX math correctly.
-     - Conversely, using matplotlib or math rendering on its own may process LaTeX math 
-       correctly but lose the Markdown styling.
-   - **Solution**: We decided to convert Markdown to LaTeX first. By pre-processing the 
-     Markdown content:
-     - We convert **bold** text to \textbf{...} and *italic* to \textit{...} 
-     - We preserve math blocks (i.e., sections between $...$ or $$...$$) exactly as they are.
-     - We escape special characters (such as &, %, #, _) only in the non-math portions.
-   - The conversion is done via a custom Python function (using regex). We learned that 
-     the order is crucial: first replace markdown markers, then escape special characters, 
-     but leave math blocks intact.
+   	•	Requirement: We needed to create PDFs that correctly display both markdown styling (e.g., bold, italic) and LaTeX math.
+	•	Problem:
+	•	Using libraries like fpdf directly will not process Markdown formatting (e.g., bold) and will not render LaTeX math correctly.
+	•	Conversely, using matplotlib or math rendering on its own may process LaTeX math correctly but lose the Markdown styling.
+	•	Solution: We decided to convert Markdown to LaTeX first. By pre-processing the Markdown content:
+	•	We convert bold text to \textbf{...} and italic to \textit{...}.
+	•	We preserve math blocks (i.e., sections between $...$ or $$...$$) exactly as they are.
+	•	We escape special characters (such as &, %, #, _) only in the non-math portions.
+To ensure correct rendering in both Streamlit and the final PDF, we apply the following rule throughout the project:
+All LaTeX expressions—whether originally inline or block—must be enclosed using double dollar signs ($$...$$).
+This guarantees consistent formatting in both the browser interface and the compiled PDF.
+For example, instead of writing $P(X)$, we always write $$P(X)$$, even for short expressions.
+	•	The conversion is done via a custom Python function (using regex). We learned that the order is crucial: first replace Markdown markers, then escape special characters, but leave math blocks intact.
 
 3. LaTeX Document Generation and Compilation:
    ------------------------------------------------
