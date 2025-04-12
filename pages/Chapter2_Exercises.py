@@ -395,10 +395,7 @@ $$
 P(Y = y).
 $$
 This is why the marginal distributions are obtained by summing along the rows (for 
-$$
-P(X = x)
-$$
-) or columns (for 
+$$P(X = x)$$) or columns (for 
 $$
 P(Y = y)
 $$
