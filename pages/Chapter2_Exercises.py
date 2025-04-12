@@ -14,6 +14,9 @@ import matplotlib.pyplot as plt
 import subprocess
 import sys
 import os
+import tempfile
+import shutil
+import re
 
 # Import helper functions
 from latex_helpers import show_sample_answer
