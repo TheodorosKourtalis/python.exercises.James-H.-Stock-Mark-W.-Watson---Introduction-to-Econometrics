@@ -96,12 +96,10 @@ what we learned and why our solution works:
        • **Chapter2_Exercises.py**: Our interactive Streamlit page that calls our helper functions to display sample answers, either as inline Markdown or as downloadable PDFs based on the user's device setting.
    - This modular and layered approach makes it easier to debug, maintain, and reuse the code in future chapters or projects.
 
----
 
-This summary outlines the main challenges, our solution strategy, the details of our conversion and PDF generation process, and why each step is necessary. This should serve as a thorough reference for your future development work.
 
 End of Session Summary 1.
-
+---
 
 To add the small-screen PDF download option for any exercise (e.g., Exercise 2.3 or later chapters):
 
@@ -115,3 +113,16 @@ To add the small-screen PDF download option for any exercise (e.g., Exercise 2.3
 
 This pattern allows each exercise to remain clean and focused while keeping the sample answer rendering modular, maintainable, and DRY (Don’t Repeat Yourself).
 End of Session Summary 2.
+---
+• The sidebar now displays a checkbox titled “I'm on a small screen”. This checkbox is used to set the global flag (st.session_state["small_screen"]).
+
+• In any sample answer expander—for example, in Exercise 2.2—we define the Markdown sample answer (stored in sample_md) and then call show_sample_answer(sample_md, key_suffix="2_2").
+
+• The helper function show_sample_answer() (imported from your latex_helpers.py module) checks the st.session_state["small_screen"] flag:
+    - If True, it converts the sample answer Markdown to a LaTeX document, compiles it via pdflatex, and displays a download button for the PDF.
+    - If False, it displays the sample answer in its Markdown form.
+
+This pattern can be reused for other exercises or chapters. The modular setup makes it easy to add this functionality consistently across your application.
+End of Session Summary 3.
+---
+
