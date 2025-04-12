@@ -28,7 +28,7 @@ st.set_page_config(
 
 st.title("📈 Chapter 2: Review of Probability – Exercises")
 st.markdown("""
-This page presents exercises from Chapter 2 of *Introduction to Econometrics*.  
+This page presents exercises from *Introduction to Econometrics*.  
 Select an exercise, work interactively, and click **Show Sample Answer** to compare your solution.
 """)
 
@@ -48,9 +48,8 @@ exercise_choice = st.radio("Select an Exercise:",
 st.markdown("---")
 
 # -------------------------------------------------------------------
-# HELPER FUNCTIONS
+# HELPER FUNCTIONS (Latex -> PDF με pdflatex)
 # -------------------------------------------------------------------
-
 def generate_pdf_with_pdflatex(sample_md: str) -> bytes:
     """
     Δημιουργεί ένα PDF από το sample answer χρησιμοποιώντας pdflatex.
@@ -60,7 +59,7 @@ def generate_pdf_with_pdflatex(sample_md: str) -> bytes:
     try:
         tex_filename = os.path.join(tmp_dir, "document.tex")
         pdf_filename = os.path.join(tmp_dir, "document.pdf")
-        # Minimal LaTeX document
+        # Δημιουργία πλήρους LaTeX document
         latex_content = r"""\documentclass{article}
 \usepackage[utf8]{inputenc}
 \usepackage{amsmath,amssymb}
@@ -73,26 +72,23 @@ def generate_pdf_with_pdflatex(sample_md: str) -> bytes:
 """ % sample_md
         with open(tex_filename, "w", encoding="utf-8") as f:
             f.write(latex_content)
-        # Compile using pdflatex
-        result = subprocess.run(
-            ["pdflatex", "-interaction=nonstopmode", tex_filename],
-            cwd=tmp_dir,
-            stdout=subprocess.PIPE,
-            stderr=subprocess.PIPE
-        )
-        if result.returncode != 0:
-            st.error("pdflatex failed:\n" + result.stderr.decode('utf-8'))
+        # Compile με pdflatex
+        cmd = ["pdflatex", "-interaction=nonstopmode", tex_filename]
+        proc = subprocess.run(cmd, cwd=tmp_dir, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        if proc.returncode != 0:
+            st.error("pdflatex error:\n" + proc.stderr.decode("utf-8"))
             return None
         with open(pdf_filename, "rb") as f:
-            pdf_data = f.read()
-        return pdf_data
+            pdf_bytes = f.read()
+        return pdf_bytes
     finally:
         shutil.rmtree(tmp_dir)
 
 def show_sample_answer(sample_md: str, key_suffix="default"):
     """
-    Αν το global flag small_screen είναι True, δημιουργεί PDF μέσω pdflatex και δείχνει κουμπί download.
-    Διαφορετικά, εμφανίζει την sample answer ως interactive Markdown με custom CSS.
+    Ελέγχει αν ο χρήστης βρίσκεται σε small screen (global flag στο st.session_state).
+    Αν ναι, δημιουργεί ένα PDF μέσω pdflatex από το sample_md και δείχνει κουμπί download.
+    Διαφορετικά, εμφανίζει το sample answer ως interactive Markdown με custom CSS.
     """
     if st.session_state.get("small_screen", False):
         pdf_bytes = generate_pdf_with_pdflatex(sample_md)
@@ -111,6 +107,7 @@ def show_sample_answer(sample_md: str, key_suffix="default"):
             max-width: 100%;
             margin: 0 auto;
             text-align: left;
+            font-family: Helvetica, Arial, sans-serif;
             font-size: 1rem;
             line-height: 1.4;
             word-wrap: break-word;
@@ -123,7 +120,7 @@ def show_sample_answer(sample_md: str, key_suffix="default"):
         st.markdown("</div>", unsafe_allow_html=True)
 
 # -------------------------------------------------------------------
-# GLOBAL SETUP FOR SMALL SCREEN FLAG (fallback standalone)
+# GLOBAL SETUP FOR SMALL SCREEN FLAG (Standalone fallback)
 # -------------------------------------------------------------------
 if "small_screen" not in st.session_state:
     st.session_state["small_screen"] = False
@@ -136,7 +133,7 @@ def exercise_2_1():
     st.subheader("Exercise 2.1: Understanding Distributions")
     st.markdown("""
 **Question:**  
-Give one example of a discrete random variable and one example of a continuous random variable from everyday life. Explain why.
+Give one example each of a discrete random variable and a continuous random variable from everyday life. Explain why.
     """)
     st.text_area("Your Answer:", height=150, key="ex2_1")
     with st.expander("Show Sample Answer"):
@@ -160,14 +157,14 @@ P(M=3) & = & 0.03,\\[4mm]
 P(M=4) & = & 0.01.
 \end{array}
 $$
-Calculate the expected value \( E(M) \) and explain your steps.
+Calculate the expected value \(E(M)\) and explain your steps.
     """)
     st.text_area("Your Answer:", height=150, key="ex2_2")
     with st.expander("Show Sample Answer"):
         st.markdown(r"""
 **Sample Answer:**
 $$
-E(M)=\sum_{m}m\,P(M=m)=0\times0.80+1\times0.10+2\times0.06+3\times0.03+4\times0.01=0.35.
+E(M)=\sum_{m} m\,P(M=m)=0\times0.80+1\times0.10+2\times0.06+3\times0.03+4\times0.01=0.35.
 $$
 Thus, \(E(M)=0.35\).
         """)
@@ -399,9 +396,9 @@ Simulate Bernoulli trials interactively. Adjust the probability of success and t
         ax.set_title("Histogram of Bernoulli Trials")
         st.pyplot(fig)
 
-# ---------------------------------------------------------------------
+# -------------------------------------------------------------------
 # MAIN EXECUTION
-# ---------------------------------------------------------------------
+# -------------------------------------------------------------------
 if exercise_choice == "2.1: Understanding Distributions":
     exercise_2_1()
 elif exercise_choice == "2.2: Expected Value Calculation":
