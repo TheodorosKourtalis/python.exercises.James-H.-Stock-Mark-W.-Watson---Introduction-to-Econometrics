@@ -326,61 +326,73 @@ Use sliders to set probabilities for each outcome of a discrete distribution and
     ax.set_title("Discrete Probability Distribution")
     st.pyplot(fig)
 
-def exercise_2_10():
-    st.subheader("Exercise 2.10: Bernoulli Simulator")
-    st.markdown("""
-**Question:**  
-Simulate Bernoulli trials interactively. Adjust the probability of success and the number of trials using sliders, then view the sample mean and a histogram of outcomes.
-    """)
-    p = st.slider("Probability of Success:", min_value=0.0, max_value=1.0, value=0.5, step=0.01, key="ex2_10_p")
-    n_trials = st.slider("Number of Trials:", min_value=10, max_value=10000, value=100, step=10, key="ex2_10_n")
-    if st.button("Simulate Bernoulli Trials", key="simulate_bernoulli"):
-        trials = np.random.binomial(1, p, int(n_trials))
-        sample_mean = np.mean(trials)
-        st.markdown(f"**Sample Mean:** {sample_mean:.4f}")
-        fig, ax = plt.subplots()
-        ax.hist(trials, bins=[-0.5, 0.5, 1.5], rwidth=0.8, color="salmon", edgecolor="black")
-        ax.set_xticks([0, 1])
-        ax.set_xlabel("Outcome")
-        ax.set_ylabel("Frequency")
-        ax.set_title("Histogram of Bernoulli Trials")
-        st.pyplot(fig)
 def exercise_2_11():
-    st.subheader("Exercise 2.11: Joint and Marginal Distribution Table Generator")
+    st.subheader("Exercise 2.11: Joint and Marginal Distribution Table Generator (Dynamic)")
     st.markdown("""
 **Question:**  
-Given a joint probability distribution for two variables X and Y, generate a table showing:
+Using a 2×2 joint probability distribution for two variables X and Y, generate a table that shows:
 - The joint distribution,
 - The marginal distributions for X and Y, and 
-- Display a heatmap of the joint distribution.
+- A heatmap of the joint distribution.
+
+Additionally, provide a brief theoretical explanation (or proof) for why summing the joint probabilities along each row (or column) yields the marginal distributions.
     """)
+    # Button to generate a random 2x2 joint distribution
+    if st.button("Generate Random Joint Distribution"):
+        import numpy as np
+        joint = np.random.rand(2, 2)
+        joint = joint / joint.sum()  # Normalize so total sum = 1
+        st.write("**Random Joint Probability Distribution:**")
+        st.table(joint)
+        # Compute marginals:
+        marginal_X = joint.sum(axis=1)
+        marginal_Y = joint.sum(axis=0)
+        st.write("**Marginal Distribution for X:**")
+        st.table(marginal_X.reshape(-1, 1))
+        st.write("**Marginal Distribution for Y:**")
+        st.table(marginal_Y.reshape(1, -1))
+        # Generate a heatmap of the joint distribution
+        import matplotlib.pyplot as plt
+        fig, ax = plt.subplots()
+        cax = ax.imshow(joint, cmap="viridis", interpolation="none")
+        ax.set_title("Joint Distribution Heatmap")
+        ax.set_xlabel("Y values")
+        ax.set_ylabel("X values")
+        fig.colorbar(cax)
+        st.pyplot(fig)
     st.text_area("Your Answer:", height=150, key="ex2_11")
     with st.expander("Show Sample Answer"):
         sample_md = r"""
 **Sample Answer:**
 
-Suppose the joint distribution is given by:
+Suppose the following joint distribution is generated:
+$$
+\begin{bmatrix}
+0.10 & 0.20 \\
+0.25 & 0.45 \\
+\end{bmatrix}
+$$
+with total sum = 1. The marginal distribution for X is calculated by summing each row:
+$$
+P(X=0)=0.10+0.20=0.30,\quad P(X=1)=0.25+0.45=0.70.
+$$
+Similarly, the marginal for Y is computed by summing each column:
+$$
+P(Y=0)=0.10+0.25=0.35,\quad P(Y=1)=0.20+0.45=0.65.
+$$
 
-|       | Y=0  | Y=1  | Total |
-|-------|------|------|-------|
-| X=0   | 0.10 | 0.20 | 0.30  |
-| X=1   | 0.25 | 0.45 | 0.70  |
-| Total | 0.35 | 0.65 | 1.00  |
-
-Then:
-- Marginal for X: \(P(X=0)=0.30\) and \(P(X=1)=0.70\).
-- Marginal for Y: \(P(Y=0)=0.10+0.25=0.35\) and \(P(Y=1)=0.20+0.45=0.65\).
-
-A heatmap can be generated using matplotlib (e.g., with `imshow`) by reshaping the joint probabilities into a 2×2 matrix.
+*Theoretical Explanation:*  
+Each cell in the joint distribution represents \(P(X=x, Y=y)\). Summing these over all \(y\) (for a fixed \(x\)) gives the total probability for that \(x\) (i.e., \(P(X=x)\)). Likewise, summing over \(x\) for a fixed \(y\) gives \(P(Y=y)\). This is why the marginal distributions are obtained by summing along rows or columns.
         """
         show_sample_answer(sample_md, key_suffix="2_11")
 
 def exercise_2_12():
-    st.subheader("Exercise 2.12: Conditional Distribution Calculator")
+    st.subheader("Exercise 2.12: Conditional Distribution Calculator (Dynamic)")
     st.markdown("""
 **Question:**  
 Given a joint probability distribution for two variables X and Y, calculate the conditional distributions 
-\(P(Y\mid X)\) for each possible value of X.
+\(P(Y \mid X)\) for each value of X. Provide a brief explanation of why the conditional probabilities 
+are computed in this way.
     """)
     st.text_area("Your Answer:", height=150, key="ex2_12")
     with st.expander("Show Sample Answer"):
@@ -388,50 +400,76 @@ Given a joint probability distribution for two variables X and Y, calculate the 
 **Sample Answer:**
 
 Using the joint distribution from Exercise 2.11:
+$$
+\begin{bmatrix}
+0.10 & 0.20 \\
+0.25 & 0.45 \\
+\end{bmatrix}
+$$
+The marginal distribution for X is:
+$$
+P(X=0)=0.10+0.20=0.30,\quad P(X=1)=0.25+0.45=0.70.
+$$
 
-For \(X=0\):
+Then, the conditional distribution for X = 0 is:
 $$
-P(Y=0\mid X=0)=\frac{0.10}{0.30}\approx 0.333,\quad P(Y=1\mid X=0)=\frac{0.20}{0.30}\approx 0.667.
+P(Y=0\mid X=0)=\frac{0.10}{0.30}\approx 0.333,\quad
+P(Y=1\mid X=0)=\frac{0.20}{0.30}\approx 0.667.
 $$
 
-For \(X=1\):
+For X = 1:
 $$
-P(Y=0\mid X=1)=\frac{0.25}{0.70}\approx 0.357,\quad P(Y=1\mid X=1)=\frac{0.45}{0.70}\approx 0.643.
+P(Y=0\mid X=1)=\frac{0.25}{0.70}\approx 0.357,\quad
+P(Y=1\mid X=1)=\frac{0.45}{0.70}\approx 0.643.
 $$
+
+*Explanation:*  
+The conditional probability \(P(Y=y \mid X=x)\) is defined as \( \frac{P(X=x,Y=y)}{P(X=x)} \). By dividing the joint probability by the marginal probability of X, we obtain the probability distribution for Y given that X is fixed.
         """
         show_sample_answer(sample_md, key_suffix="2_12")
 
 def exercise_2_13():
-    st.subheader("Exercise 2.13: Law of Iterated Expectations Verifier")
+    st.subheader("Exercise 2.13: Law of Iterated Expectations Verifier (Theoretical & Dynamic)")
     st.markdown(r"""
 **Question:**  
 For random variables \(X\) and \(Y\) with a given joint distribution, verify the law of 
 iterated expectations:
 $$
-\mathbb{E}[Y] = \mathbb{E}[\mathbb{E}[Y\mid X]].
+\mathbb{E}[Y] = \mathbb{E}[\mathbb{E}[Y \mid X]].
 $$
-Compute the conditional expectations for each value of \(X\) and show that the overall expectation 
-matches the weighted average of these conditional expectations.
+Generate or assume a joint distribution for X and Y, compute the conditional expectations 
+\(\mathbb{E}[Y\mid X=x]\) for each value of \(x\), and then show that the overall expectation 
+matches the weighted average of these conditional expectations. Also, provide a brief proof outline.
     """)
     st.text_area("Your Answer:", height=150, key="ex2_13")
     with st.expander("Show Sample Answer"):
         sample_md = r"""
 **Sample Answer:**
 
-Assume:
-- \(X\) takes values 0 and 1 with \(P(X=0)=0.4\) and \(P(X=1)=0.6\).
-- The conditional expectations are: 
-  \(\mathbb{E}[Y\mid X=0]=3\) and \(\mathbb{E}[Y\mid X=1]=5\).
+Assume \(X\) takes values 0 and 1 with:
+$$
+P(X=0)=0.4,\quad P(X=1)=0.6.
+$$
+Suppose the conditional expectations are given by:
+$$
+\mathbb{E}[Y\mid X=0]=3 \quad \text{and} \quad \mathbb{E}[Y\mid X=1]=5.
+$$
+Then, by the law of iterated expectations:
+$$
+\mathbb{E}[Y] = P(X=0) \times \mathbb{E}[Y\mid X=0] + P(X=1) \times \mathbb{E}[Y\mid X=1] = 0.4 \times 3 + 0.6 \times 5 = 1.2 + 3 = 4.2.
+$$
 
-By the law of iterated expectations:
-$$
-\mathbb{E}[Y]= 0.4\times 3 + 0.6\times 5=1.2+3=4.2.
-$$
-
-Thus, we verify that:
-$$
-\mathbb{E}[Y] = \mathbb{E}[\mathbb{E}[Y\mid X]] = 4.2.
-$$
+*Proof Outline:*  
+1. By definition, the conditional expectation \(\mathbb{E}[Y\mid X]\) is a function of \(X\).  
+2. The overall expectation is computed as:
+   $$
+   \mathbb{E}[Y] = \sum_{x} \mathbb{E}[Y\mid X=x]\,P(X=x).
+   $$
+3. Plugging in the values, we verify that:
+   $$
+   \mathbb{E}[Y] = 0.4\times 3 + 0.6\times 5 = 4.2,
+   $$
+   which confirms the law of iterated expectations.
         """
         show_sample_answer(sample_md, key_suffix="2_13")
 # -------------------------------------------------------------------
