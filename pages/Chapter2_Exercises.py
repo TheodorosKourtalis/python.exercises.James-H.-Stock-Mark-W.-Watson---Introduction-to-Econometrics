@@ -89,16 +89,14 @@ $$
 Calculate the expected value \(E(M)\) and explain your steps.
     """)
     st.text_area("Your Answer:", height=150, key="ex2_2")
-
-    sample_md = r"""
+    with st.expander("Show Sample Answer"):
+        sample_md = r"""
 **Sample Answer:**
 $$
 E(M)=\sum_{m} m\,P(M=m)=0\times0.80+1\times0.10+2\times0.06+3\times0.03+4\times0.01=0.35.
 $$
 Thus, \(E(M)=0.35\).
-    """
-
-    with st.expander("Show Sample Answer"):
+        """
         show_sample_answer(sample_md, key_suffix="2_2")
 
 def exercise_2_3():
