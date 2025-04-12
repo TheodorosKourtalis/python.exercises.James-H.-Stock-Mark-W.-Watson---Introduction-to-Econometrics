@@ -60,7 +60,7 @@ exercise_choice = st.radio("Select an Exercise:",
         "2.7: Variance and Std Calculator",
         "2.8: Expected Value Calculator (Interactive)",
         "2.9: Discrete Distribution Plotter",
-        "2.10: Bernoulli Simulator"
+        "2.10: Bernoulli Simulator",
         "2.11: Joint & Marginal Distribution Table Generator",
         "2.12: Conditional Distribution Calculator",
         "2.13: Law of Iterated Expectations Verifier"
