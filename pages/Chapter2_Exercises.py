@@ -17,6 +17,13 @@ import os
 
 # Import helper functions
 from latex_helpers import show_sample_answer
+# -------------------------------------------------------------------
+# SIDEBAR OPTION: Small Screen Flag
+# -------------------------------------------------------------------
+st.sidebar.header("Display Options")
+# Provide a checkbox that sets the small_screen flag.
+small_screen_flag = st.sidebar.checkbox("I'm on a small screen", value=st.session_state.get("small_screen", False))
+st.session_state["small_screen"] = small_screen_flag
 
 # -------------------------------------------------------------------
 # PAGE CONFIGURATION
