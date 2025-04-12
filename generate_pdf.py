@@ -3,8 +3,7 @@ import sys
 import io
 from fpdf import FPDF
 
-def main():
-    sample_text = sys.stdin.read()
+def generate_pdf_from_markdown(sample_text: str) -> bytes:
     pdf = FPDF()
     pdf.add_page()
     pdf.set_font("Arial", size=12)
@@ -12,7 +11,11 @@ def main():
         pdf.multi_cell(0, 10, line)
     pdf_buffer = io.BytesIO()
     pdf.output(pdf_buffer)
-    sys.stdout.buffer.write(pdf_buffer.getvalue())
+    pdf_data = pdf_buffer.getvalue()
+    pdf_buffer.close()
+    return pdf_data
 
 if __name__ == "__main__":
-    main()
+    sample_text = sys.stdin.read()
+    pdf_data = generate_pdf_from_markdown(sample_text)
+    sys.stdout.buffer.write(pdf_data)
