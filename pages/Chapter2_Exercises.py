@@ -388,15 +388,16 @@ Each cell in the joint distribution represents \(P(X=x, Y=y)\). Summing these ov
 
 def exercise_2_12():
     st.subheader("Exercise 2.12: Conditional Distribution Calculator (Dynamic)")
-    st.markdown("""
+    st.markdown(r"""
 **Question:**  
-Given a joint probability distribution for two variables X and Y, calculate the conditional distributions 
+Given a joint probability distribution for two variables $$X$$ and $$Y$$, calculate the conditional distributions  
 $$
-\(P(Y \mid X)\)
-$$
-for each value of X. Provide a brief explanation of why the conditional probabilities 
-are computed in this way.
-    """)
+P(Y \mid X)
+$$  
+for each value of $$X$$.  
+
+Provide a brief explanation of why the conditional probabilities are computed in this way.
+""")
     st.text_area("Your Answer:", height=150, key="ex2_12")
     with st.expander("Show Sample Answer"):
         sample_md = r"""
