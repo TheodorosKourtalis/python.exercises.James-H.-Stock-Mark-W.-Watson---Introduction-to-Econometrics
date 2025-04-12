@@ -18,15 +18,10 @@ import tempfile
 import shutil
 import re
 
-# Import helper functions
+# -------------------------------------------------------------------
+# IMPORT HELPER FUNCTIONS (assumes latex_helpers.py is in your repository root)
+# -------------------------------------------------------------------
 from latex_helpers import show_sample_answer
-# -------------------------------------------------------------------
-# SIDEBAR OPTION: Small Screen Flag
-# -------------------------------------------------------------------
-st.sidebar.header("Display Options")
-# Provide a checkbox that sets the small_screen flag.
-small_screen_flag = st.sidebar.checkbox("I'm on a small screen", value=st.session_state.get("small_screen", False))
-st.session_state["small_screen"] = small_screen_flag
 
 # -------------------------------------------------------------------
 # PAGE CONFIGURATION
@@ -43,6 +38,17 @@ This page presents exercises from *Introduction to Econometrics*.
 Select an exercise, work interactively, and click **Show Sample Answer** to compare your solution.
 """)
 
+# -------------------------------------------------------------------
+# SIDEBAR OPTION: Small Screen Flag
+# -------------------------------------------------------------------
+st.sidebar.header("Display Options")
+# Provide a checkbox that sets the small_screen flag.
+small_screen_flag = st.sidebar.checkbox("I'm on a small screen", value=st.session_state.get("small_screen", False))
+st.session_state["small_screen"] = small_screen_flag
+
+# -------------------------------------------------------------------
+# EXERCISE SELECTION
+# -------------------------------------------------------------------
 exercise_choice = st.radio("Select an Exercise:",
     [
         "2.1: Understanding Distributions",
@@ -59,7 +65,7 @@ exercise_choice = st.radio("Select an Exercise:",
 st.markdown("---")
 
 # -------------------------------------------------------------------
-# GLOBAL SETUP FOR SMALL SCREEN FLAG
+# GLOBAL SETUP FOR SMALL SCREEN FLAG (fallback)
 # -------------------------------------------------------------------
 if "small_screen" not in st.session_state:
     st.session_state["small_screen"] = False
@@ -108,6 +114,7 @@ $$
 Thus, \(E(M)=0.35\).
         """
         show_sample_answer(sample_md, key_suffix="2_2")
+
 def exercise_2_3():
     st.subheader("Exercise 2.3: Joint and Conditional Probabilities")
     st.markdown(r"""
@@ -144,9 +151,8 @@ P(Y=0 \mid X=0)=\frac{P(X=0,Y=0)}{P(X=0)}=\frac{0.15}{0.30}=0.50.
 $$
 
 Thus, \(P(Y=1)=0.78\) and \(P(Y=0 \mid X=0)=0.50\).
-"""
-        # Call the helper function from latex_helpers.py:
-        show_sample_answer(sample_md)
+        """
+        show_sample_answer(sample_md, key_suffix="2_3")
 
 def exercise_2_4():
     st.subheader("Exercise 2.4: Normal Distribution Application")
@@ -173,7 +179,7 @@ $$
 
 Thus, the probability is approximately **4.75%**.
         """
-        show_sample_answer(sample_md)
+        show_sample_answer(sample_md, key_suffix="2_4")
 
 def exercise_2_5():
     st.subheader("Exercise 2.5: Bayes’ Rule Challenge")
@@ -213,7 +219,7 @@ P(\text{Disease}\mid\text{Test Positive})\;\approx\;\frac{0.0098}{0.0593}\;\appr
 $$
 Thus, a person who tests positive has roughly a **16.5% chance** of having the disease.
         """
-        show_sample_answer(sample_md)
+        show_sample_answer(sample_md, key_suffix="2_5")
 
 def exercise_2_6():
     st.subheader("Exercise 2.6: Skewness & Kurtosis Calculator")
