@@ -381,27 +381,18 @@ $$
 P(Y=0)=0.10+0.25=0.35,\quad P(Y=1)=0.20+0.45=0.65.
 $$
 
-*Theoretical Explanation:*  
-Each cell in the joint distribution represents \(P(X=x, Y=y)\). Summing these over all 
+*$$
+P(X = x, Y = y).
 $$
-\(y\)
+Summing over all values of $$y$$ for a fixed value of $$x$$ gives the total probability for that $$x$$, that is:
 $$
-(for a fixed 
+P(X = x).
 $$
-\(x\))
+Likewise, summing over all values of $$x$$ for a fixed value of $$y$$ gives:
 $$
-gives the total probability for that 
+P(Y = y).
 $$
-\(x\))
-$$
-(i.e., 
-$$
-\(P(X=x)\))
-$$. Likewise, summing over 
-$$
-\(x\)
-$$
-for a fixed \(y\) gives \(P(Y=y)\). This is why the marginal distributions are obtained by summing along rows or columns.
+This is why the marginal distributions are obtained by summing along the rows (for $$P(X = x)$$) or columns (for $$P(Y = y)$$) of the joint distribution table.
         """
         show_sample_answer(sample_md, key_suffix="2_11")
 
