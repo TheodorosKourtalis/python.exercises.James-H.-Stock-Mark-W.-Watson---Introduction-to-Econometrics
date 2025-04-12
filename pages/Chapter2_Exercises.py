@@ -396,10 +396,7 @@ P(Y = y).
 $$
 This is why the marginal distributions are obtained by summing along the rows (for 
 $$P(X = x)$$) or columns (for 
-$$
-P(Y = y)
-$$
-) of the joint distribution table.
+$$P(Y = y)$$) of the joint distribution table.
         """
         show_sample_answer(sample_md, key_suffix="2_11")
 
