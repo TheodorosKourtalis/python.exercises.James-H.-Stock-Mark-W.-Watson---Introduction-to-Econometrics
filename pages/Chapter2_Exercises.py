@@ -28,7 +28,7 @@ st.set_page_config(
 
 st.title("📈 Chapter 2: Review of Probability – Exercises")
 st.markdown("""
-This page presents exercises from *Introduction to Econometrics*.  
+This page presents exercises from Chapter 2 of *Introduction to Econometrics*.  
 Select an exercise, work interactively, and click **Show Sample Answer** to compare your solution.
 """)
 
@@ -50,34 +50,52 @@ st.markdown("---")
 # -------------------------------------------------------------------
 # HELPER FUNCTIONS
 # -------------------------------------------------------------------
-def generate_pdf_via_subprocess(sample_text: str) -> bytes:
+
+def generate_pdf_with_pdflatex(sample_md: str) -> bytes:
     """
-    Καλεί το generate_pdf.py μέσω subprocess χρησιμοποιώντας το ίδιο interpreter,
-    και επιστρέφει τα bytes του PDF.
+    Δημιουργεί ένα PDF από το sample answer χρησιμοποιώντας pdflatex.
+    Γράφει ένα προσωρινό .tex αρχείο, το compileάρει και επιστρέφει τα bytes του PDF.
     """
+    tmp_dir = tempfile.mkdtemp()
     try:
-        process = subprocess.Popen(
-            [sys.executable, "generate_pdf.py"],
-            stdin=subprocess.PIPE,
+        tex_filename = os.path.join(tmp_dir, "document.tex")
+        pdf_filename = os.path.join(tmp_dir, "document.pdf")
+        # Minimal LaTeX document
+        latex_content = r"""\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath,amssymb}
+\usepackage{lmodern}
+\usepackage{geometry}
+\geometry{margin=1in}
+\begin{document}
+%s
+\end{document}
+""" % sample_md
+        with open(tex_filename, "w", encoding="utf-8") as f:
+            f.write(latex_content)
+        # Compile using pdflatex
+        result = subprocess.run(
+            ["pdflatex", "-interaction=nonstopmode", tex_filename],
+            cwd=tmp_dir,
             stdout=subprocess.PIPE,
             stderr=subprocess.PIPE
         )
-        pdf_data, err = process.communicate(input=sample_text.encode('utf-8'))
-        if process.returncode != 0:
-            st.error("Error generating PDF: " + err.decode('utf-8'))
+        if result.returncode != 0:
+            st.error("pdflatex failed:\n" + result.stderr.decode('utf-8'))
             return None
+        with open(pdf_filename, "rb") as f:
+            pdf_data = f.read()
         return pdf_data
-    except Exception as e:
-        st.error("Exception during PDF generation: " + str(e))
-        return None
+    finally:
+        shutil.rmtree(tmp_dir)
 
 def show_sample_answer(sample_md: str, key_suffix="default"):
     """
-    Αν το global flag small_screen είναι ενεργό, δημιουργεί το PDF μέσω generate_pdf.py
-    και εμφανίζει κουμπί για download. Διαφορετικά, εμφανίζει το sample answer ως interactive Markdown με custom CSS.
+    Αν το global flag small_screen είναι True, δημιουργεί PDF μέσω pdflatex και δείχνει κουμπί download.
+    Διαφορετικά, εμφανίζει την sample answer ως interactive Markdown με custom CSS.
     """
     if st.session_state.get("small_screen", False):
-        pdf_bytes = generate_pdf_via_subprocess(sample_md)
+        pdf_bytes = generate_pdf_with_pdflatex(sample_md)
         if pdf_bytes:
             st.download_button(
                 label="Download Sample Answer PDF",
@@ -93,7 +111,6 @@ def show_sample_answer(sample_md: str, key_suffix="default"):
             max-width: 100%;
             margin: 0 auto;
             text-align: left;
-            font-family: Helvetica, Arial, sans-serif;
             font-size: 1rem;
             line-height: 1.4;
             word-wrap: break-word;
@@ -106,7 +123,7 @@ def show_sample_answer(sample_md: str, key_suffix="default"):
         st.markdown("</div>", unsafe_allow_html=True)
 
 # -------------------------------------------------------------------
-# GLOBAL SETUP FOR SMALL SCREEN FLAG (Standalone fallback)
+# GLOBAL SETUP FOR SMALL SCREEN FLAG (fallback standalone)
 # -------------------------------------------------------------------
 if "small_screen" not in st.session_state:
     st.session_state["small_screen"] = False
@@ -119,7 +136,7 @@ def exercise_2_1():
     st.subheader("Exercise 2.1: Understanding Distributions")
     st.markdown("""
 **Question:**  
-Give one example each of a discrete random variable and a continuous random variable from everyday life. Explain why.
+Give one example of a discrete random variable and one example of a continuous random variable from everyday life. Explain why.
     """)
     st.text_area("Your Answer:", height=150, key="ex2_1")
     with st.expander("Show Sample Answer"):
@@ -143,7 +160,7 @@ P(M=3) & = & 0.03,\\[4mm]
 P(M=4) & = & 0.01.
 \end{array}
 $$
-Calculate the expected value \(E(M)\) and explain your steps.
+Calculate the expected value \( E(M) \) and explain your steps.
     """)
     st.text_area("Your Answer:", height=150, key="ex2_2")
     with st.expander("Show Sample Answer"):
@@ -382,9 +399,9 @@ Simulate Bernoulli trials interactively. Adjust the probability of success and t
         ax.set_title("Histogram of Bernoulli Trials")
         st.pyplot(fig)
 
-# -------------------------------------------------------------------
+# ---------------------------------------------------------------------
 # MAIN EXECUTION
-# -------------------------------------------------------------------
+# ---------------------------------------------------------------------
 if exercise_choice == "2.1: Understanding Distributions":
     exercise_2_1()
 elif exercise_choice == "2.2: Expected Value Calculation":
