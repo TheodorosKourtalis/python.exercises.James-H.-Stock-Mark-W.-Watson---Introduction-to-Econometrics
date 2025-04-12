@@ -51,38 +51,42 @@ st.markdown("---")
 # -------------------------------------------------------------------
 # HELPER FUNCTIONS
 # -------------------------------------------------------------------
+import re
+
 def markdown_to_latex_fixed(md_text: str) -> str:
     """
-    Converts Markdown formatting to LaTeX.
-      - **text** → \textbf{text}
-      - *text* → \textit{text}
-      - Math blocks remain unchanged.
+    Converts Markdown-formatted text to LaTeX.
+    - Math segments (delimited by $…$ or $$…$$) are preserved verbatim.
+    - In non-math segments:
+      * **Bold** text is converted to \textbf{...}
+      * *Italic* text is converted to \textit{...}
+      * Special characters &, %, #, _, ~, and ^ are escaped.
+    Note: Curly braces ({ and }) and backslashes (which occur in valid LaTeX commands) are left untouched.
     """
-    def escape_text(text: str) -> str:
-        special_chars = {
-            '&': r'\&',
-            '%': r'\%',
-            '#': r'\#',
-            '_': r'\_',
-            '{': r'\{',
-            '}': r'\}',
-            '~': r'\textasciitilde{}',
-            '^': r'\^{}',
-        }
-        for ch, repl in special_chars.items():
-            text = text.replace(ch, repl)
-        return text
-
-    # Split the text into math and non-math segments.
+    # Split text into math and non-math segments.
     segments = re.split(r'(\$\$.*?\$\$|\$.*?\$)', md_text, flags=re.DOTALL)
     output_segments = []
     for seg in segments:
         if seg.startswith('$'):
+            # It's a math segment; leave it unchanged.
             output_segments.append(seg)
         else:
+            # Convert **bold**
             seg = re.sub(r'\*\*(.+?)\*\*', r'\\textbf{\1}', seg)
+            # Convert *italic*
             seg = re.sub(r'\*(.+?)\*', r'\\textit{\1}', seg)
-            seg = escape_text(seg)
+            # Escape special characters (do not escape { or }).
+            # This dictionary lists characters to escape.
+            special_chars = {
+                '&': r'\&',
+                '%': r'\%',
+                '#': r'\#',
+                '_': r'\_',
+                '~': r'\textasciitilde{}',
+                '^': r'\^{}'
+            }
+            for char, replacement in special_chars.items():
+                seg = seg.replace(char, replacement)
             output_segments.append(seg)
     return ''.join(output_segments)
 
