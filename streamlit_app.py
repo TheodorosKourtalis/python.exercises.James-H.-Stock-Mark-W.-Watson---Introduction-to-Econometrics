@@ -25,3 +25,13 @@ Navigate through chapters to access a mix of directly transferred and inspired e
 ---
 """
 )
+
+# Global display option for small screens.
+if "small_screen" not in st.session_state:
+    st.session_state["small_screen"] = False
+
+st.sidebar.markdown("### Display Options")
+small_screen = st.sidebar.checkbox("I'm on a small screen", value=st.session_state["small_screen"])
+st.session_state["small_screen"] = small_screen
+
+st.markdown("---")
