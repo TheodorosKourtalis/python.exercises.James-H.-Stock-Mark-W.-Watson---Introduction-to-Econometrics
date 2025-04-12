@@ -189,7 +189,8 @@ Outline your steps using the standard normal transformation.
 Thus, the probability is approximately **4.75%**.
             """
         )
-
+         # Use our helper to conditionally show interactive sample answer or PDF link.
+        show_sample_answer(sample_md)
 # ------------------------------
 # Exercise 2.5: Bayes’ Rule Challenge
 def exercise_2_5():
