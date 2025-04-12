@@ -97,9 +97,10 @@ what we learned and why our solution works:
    - This modular and layered approach makes it easier to debug, maintain, and reuse the code in future chapters or projects.
 
 
-
+------------------------------------------------------------
 End of Session Summary 1.
----
+------------------------------------------------------------
+
 
 To add the small-screen PDF download option for any exercise (e.g., Exercise 2.3 or later chapters):
 
@@ -112,17 +113,49 @@ To add the small-screen PDF download option for any exercise (e.g., Exercise 2.3
 • Ensure the global `st.session_state["small_screen"]` flag is initialized (e.g., on your main page with a checkbox or default value).
 
 This pattern allows each exercise to remain clean and focused while keeping the sample answer rendering modular, maintainable, and DRY (Don’t Repeat Yourself).
+------------------------------------------------------------
 End of Session Summary 2.
----
-• The sidebar now displays a checkbox titled “I'm on a small screen”. This checkbox is used to set the global flag (st.session_state["small_screen"]).
+------------------------------------------------------------
 
-• In any sample answer expander—for example, in Exercise 2.2—we define the Markdown sample answer (stored in sample_md) and then call show_sample_answer(sample_md, key_suffix="2_2").
 
-• The helper function show_sample_answer() (imported from your latex_helpers.py module) checks the st.session_state["small_screen"] flag:
-    - If True, it converts the sample answer Markdown to a LaTeX document, compiles it via pdflatex, and displays a download button for the PDF.
-    - If False, it displays the sample answer in its Markdown form.
+To ensure that every chapter in your application supports the small-screen PDF download option for sample answers, follow these steps:
 
-This pattern can be reused for other exercises or chapters. The modular setup makes it easy to add this functionality consistently across your application.
+1. Modularize the PDF Generation Logic:
+   • Create a helper module (e.g., “latex_helpers.py”) that contains all the functions needed to:
+     - Convert Markdown (with **bold** and *italic*, and including LaTeX math blocks) into proper LaTeX code.
+     - Wrap the converted content in a complete LaTeX document.
+     - Compile the document using pdflatex via a subprocess call.
+     - Provide a function (show_sample_answer) that checks the global flag and either:
+         ▸ Displays a download button for the generated PDF (when st.session_state["small_screen"] is True), or
+         ▸ Renders the sample answer as inline Markdown.
+     
+2. Import the Helper in Each Chapter Script:
+   • In every chapter file (e.g., Chapter2_Exercises.py, Chapter3_Exercises.py, etc.), add:
+         from latex_helpers import show_sample_answer
+     This makes the helper available for use across all chapters.
+
+3. Set Up the Global Small-Screen Flag:
+   • In your main page or in every chapter script’s sidebar, add a checkbox that allows the user to indicate they are on a small screen. For example:
+         st.sidebar.header("Display Options")
+         small_screen_flag = st.sidebar.checkbox("I'm on a small screen", value=st.session_state.get("small_screen", False))
+         st.session_state["small_screen"] = small_screen_flag
+   • This global flag (stored in st.session_state["small_screen"]) is then used by show_sample_answer().
+
+4. Use the Helper Function in Each Sample Answer Expander:
+   • In each exercise’s “Show Sample Answer” expander, define the sample answer as a Markdown string (sample_md).
+   • Instead of using st.markdown() directly, call:
+         show_sample_answer(sample_md, key_suffix="unique_id")
+     where “unique_id” is a unique key (for example, "2_2" for Exercise 2.2, "2_3" for Exercise 2.3, etc.). This ensures unique widget keys and reuse of the same PDF conversion logic.
+
+5. Reuse Across Chapters:
+   • By following this pattern in every chapter script, you ensure that:
+         - The code remains modular and DRY (Don't Repeat Yourself).
+         - New chapters will automatically support the small-screen PDF download option by simply importing and using show_sample_answer().
+         - The user experience is consistent: on small screens, sample answers are offered as downloadable PDFs; on larger screens, they are displayed inline.
+
+This approach makes it easy to maintain and extend the PDF generation functionality across all chapters. Any future chapter can simply import the helper and follow the same pattern in its sample answer expander.
+
+------------------------------------------------------------
 End of Session Summary 3.
----
+------------------------------------------------------------
 
