@@ -159,4 +159,6 @@ This approach makes it easy to maintain and extend the PDF generation functional
 ------------------------------------------------------------
 End of Session Summary 3.
 ------------------------------------------------------------
+All LaTeX expressions (inline or block) must be enclosed using double dollar signs ($$...$$) to ensure correct rendering in both Streamlit’s interface and the compiled PDF output.
+
 
