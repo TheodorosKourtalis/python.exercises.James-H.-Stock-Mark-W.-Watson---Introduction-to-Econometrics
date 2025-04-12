@@ -325,7 +325,25 @@ Use sliders to set probabilities for each outcome of a discrete distribution and
     ax.set_ylabel("Probability")
     ax.set_title("Discrete Probability Distribution")
     st.pyplot(fig)
-
+def exercise_2_10():
+    st.subheader("Exercise 2.10: Bernoulli Simulator")
+    st.markdown("""
+**Question:**  
+Simulate Bernoulli trials interactively. Adjust the probability of success and the number of trials using sliders, then view the sample mean and a histogram of outcomes.
+    """)
+    p = st.slider("Probability of Success:", min_value=0.0, max_value=1.0, value=0.5, step=0.01, key="ex2_10_p")
+    n_trials = st.slider("Number of Trials:", min_value=10, max_value=10000, value=100, step=10, key="ex2_10_n")
+    if st.button("Simulate Bernoulli Trials", key="simulate_bernoulli"):
+        trials = np.random.binomial(1, p, int(n_trials))
+        sample_mean = np.mean(trials)
+        st.markdown(f"**Sample Mean:** {sample_mean:.4f}")
+        fig, ax = plt.subplots()
+        ax.hist(trials, bins=[-0.5, 0.5, 1.5], rwidth=0.8, color="salmon", edgecolor="black")
+        ax.set_xticks([0, 1])
+        ax.set_xlabel("Outcome")
+        ax.set_ylabel("Frequency")
+        ax.set_title("Histogram of Bernoulli Trials")
+        st.pyplot(fig)
 def exercise_2_11():
     st.subheader("Exercise 2.11: Joint and Marginal Distribution Table Generator (Dynamic)")
     st.markdown("""
