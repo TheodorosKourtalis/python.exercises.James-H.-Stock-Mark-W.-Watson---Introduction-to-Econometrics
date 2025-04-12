@@ -51,41 +51,53 @@ st.markdown("---")
 # -------------------------------------------------------------------
 # HELPER FUNCTIONS
 # -------------------------------------------------------------------
+def markdown_to_latex_fixed(md_text: str) -> str:
+    """
+    Converts Markdown formatting to LaTeX.
+      - **text** → \textbf{text}
+      - *text* → \textit{text}
+      - Math blocks remain unchanged.
+    """
+    def escape_text(text: str) -> str:
+        special_chars = {
+            '&': r'\&',
+            '%': r'\%',
+            '#': r'\#',
+            '_': r'\_',
+            '{': r'\{',
+            '}': r'\}',
+            '~': r'\textasciitilde{}',
+            '^': r'\^{}',
+        }
+        for ch, repl in special_chars.items():
+            text = text.replace(ch, repl)
+        return text
 
-def markdown_to_latex(md_text: str) -> str:
-    """
-    A simple converter that turns Markdown bold syntax into LaTeX commands.
-    For example, **Sample Answer:** becomes \textbf{Sample Answer:}
-    """
-    # Convert bold: **text** → \textbf{text}
-    converted = re.sub(r"\*\*(.+?)\*\*", r"\\textbf{\1}", md_text)
-    return converted
+    # Split the text into math and non-math segments.
+    segments = re.split(r'(\$\$.*?\$\$|\$.*?\$)', md_text, flags=re.DOTALL)
+    output_segments = []
+    for seg in segments:
+        if seg.startswith('$'):
+            output_segments.append(seg)
+        else:
+            seg = re.sub(r'\*\*(.+?)\*\*', r'\\textbf{\1}', seg)
+            seg = re.sub(r'\*(.+?)\*', r'\\textit{\1}', seg)
+            seg = escape_text(seg)
+            output_segments.append(seg)
+    return ''.join(output_segments)
 
 def generate_pdf_with_pdflatex(sample_md: str) -> bytes:
     """
-    Converts Markdown to LaTeX and compiles it using pdflatex.
-    Returns PDF as bytes.
+    Converts Markdown to LaTeX and compiles the resulting document using pdflatex.
+    Returns the resulting PDF as bytes.
     """
-    # Convert Markdown to LaTeX (preserve math and convert bold)
-    latex_source = markdown_to_latex(sample_md)
-    # Create a temporary directory and tex file
+    latex_source = generate_latex_document(sample_md)
     tmp_dir = tempfile.mkdtemp()
     try:
         tex_filename = os.path.join(tmp_dir, "document.tex")
         pdf_filename = os.path.join(tmp_dir, "document.pdf")
-        document = r"""\documentclass{article}
-\usepackage[utf8]{inputenc}
-\usepackage{amsmath,amssymb}
-\usepackage{lmodern}
-\usepackage{geometry}
-\geometry{margin=1in}
-\begin{document}
-%s
-\end{document}
-""" % latex_source
         with open(tex_filename, "w", encoding="utf-8") as f:
-            f.write(document)
-        # Run pdflatex (make sure it's installed in the environment)
+            f.write(latex_source)
         result = subprocess.run(
             ["pdflatex", "-interaction=nonstopmode", tex_filename],
             cwd=tmp_dir,
@@ -96,16 +108,25 @@ def generate_pdf_with_pdflatex(sample_md: str) -> bytes:
             st.error("pdflatex error:\n" + result.stderr.decode("utf-8"))
             return None
         with open(pdf_filename, "rb") as f:
-            pdf_data = f.read()
-        return pdf_data
+            pdf_bytes = f.read()
+        return pdf_bytes
     finally:
         shutil.rmtree(tmp_dir)
 
+def generate_latex_document(md_content: str) -> str:
+    converted = markdown_to_latex_fixed(md_content)
+    document = r"""\documentclass[12pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath,amssymb}
+\usepackage{lmodern}
+\usepackage{geometry}
+\geometry{margin=1in}
+\begin{document}
+%s
+\end{document}""" % converted
+    return document
+
 def show_sample_answer(sample_md: str, key_suffix="default"):
-    """
-    If the global small_screen flag is True, generate a PDF (with pdflatex) from the
-    converted Markdown and show a download button; otherwise, display the sample answer interactively.
-    """
     if st.session_state.get("small_screen", False):
         pdf_bytes = generate_pdf_with_pdflatex(sample_md)
         if pdf_bytes:
@@ -116,11 +137,10 @@ def show_sample_answer(sample_md: str, key_suffix="default"):
                 mime="application/pdf"
             )
     else:
-        # Simply display the sample answer as-is (without conversion)
         st.markdown(sample_md)
 
 # -------------------------------------------------------------------
-# GLOBAL SETUP FOR SMALL SCREEN FLAG (Standalone fallback)
+# GLOBAL SETUP FOR SMALL SCREEN FLAG (fallback standalone)
 # -------------------------------------------------------------------
 if "small_screen" not in st.session_state:
     st.session_state["small_screen"] = False
@@ -128,7 +148,6 @@ if "small_screen" not in st.session_state:
 # -------------------------------------------------------------------
 # EXERCISE FUNCTIONS
 # -------------------------------------------------------------------
-
 def exercise_2_1():
     st.subheader("Exercise 2.1: Understanding Distributions")
     st.markdown("""
@@ -164,7 +183,7 @@ Calculate the expected value \(E(M)\) and explain your steps.
         st.markdown(r"""
 **Sample Answer:**
 $$
-E(M)=\sum_{m}m\,P(M=m)=0\times0.80+1\times0.10+2\times0.06+3\times0.03+4\times0.01=0.35.
+E(M)=\sum_{m} m\,P(M=m)=0\times0.80+1\times0.10+2\times0.06+3\times0.03+4\times0.01=0.35.
 $$
 Thus, \(E(M)=0.35\).
         """)
