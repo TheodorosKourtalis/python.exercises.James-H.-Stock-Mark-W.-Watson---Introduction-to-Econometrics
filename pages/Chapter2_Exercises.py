@@ -479,20 +479,26 @@ def exercise_2_13():
 
     st.subheader("Exercise 2.13: Law of Iterated Expectations Verifier (Theoretical & Dynamic)")
     
-    st.markdown(r"""
+st.markdown(r"""
 **Question:**  
-For random variables \(X\) and \(Y\) with a given joint distribution, verify the law of
+For random variables $$X$$ and $$Y$$ with a given joint distribution, verify the law of
 iterated expectations:
 $$
 \mathbb{E}[Y] = \mathbb{E}\bigl[\mathbb{E}[Y \mid X]\bigr].
 $$
 
-1. Generate or assume a (discrete or continuous) joint distribution for \(X\) and \(Y\).
-2. Compute $$ \(\mathbb{E}[Y \mid X = x]\) $$ for each possible $$\(x\)$$.
-3. Show that summing (or integrating) over $$\(x\)$$ with the distribution of \(X\) gives
-   the unconditional expectation $$\(\mathbb{E}[Y]\)$$.
+1. Generate or assume a (discrete or continuous) joint distribution for $$X$$ and $$Y$$.  
+2. Compute the conditional expectation:
+$$
+\mathbb{E}[Y \mid X = x]
+$$ 
+for each possible value of $$x$$.  
+3. Show that summing (in the discrete case) or integrating (in the continuous case) over $$x$$, weighted by the distribution of $$X$$, yields:
+$$
+\mathbb{E}[Y] = \mathbb{E}\bigl[\mathbb{E}[Y \mid X]\bigr].
+$$
 4. Provide a brief proof outline.
-    """)
+""")
 
     st.text_area("Your Answer:", height=150, key="ex2_13_user_answer")
 
