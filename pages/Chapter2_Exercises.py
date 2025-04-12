@@ -135,6 +135,7 @@ $$
 
 Thus, \(P(Y=1)=0.78\) and \(P(Y=0 \mid X=0)=0.50\).
         """)
+        show_sample_answer(sample_md, key_suffix="2_3")
 
 def exercise_2_4():
     st.subheader("Exercise 2.4: Normal Distribution Application")
