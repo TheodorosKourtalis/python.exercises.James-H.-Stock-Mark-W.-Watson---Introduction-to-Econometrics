@@ -437,41 +437,178 @@ iterated expectations:
 $$
 \mathbb{E}[Y] = \mathbb{E}[\mathbb{E}[Y \mid X]].
 $$
-Generate or assume a joint distribution for X and Y, compute the conditional expectations 
-\(\mathbb{E}[Y\mid X=x]\) for each value of \(x\), and then show that the overall expectation 
+Generate or assume a joint distribution for \(X\) and \(Y\), compute the conditional expectations 
+\(\mathbb{E}[Y \mid X = x]\) for each value of \(x\), and then show that the overall expectation 
 matches the weighted average of these conditional expectations. Also, provide a brief proof outline.
+
+Below is a **sample solution** that (1) demonstrates the verification on a **specific** joint distribution and (2) gives a short **proof outline** of the general law.
     """)
+    
     st.text_area("Your Answer:", height=150, key="ex2_13")
+    
     with st.expander("Show Sample Answer"):
         sample_md = r"""
-**Sample Answer:**
+**Sample Answer (Concrete Example + Proof Outline)**
 
-Assume \(X\) takes values 0 and 1 with:
-$$
-P(X=0)=0.4,\quad P(X=1)=0.6.
-$$
-Suppose the conditional expectations are given by:
-$$
-\mathbb{E}[Y\mid X=0]=3 \quad \text{and} \quad \mathbb{E}[Y\mid X=1]=5.
-$$
-Then, by the law of iterated expectations:
-$$
-\mathbb{E}[Y] = P(X=0) \times \mathbb{E}[Y\mid X=0] + P(X=1) \times \mathbb{E}[Y\mid X=1] = 0.4 \times 3 + 0.6 \times 5 = 1.2 + 3 = 4.2.
-$$
+### 1. Example Joint Distribution
 
-*Proof Outline:*  
-1. By definition, the conditional expectation \(\mathbb{E}[Y\mid X]\) is a function of \(X\).  
-2. The overall expectation is computed as:
-   $$
-   \mathbb{E}[Y] = \sum_{x} \mathbb{E}[Y\mid X=x]\,P(X=x).
-   $$
-3. Plugging in the values, we verify that:
-   $$
-   \mathbb{E}[Y] = 0.4\times 3 + 0.6\times 5 = 4.2,
-   $$
-   which confirms the law of iterated expectations.
-        """
-        show_sample_answer(sample_md, key_suffix="2_13")
+To demonstrate the law of iterated expectations, let's pick a small discrete joint distribution for two random variables \(X\) and \(Y\). Suppose:
+
+- \(X\) can take values in \(\{0,1\}\).
+- \(Y\) can take values in \(\{2,4,6\}\).
+
+Let the joint probability mass function \(p_{X,Y}(x,y)\) be defined by:
+
+\[
+p_{X,Y}(0,2) = 0.1,\quad
+p_{X,Y}(0,4) = 0.3,\quad
+p_{X,Y}(0,6) = 0.0,
+\]
+\[
+p_{X,Y}(1,2) = 0.1,\quad
+p_{X,Y}(1,4) = 0.2,\quad
+p_{X,Y}(1,6) = 0.3.
+\]
+
+> *Check these probabilities sum to 1:*  
+\(
+0.1 + 0.3 + 0.0 + 0.1 + 0.2 + 0.3 = 1.0.
+\)
+
+#### Step 1: Compute \(P(X=x)\)
+
+\[
+P(X=0) = p_{X,Y}(0,2) + p_{X,Y}(0,4) + p_{X,Y}(0,6) = 0.1 + 0.3 + 0.0 = 0.4,
+\]
+\[
+P(X=1) = p_{X,Y}(1,2) + p_{X,Y}(1,4) + p_{X,Y}(1,6) = 0.1 + 0.2 + 0.3 = 0.6.
+\]
+
+#### Step 2: Compute conditional expectations \(\mathbb{E}[Y \mid X=x]\)
+
+- **Case \(X=0\):**
+
+  \[
+  \mathbb{E}[Y \mid X=0] 
+  = \sum_{y} y \, P(Y=y \mid X=0).
+  \]
+  First find \(P(Y=y \mid X=0)\):
+  \[
+  P(Y=2 \mid X=0) = \frac{0.1}{0.4} = 0.25,\quad
+  P(Y=4 \mid X=0) = \frac{0.3}{0.4} = 0.75,\quad
+  P(Y=6 \mid X=0) = \frac{0.0}{0.4} = 0.
+  \]
+  Hence,
+  \[
+  \mathbb{E}[Y \mid X=0] 
+  = 2 \times 0.25 + 4 \times 0.75 + 6 \times 0 
+  = 0.5 + 3 + 0
+  = 3.5.
+  \]
+
+- **Case \(X=1\):**
+
+  \[
+  \mathbb{E}[Y \mid X=1] 
+  = \sum_{y} y \, P(Y=y \mid X=1).
+  \]
+  Now find \(P(Y=y \mid X=1)\):
+  \[
+  P(Y=2 \mid X=1) = \frac{0.1}{0.6} \approx 0.1667, \quad
+  P(Y=4 \mid X=1) = \frac{0.2}{0.6} \approx 0.3333, \quad
+  P(Y=6 \mid X=1) = \frac{0.3}{0.6} = 0.5.
+  \]
+  Thus,
+  \[
+  \mathbb{E}[Y \mid X=1] 
+  = 2 \times 0.1667 + 4 \times 0.3333 + 6 \times 0.5
+  = 0.3334 + 1.3332 + 3
+  \approx 4.6666.
+  \]
+
+#### Step 3: Use the law of iterated expectations
+
+According to the law of iterated expectations,
+\[
+\mathbb{E}[Y] = \sum_{x} \bigl[\mathbb{E}(Y \mid X=x)\bigr] \, P(X=x).
+\]
+We have:
+\[
+P(X=0) = 0.4,\quad \mathbb{E}[Y \mid X=0] = 3.5,
+\]
+\[
+P(X=1) = 0.6,\quad \mathbb{E}[Y \mid X=1] \approx 4.6666.
+\]
+Hence,
+\[
+\mathbb{E}[Y] \approx 3.5 \times 0.4 \;+\; 4.6666 \times 0.6 
+= 1.4 \;+\; 2.8 
+= 4.2.
+\]
+
+#### Step 4: (Optional) Verify \(\mathbb{E}[Y]\) directly
+
+To check consistency, we can compute \(\mathbb{E}[Y]\) using *all* pairs \((x,y)\):
+\[
+\mathbb{E}[Y]
+= \sum_{x,y} y \, p_{X,Y}(x,y)
+= 2\times(0.1+0.1) \;+\; 4\times(0.3+0.2) \;+\; 6\times(0.0+0.3).
+\]
+\[
+= 2 \times 0.2 \;+\; 4 \times 0.5 \;+\; 6 \times 0.3
+= 0.4 + 2 + 1.8 = 4.2.
+\]
+Indeed, the two computations agree: \(\mathbb{E}[Y] = 4.2\).
+
+---
+
+### 2. Brief Proof Outline of the Law
+
+1. **Definition of expectation in the discrete case:**
+   \[
+   \mathbb{E}[Y] 
+   = \sum_{y} y \, P(Y = y).
+   \]
+
+2. **Rewrite using joint probabilities:**
+   \[
+   \mathbb{E}[Y] 
+   = \sum_{x} \sum_{y} y \, P(X=x, Y=y).
+   \]
+
+3. **Factorize and group by \(X=x\):**
+   \[
+   \mathbb{E}[Y] 
+   = \sum_{x} \sum_{y} y \, P(Y=y \mid X=x)\, P(X=x).
+   \]
+
+4. **Recognize the inner sum is \(\mathbb{E}[Y\mid X=x]\):**
+   \[
+   \sum_{y} y \, P(Y=y \mid X=x) 
+   = \mathbb{E}[Y \mid X=x].
+   \]
+
+5. **Hence:**
+   \[
+   \mathbb{E}[Y] 
+   = \sum_{x} \mathbb{E}[Y \mid X=x] \, P(X=x),
+   \]
+   which is exactly
+   \[
+   \mathbb{E}[Y] 
+   = \mathbb{E}\bigl[\mathbb{E}[Y \mid X]\bigr].
+   \]
+
+> *Conclusion:* This completes the demonstration that  
+\[
+\mathbb{E}[Y] 
+= \mathbb{E}\bigl[\mathbb{E}[Y \mid X]\bigr]
+\]
+for both this specific discrete example *and* in general by the proof outline.
+
+---
+"""
+        st.markdown(sample_md)
 # -------------------------------------------------------------------
 # MAIN EXECUTION
 # -------------------------------------------------------------------
