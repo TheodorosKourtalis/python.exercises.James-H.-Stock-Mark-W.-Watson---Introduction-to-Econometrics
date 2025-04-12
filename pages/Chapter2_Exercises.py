@@ -391,7 +391,10 @@ def exercise_2_12():
     st.markdown("""
 **Question:**  
 Given a joint probability distribution for two variables X and Y, calculate the conditional distributions 
-\(P(Y \mid X)\) for each value of X. Provide a brief explanation of why the conditional probabilities 
+$$
+\(P(Y \mid X)\)
+$$
+for each value of X. Provide a brief explanation of why the conditional probabilities 
 are computed in this way.
     """)
     st.text_area("Your Answer:", height=150, key="ex2_12")
