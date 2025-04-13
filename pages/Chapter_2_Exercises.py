@@ -34,7 +34,6 @@ st.set_page_config(
 
 st.title("📈 Chapter 2: Review of Probability – Exercises")
 st.markdown("""
-This page presents exercises from *Introduction to Econometrics*.  
 Select an exercise, work interactively, and click **Show Sample Answer** to compare your solution.
 """)
 
