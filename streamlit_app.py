@@ -38,11 +38,10 @@ GitHub repository.
 
 2. **Answering & Sample Solutions**  
    Each page has:
-   - A question prompt.  
-   - A text area for your own answer.  
-   - A “Show Sample Answer” expander with a reference solution.
-2_5. **Some pages have:**
-   - a interactive menu where you can test out parameters and see the results in real time. 
+   - A question prompt  
+   - A text area for your own answer  
+   - A “Show Sample Answer” expander with a reference solution  
+   - *(On some pages)*: Interactive widgets where you can test out parameters and see results in real time
 
 3. **Small-Screen Mode**  
    If you’re on a mobile device or narrow display, enable the **“I’m on a small screen”** checkbox in the sidebar.  
