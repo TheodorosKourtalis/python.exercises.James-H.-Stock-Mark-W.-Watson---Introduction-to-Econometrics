@@ -132,4 +132,4 @@ def show_sample_answer(sample_md):
 # END NOTE
 # -----------------------------------------------------------
 st.markdown("---")
-st.markdown("*Use the **Pages** menu to access specific exercises.*")
+st.markdown("*Use the **Bullet** menu of each chapter to access specific exercises.*")
