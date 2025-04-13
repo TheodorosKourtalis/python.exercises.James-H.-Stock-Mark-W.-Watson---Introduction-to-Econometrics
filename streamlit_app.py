@@ -19,31 +19,34 @@ st.subheader("Created by Thodoris Kourtalis")
 # INTRODUCTORY REMARKS
 # -----------------------------------------------------------
 st.markdown("""
-I built this collection of **econometrics exercises** from my own notes, 
-with a **significant portion** inspired by the textbook 
-[“Introduction to Econometrics”](https://www.pearson.com/en-us/subject-catalog/p/introduction-to-econometrics/P200000006421/9780136879787).  
-Though I claim **no special rights** over these ideas, I'm sharing them 
-as a personal project, in hopes they support your learning process.
+A personal collection of **econometrics exercises**, assembled out of passion. 
+While certain problems are **inspired** or **transferred** from external sources—
+notably [“Introduction to Econometrics”](https://www.pearson.com/en-us/subject-catalog/p/introduction-to-econometrics/P200000006421/9780136879787)—the 
+**solutions** and the **website** you see here are entirely my own work.
+
+If you’re curious about how the exercises are run or how this website is built, 
+feel free to browse the **open-source code** available on my connected 
+GitHub repository.
 
 ---
 
-### How This Website Works
+### How to Use This Site
 
-1. **Pages for Each Chapter or Topic**  
-   - In the **top-left corner** (or via the navigation sidebar), you'll see a **Pages** menu.
-   - Each **page** contains a different set of exercises.
+1. **Pages for Each Topic**  
+   In the top-left corner (or via your Streamlit sidebar), you will see a **Pages** menu.  
+   Select a page to view a set of exercises.
 
-2. **Your Responses**  
-   - Each exercise page provides:
-     - A **Question** or prompt.
-     - A text area for you to type your own answer.
-     - A **Show Sample Answer** expander, which reveals a reference solution.
+2. **Answering & Sample Solutions**  
+   Each page has:
+   - A question prompt.  
+   - A text area for your own answer.  
+   - A “Show Sample Answer” expander with a reference solution.
 
 3. **Small-Screen Mode**  
-   - Use the checkbox labeled **“I’m on a small screen”** in the sidebar if you’re on a phone or narrow display.
-   - When checked, solutions are generated as **PDF** files for download instead of being displayed inline.
+   If you’re on a mobile device or narrow display, enable the **“I’m on a small screen”** checkbox in the sidebar.  
+   This mode renders solutions as **PDFs** to download, rather than inline text.
 
-Feel free to explore, experiment, and learn!
+Enjoy exploring, and I hope it fosters a deeper understanding of econometrics!
 """)
 
 # -----------------------------------------------------------
