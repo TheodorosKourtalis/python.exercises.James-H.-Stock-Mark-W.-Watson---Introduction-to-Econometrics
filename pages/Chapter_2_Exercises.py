@@ -129,7 +129,7 @@ Suppose we have two binary variables:
 - **\(X\)**: Weather (0 = rainy, 1 = clear)
 - **\(Y\)**: Commute length (0 = long, 1 = short)
 
-Their joint distribution is given by:
+Their joint distribution is given by table (2.2) from "Introduction to Econometrics":
     
 |                | \(Y=0\) (Long) | \(Y=1\) (Short) | Total   |
 |----------------|----------------|-----------------|---------|
