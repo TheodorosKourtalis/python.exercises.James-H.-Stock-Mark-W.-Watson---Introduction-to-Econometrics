@@ -349,7 +349,7 @@ Simulate Bernoulli trials interactively. Adjust the probability of success and t
         ax.set_title("Histogram of Bernoulli Trials")
         st.pyplot(fig)
 def exercise_2_11():
-    st.subheader("Exercise 2.11: Joint and Marginal Distribution Table Generator (Dynamic)")
+    st.subheader("Exercise 2.11: Joint and Marginal Distribution Table Generator")
     st.markdown("""
 **Question:**  
 Using a 2×2 joint probability distribution for two variables X and Y, generate a table that shows:
@@ -423,7 +423,7 @@ $$P(Y = y)$$) of the joint distribution table.
         show_sample_answer(sample_md, key_suffix="2_11")
 
 def exercise_2_12():
-    st.subheader("Exercise 2.12: Conditional Distribution Calculator (Dynamic)")
+    st.subheader("Exercise 2.12: Conditional Distribution Calculator")
     st.markdown(r"""
 **Question:**  
 Given a joint probability distribution for two variables $$X$$ and $$Y$$, calculate the conditional distributions  
@@ -472,7 +472,7 @@ import streamlit as st
 
 def exercise_2_13():
     """
-    Exercise 2.13: Law of Iterated Expectations Verifier (Theoretical & Dynamic)
+    Exercise 2.13: Law of Iterated Expectations Verifier
     Demonstrates how to verify the law of iterated expectations in a simple discrete setting.
     Uses a helper function to display or download the sample answer, depending on the small-screen setting.
     """
