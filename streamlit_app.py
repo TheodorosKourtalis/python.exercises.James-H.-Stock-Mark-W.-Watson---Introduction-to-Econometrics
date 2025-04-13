@@ -16,30 +16,32 @@ st.title("Econometrics Exercises Notebook")
 st.subheader("Created by Thodoris Kourtalis")
 
 # -----------------------------------------------------------
-# INTRODUCTORY REMARKS (MINIMAL YET THOROUGH)
+# INTRODUCTORY REMARKS
 # -----------------------------------------------------------
 st.markdown("""
-I built this collection of **econometrics exercises** from my own notes 
-and references. I claim **no special rights** over these ideas; I'm simply 
-sharing them as a personal project in the hope they’re **helpful**.
+I built this collection of **econometrics exercises** from my own notes, 
+with a **significant portion** inspired by the textbook 
+[“Introduction to Econometrics”](https://www.pearson.com/en-us/subject-catalog/p/introduction-to-econometrics/P200000006421/9780136879787).  
+Though I claim **no special rights** over these ideas, I'm sharing them 
+as a personal project, in hopes they support your learning process.
 
 ---
 
 ### How This Website Works
 
 1. **Pages for Each Chapter or Topic**  
-   - In the **top-left corner** (or via the navigation sidebar), you’ll see a **Pages** menu.
-   - Each **page** corresponds to a different set of exercises.
+   - In the **top-left corner** (or via the navigation sidebar), you'll see a **Pages** menu.
+   - Each **page** contains a different set of exercises.
 
 2. **Your Responses**  
    - Each exercise page provides:
      - A **Question** or prompt.
-     - A text area for you to type and save your own answer.
+     - A text area for you to type your own answer.
      - A **Show Sample Answer** expander, which reveals a reference solution.
 
 3. **Small-Screen Mode**  
    - Use the checkbox labeled **“I’m on a small screen”** in the sidebar if you’re on a phone or narrow display.
-   - When checked, solutions are generated as **PDF** files for download rather than displayed inline.
+   - When checked, solutions are generated as **PDF** files for download instead of being displayed inline.
 
 Feel free to explore, experiment, and learn!
 """)
@@ -52,7 +54,7 @@ if "small_screen" not in st.session_state:
 
 st.sidebar.markdown("### Display Options")
 small_screen_checkbox = st.sidebar.checkbox(
-    "I'm on a small screen", 
+    "I'm on a small screen",
     value=st.session_state["small_screen"]
 )
 st.session_state["small_screen"] = small_screen_checkbox
