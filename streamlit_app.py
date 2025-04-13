@@ -41,7 +41,7 @@ GitHub repository.
    - A question prompt  
    - A text area for your own answer  
    - A “Show Sample Answer” expander with a reference solution  
-   - *(On some pages)*: Interactive widgets where you can test out parameters and see results in real time
+   - **(On some pages)**: Interactive widgets where you can test out parameters and see results in real time
 
 3. **Small-Screen Mode**  
    If you’re on a mobile device or narrow display, enable the **“I’m on a small screen”** checkbox in the sidebar.  
