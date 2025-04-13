@@ -10,40 +10,36 @@ st.set_page_config(
 )
 
 # -----------------------------------------------------------
-# TITLE & BYLINE
+# TITLE & SUBHEADER (PASSION PROJECT)
 # -----------------------------------------------------------
 st.title("Econometrics Exercises Notebook")
-st.subheader("Curated by Thodoris Kourtalis")
+st.subheader("A Passion Project by Thodoris Kourtalis")
 
 # -----------------------------------------------------------
-# DISCALIMER & GUIDANCE
+# INTRODUCTORY REMARKS
 # -----------------------------------------------------------
 st.markdown("""
-In this notebook, you will find **exercises and solutions** inspired by standard  
-econometrics syllabi. **All content is purely for educational demonstration.**  
+Welcome to this **Econometrics Exercises** repository, assembled out of pure enthusiasm 
+for sharing knowledge. Some exercises have been **originally crafted or inspired** 
+by standard econometrics references, while **others are directly transferred** 
+(or adapted) from external sources.  
 
-I hold **no proprietary rights** to the concepts or methods described within. 
-For rigorous coverage, please consider purchasing the textbook 
-[“Introduction to Econometrics”](https://www.pearson.com/en-us/subject-catalog/p/introduction-to-econometrics/P200000006421/9780136879787).
+No special rights are claimed over the material; it is provided as **educational demonstration** only.  
+Be aware that **some solutions or questions may be incomplete or incorrect**.  
+We encourage users to verify and cross-check with reputable references—particularly 
+the textbook [“Introduction to Econometrics”](https://www.pearson.com/en-us/subject-catalog/p/introduction-to-econometrics/P200000006421/9780136879787) for a rigorous treatment.
 
 ---
-
 ### How to Navigate
-1. **Streamlit Pages**  
-   Use the **Pages** panel (usually found in the upper-left menu or as separate pages) to switch between the different *chapters* or *sections*. Each page hosts a unique collection of exercises.
+- **Streamlit Pages**:  
+  Each chapter or set of exercises is on a separate **Page** in this application.  
+  Access them from the top-left menu or your Streamlit sidebar, depending on your interface.
 
-2. **Small-Screen Mode**  
-   If you’re on a mobile device or narrow display, enable the “**I’m on a small screen**” option in the sidebar (see below). Instead of revealing solutions inline, this mode will generate **PDF** files for you to download.
+- **Small-Screen Mode**:  
+  If you’re on a mobile device or prefer a simpler layout, enable “I’m on a small screen” in the sidebar (see below).  
+  This mode allows you to download sample answers as **PDF** files instead of viewing them inline.
 
-3. **Exercises & Solutions**  
-   - Each exercise page includes a **question prompt** (or multiple prompts).  
-   - You may type your own solution in the designated text area.  
-   - **Show Sample Answer** reveals (or lets you download) a reference solution, which often includes both text and \\(\\LaTeX\\) math.
-
----
-
-We trust you will find this resource beneficial as you explore and master the fundamentals 
-of econometrics.
+Thank you for exploring this **passion project**—I hope it aids your study and sparks new insights.
 """)
 
 # -----------------------------------------------------------
@@ -65,7 +61,7 @@ st.session_state["small_screen"] = small_screen_checkbox
 def generate_pdf_via_subprocess(sample_text):
     """
     Calls the external generate_pdf.py script via subprocess,
-    passing the sample_text on stdin. Returns the PDF bytes.
+    passing 'sample_text' on stdin. Returns the PDF bytes.
     """
     try:
         process = subprocess.Popen(
@@ -80,20 +76,19 @@ def generate_pdf_via_subprocess(sample_text):
             return None
         return pdf_data
     except Exception as e:
-        st.error("Exception during PDF generation: " + str(e))
+        st.error(f"Exception during PDF generation: {str(e)}")
         return None
 
 # -----------------------------------------------------------
-# SAMPLE ANSWER RENDERING
+# SAMPLE ANSWER RENDERING FUNCTION
 # -----------------------------------------------------------
 def show_sample_answer(sample_md):
     """
-    Checks the global 'small_screen' flag.
-    If enabled, generates a PDF from sample_md and offers it for download.
-    Otherwise, displays sample_md inline.
+    Checks 'small_screen' in st.session_state.
+    If True, generates a PDF from 'sample_md' and offers a download.
+    Otherwise, displays the Markdown inline with custom styling.
     """
     if st.session_state.get("small_screen", False):
-        # Generate PDF and provide as download
         pdf_data = generate_pdf_via_subprocess(sample_md)
         if pdf_data is not None:
             st.download_button(
@@ -103,7 +98,6 @@ def show_sample_answer(sample_md):
                 mime="application/pdf"
             )
     else:
-        # Inline display with custom styling
         st.markdown(
             """
             <style>
@@ -126,6 +120,6 @@ def show_sample_answer(sample_md):
         st.markdown("</div>", unsafe_allow_html=True)
 
 # -----------------------------------------------------------
-# END: This script is primarily for the main page.
-# Individual exercises and additional content can be placed in separate pages.
+# END: All specialized exercises or pages can be accessed
+# via Streamlit's "Pages" feature, not in this file.
 # -----------------------------------------------------------
