@@ -20,7 +20,7 @@ st.caption("by Thodoris Kourtalis")
 # -----------------------------------------------------------
 st.markdown("""
 A personal collection of **econometrics exercises**, assembled out of passion. 
-While certain problems are **inspired** or loosely **transferred** from external sources—
+Certain problems are **inspired** or loosely **transferred** from external sources—
 notably [“Introduction to Econometrics”](https://www.pearson.com/en-us/subject-catalog/p/introduction-to-econometrics/P200000006421/9780136879787) so I try to reference them as much as possible.
 The **solutions** and the **website** you see here are entirely my own work so please if you find any mistakes contact me at theodoroskourtalisgithub@gmail.com.
 
