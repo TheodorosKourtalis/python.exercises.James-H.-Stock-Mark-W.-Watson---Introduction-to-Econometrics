@@ -40,8 +40,10 @@ GitHub repository.
    Each page has:
    - A question prompt  
    - A text area for your own answer  
-   - A “Show Sample Answer” expander with a reference solution  
-   - **(On some pages)**: Interactive widgets where you can test out parameters and see results in real time
+   - A “Show Sample Answer” expander with a reference solution
+
+**2.5 – Interactive Exercises**  
+Some pages include interactive elements, where you can adjust parameters and see the results in real time.
 
 3. **Small-Screen Mode**  
    If you’re on a mobile device or narrow display, enable the **“I’m on a small screen”** checkbox in the sidebar.  
