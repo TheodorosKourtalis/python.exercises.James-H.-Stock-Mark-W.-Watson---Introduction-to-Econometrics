@@ -41,6 +41,7 @@ GitHub repository.
    - A question prompt.  
    - A text area for your own answer.  
    - A “Show Sample Answer” expander with a reference solution.
+   
    - Some exercises have a interactive menu where you can test out parameters and see the results in real time. 
 
 3. **Small-Screen Mode**  
