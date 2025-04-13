@@ -10,36 +10,38 @@ st.set_page_config(
 )
 
 # -----------------------------------------------------------
-# TITLE & SUBHEADER (PASSION PROJECT)
+# TITLE & SUBHEADER
 # -----------------------------------------------------------
 st.title("Econometrics Exercises Notebook")
-st.subheader("A Passion Project by Thodoris Kourtalis")
+st.subheader("Created by Thodoris Kourtalis")
 
 # -----------------------------------------------------------
-# INTRODUCTORY REMARKS
+# INTRODUCTORY REMARKS (MINIMAL YET THOROUGH)
 # -----------------------------------------------------------
 st.markdown("""
-Welcome to this **Econometrics Exercises** repository, assembled out of pure enthusiasm 
-for sharing knowledge. Some exercises have been **originally crafted or inspired** 
-by standard econometrics references, while **others are directly transferred** 
-(or adapted) from external sources.  
-
-No special rights are claimed over the material; it is provided as **educational demonstration** only.  
-Be aware that **some solutions or questions may be incomplete or incorrect**.  
-We encourage users to verify and cross-check with reputable references—particularly 
-the textbook [“Introduction to Econometrics”](https://www.pearson.com/en-us/subject-catalog/p/introduction-to-econometrics/P200000006421/9780136879787) for a rigorous treatment.
+I built this collection of **econometrics exercises** from my own notes 
+and references. I claim **no special rights** over these ideas; I'm simply 
+sharing them as a personal project in the hope they’re **helpful**.
 
 ---
-### How to Navigate
-- **Streamlit Pages**:  
-  Each chapter or set of exercises is on a separate **Page** in this application.  
-  Access them from the top-left menu or your Streamlit sidebar, depending on your interface.
 
-- **Small-Screen Mode**:  
-  If you’re on a mobile device or prefer a simpler layout, enable “I’m on a small screen” in the sidebar (see below).  
-  This mode allows you to download sample answers as **PDF** files instead of viewing them inline.
+### How This Website Works
 
-Thank you for exploring this **passion project**—I hope it aids your study and sparks new insights.
+1. **Pages for Each Chapter or Topic**  
+   - In the **top-left corner** (or via the navigation sidebar), you’ll see a **Pages** menu.
+   - Each **page** corresponds to a different set of exercises.
+
+2. **Your Responses**  
+   - Each exercise page provides:
+     - A **Question** or prompt.
+     - A text area for you to type and save your own answer.
+     - A **Show Sample Answer** expander, which reveals a reference solution.
+
+3. **Small-Screen Mode**  
+   - Use the checkbox labeled **“I’m on a small screen”** in the sidebar if you’re on a phone or narrow display.
+   - When checked, solutions are generated as **PDF** files for download rather than displayed inline.
+
+Feel free to explore, experiment, and learn!
 """)
 
 # -----------------------------------------------------------
@@ -60,8 +62,8 @@ st.session_state["small_screen"] = small_screen_checkbox
 # -----------------------------------------------------------
 def generate_pdf_via_subprocess(sample_text):
     """
-    Calls the external generate_pdf.py script via subprocess,
-    passing 'sample_text' on stdin. Returns the PDF bytes.
+    Calls the external generate_pdf.py script, passing 'sample_text' on stdin.
+    Returns the PDF bytes if successful, else None.
     """
     try:
         process = subprocess.Popen(
@@ -84,9 +86,8 @@ def generate_pdf_via_subprocess(sample_text):
 # -----------------------------------------------------------
 def show_sample_answer(sample_md):
     """
-    Checks 'small_screen' in st.session_state.
-    If True, generates a PDF from 'sample_md' and offers a download.
-    Otherwise, displays the Markdown inline with custom styling.
+    If 'small_screen' is True, generates a PDF of sample_md for download.
+    Otherwise, displays sample_md inline.
     """
     if st.session_state.get("small_screen", False):
         pdf_data = generate_pdf_via_subprocess(sample_md)
@@ -120,6 +121,7 @@ def show_sample_answer(sample_md):
         st.markdown("</div>", unsafe_allow_html=True)
 
 # -----------------------------------------------------------
-# END: All specialized exercises or pages can be accessed
-# via Streamlit's "Pages" feature, not in this file.
+# END NOTE
 # -----------------------------------------------------------
+st.markdown("---")
+st.markdown("*Use the **Pages** menu to access specific exercises.*")
