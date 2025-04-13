@@ -8,11 +8,9 @@ import streamlit as st
 def markdown_to_latex_fixed(md_text: str) -> str:
     """
     Converts Markdown-formatted text to LaTeX.
-    - Math segments (delimited by $...$ or $$...$$) are preserved.
-    - In non-math segments:
-      * **Bold** text is converted to \textbf{...}
-      * *Italic* text is converted to \textit{...}
-      * Special characters &, %, #, _, ~, and ^ are escaped.
+    - Preserves math segments (delimited by $$...$$ or $...$).
+    - Converts **bold** to \textbf{...} and *italic* to \textit{...}.
+    - Escapes special characters in non-math segments.
     """
     def escape_text(text: str) -> str:
         special_chars = {
@@ -55,7 +53,7 @@ def generate_latex_document(md_content: str) -> str:
 def generate_pdf_with_pdflatex(sample_md: str, pdf_base_name: str = "document") -> bytes:
     """
     Generates a PDF from sample_md using pdflatex.
-    The .tex and .pdf file names are based on pdf_base_name.
+    The temporary .tex and .pdf file names are built using pdf_base_name.
     """
     latex_source = generate_latex_document(sample_md)
     tmp_dir = tempfile.mkdtemp()
@@ -78,25 +76,29 @@ def generate_pdf_with_pdflatex(sample_md: str, pdf_base_name: str = "document") 
     finally:
         shutil.rmtree(tmp_dir)
 
-def show_sample_answer(sample_md: str, key_suffix="default") -> None:
+def show_sample_answer(sample_md: str, key_suffix: str = "") -> None:
     """
-    If the global small_screen flag is True, generates a PDF from the sample Markdown using pdflatex,
-    then displays a download button with a file name based on the current chapter's PDF label.
-    Otherwise, displays the sample answer as Markdown.
-    """
-    # Retrieve global label, or use a default if not set.
-    chapter_label = st.session_state.get("current_pdf_label", "sample_answer")
+    Displays the sample answer.
+    If st.session_state["small_screen"] is True, it generates a PDF using pdflatex and shows a download button.
     
+    If key_suffix is empty, it uses st.session_state["current_pdf_label"] as the base for the PDF file name.
+    """
+    if key_suffix == "":
+        chapter_label = st.session_state.get("current_pdf_label", "sample_answer")
+        key_suffix_used = chapter_label
+    else:
+        key_suffix_used = key_suffix
+
     if st.session_state.get("small_screen", False):
         try:
-            pdf_bytes = generate_pdf_with_pdflatex(sample_md, pdf_base_name=chapter_label)
+            pdf_bytes = generate_pdf_with_pdflatex(sample_md, pdf_base_name=st.session_state.get("current_pdf_label", "sample_answer"))
             if pdf_bytes:
                 st.download_button(
                     label="Download Sample Answer PDF",
                     data=pdf_bytes,
-                    file_name=f"{chapter_label}.pdf",
+                    file_name=f"{st.session_state.get('current_pdf_label', 'sample_answer')}.pdf",
                     mime="application/pdf",
-                    key="download_sample_" + key_suffix
+                    key="download_sample_" + key_suffix_used
                 )
         except Exception as e:
             st.error(str(e))
