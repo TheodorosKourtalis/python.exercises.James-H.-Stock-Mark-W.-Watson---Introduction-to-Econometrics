@@ -10,7 +10,6 @@ st.set_page_config(
 st.title("📘 Chapter 1: Economic Questions and Data")
 st.markdown(
     """
-This page presents review exercises from Chapter 1 of *Introduction to Econometrics*.  
 Select an exercise below to view the question, type your answer, and compare it with the sample answer.
 """
 )
