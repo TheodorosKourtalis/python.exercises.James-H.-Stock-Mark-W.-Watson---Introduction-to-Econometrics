@@ -42,7 +42,7 @@ GitHub repository.
    - A text area for your own answer.  
    - A “Show Sample Answer” expander with a reference solution.
    
-   - Some exercises have a interactive menu where you can test out parameters and see the results in real time. 
+**Some exercises have a interactive menu where you can test out parameters and see the results in real time. 
 
 3. **Small-Screen Mode**  
    If you’re on a mobile device or narrow display, enable the **“I’m on a small screen”** checkbox in the sidebar.  
