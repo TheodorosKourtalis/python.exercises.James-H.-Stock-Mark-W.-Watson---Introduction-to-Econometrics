@@ -13,7 +13,7 @@ st.set_page_config(
 # TITLE & SUBHEADER
 # -----------------------------------------------------------
 st.title("Econometrics Exercises Notebook")
-st.subheader("Created by Thodoris Kourtalis")
+st.subtitle("by Thodoris Kourtalis")
 
 # -----------------------------------------------------------
 # INTRODUCTORY REMARKS
