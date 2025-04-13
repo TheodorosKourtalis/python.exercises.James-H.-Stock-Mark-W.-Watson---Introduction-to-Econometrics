@@ -22,7 +22,7 @@ st.markdown("""
 A personal collection of **econometrics exercises**, assembled out of passion. 
 While certain problems are **inspired** or **transferred** from external sources—
 notably [“Introduction to Econometrics”](https://www.pearson.com/en-us/subject-catalog/p/introduction-to-econometrics/P200000006421/9780136879787)—the 
-**solutions** and the **website** you see here are entirely my own work so please if you find any mistakes email me @ theodoroskourtalisgithub@gmail.com.
+**solutions** and the **website** you see here are entirely my own work so please if you find any mistakes please contact me at theodoroskourtalisgithub@gmail.com.
 
 If you’re curious about how the exercises are run or how this website is built, 
 feel free to browse the **open-source code** available on my connected 
