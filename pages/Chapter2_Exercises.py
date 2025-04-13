@@ -477,7 +477,7 @@ def exercise_2_13():
     Uses a helper function to display or download the sample answer, depending on the small-screen setting.
     """
 
-    st.subheader("Exercise 2.13: Law of Iterated Expectations Verifier (Theoretical & Dynamic)")
+    st.subheader("Exercise 2.13: Law of Iterated Expectations Verifier")
     
     st.markdown(r"""
 **Question:**  
