@@ -61,15 +61,22 @@ def generate_latex_document(md_content: str) -> str:
     return document
 
 def main():
+    # 1) Check for optional argv naming
+    pdf_base_name = "doc"
+    if len(sys.argv) > 1:
+        pdf_base_name = sys.argv[1]  # e.g. "2.16_sample_answer"
+
+    # 2) Read from stdin
     md_input = sys.stdin.read()
     latex_source = generate_latex_document(md_input)
+
     tmp_dir = tempfile.mkdtemp()
     try:
-        tex_file = os.path.join(tmp_dir, "doc.tex")
-        pdf_file = os.path.join(tmp_dir, "doc.pdf")
+        tex_file = os.path.join(tmp_dir, pdf_base_name + ".tex")
+        pdf_file = os.path.join(tmp_dir, pdf_base_name + ".pdf")
         with open(tex_file, "w", encoding="utf-8") as f:
             f.write(latex_source)
-        # Run pdflatex
+
         proc = subprocess.run(
             ["pdflatex", "-interaction=nonstopmode", tex_file],
             cwd=tmp_dir,
@@ -79,8 +86,11 @@ def main():
         if proc.returncode != 0:
             sys.stderr.write(proc.stderr.decode("utf-8"))
             sys.exit(proc.returncode)
+
         with open(pdf_file, "rb") as f:
             pdf_bytes = f.read()
+
+        # Output PDF to stdout
         sys.stdout.buffer.write(pdf_bytes)
     finally:
         shutil.rmtree(tmp_dir)
